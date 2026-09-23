@@ -1,3 +1,12 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#FFF5F8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Case Lab">
+<style>html{color-scheme:light}body{margin:0;font:14px system-ui,sans-serif;background:#fafafa}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Hygiene Case Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -256,6 +265,9 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
 .confirm{display:inline-flex;gap:6px;align-items:center;font-size:13px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
+</head>
+<body>
+
 
 <svg class="sakura" viewBox="0 0 520 260" aria-hidden="true">
   <g fill="none" stroke="var(--branch)" stroke-linecap="round">
@@ -1056,3 +1068,6 @@ let startTab="cases";try{startTab=localStorage.getItem(KEY+"-tab")||"cases";}cat
 const h=(location.hash||"").slice(1); if(["cases","la","cards","quiz","cram"].includes(h)) startTab=h;
 setTab(startTab);
 </script>
+
+</body>
+</html>
