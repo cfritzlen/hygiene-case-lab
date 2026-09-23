@@ -16,6 +16,11 @@ Study page for a dental hygiene student (user's stepdaughter) at Northampton Com
 - Max-dose numbers are textbook (Malamed), not from the manual.
 - Unknowns: Grace's and Robert's weights, Jack's BP.
 
+## Where she opens it
+**https://cfritzlen.github.io/hygiene-case-lab/** — GitHub Pages from `cfritzlen/hygiene-case-lab` (public, `main` branch root). No login needed. The repo holds only `index.html`, `README.md`, `.gitignore`; `.gitignore` blocks everything else (manual, scans) from ever being pushed.
+
+To update: edit `case-lab.html`, copy it over `index.html`, commit, `git push`. Pages rebuilds in about a minute.
+
 ## Rules for edits
 - Every answer is tagged "Manual p.__" (printed page) or "Standard teaching". Keep that.
 - Edit `case-lab.html`, syntax-check the script, republish to the same artifact URL.
