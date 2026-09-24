@@ -11,6 +11,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<script>try{localStorage.removeItem("hcl-ver")}catch(e){}</script>
+<style>button,a,input,select,textarea{touch-action:manipulation}</style>
 <style>
 :root{
   --bg:#FFF5F8; --surface:#FFFFFF; --surface2:#FDF0F4; --ink:#4A2438; --muted:#8C6376; --line:#F2D3DE;
@@ -64,7 +66,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 /* header */
 header.top{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justify-content:space-between;padding-bottom:14px;border-bottom:2px solid var(--accent)}
 .brand h1{font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:-.02em}
-.brand h1 .probe{display:inline-block;width:.9em;height:.18em;vertical-align:.2em;margin-left:.15em;background:repeating-linear-gradient(90deg,var(--ink) 0 18%,transparent 18% 30%);}
+.brand h1 .probe{display:inline-block;margin-left:.2em}
 .brand p{margin:4px 0 0;color:var(--muted);font-size:14px}
 .hud{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .xp{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px 6px 6px;box-shadow:var(--shadow)}
@@ -299,7 +301,7 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
         <span class="num" id="xpnum">0 XP</span>
       </div>
       <span id="resetArea"><button class="ghost" id="resetBtn">Start over</button></span>
-      <a class="verlink" href="./">Web version →</a>
+      <a class="verlink" href="./?web">Web version →</a>
     </div>
   </header>
 
