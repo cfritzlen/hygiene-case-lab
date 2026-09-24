@@ -226,9 +226,17 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
 @media (min-width:0px){/*PHONE-BLOCK*/
   .wrap{padding-block:12px 96px}
   .sakura{width:190px;opacity:.55}
-  .brand h1{font-size:30px}
-  .brand p{font-size:12.5px}
-  .hud{width:100%}
+  header.top{gap:8px;padding-bottom:10px;align-items:center}
+  .brand{flex:1 1 100%}
+  .brand h1{font-size:24px}
+  .brand p{font-size:12px;margin-top:2px}
+  .hud{width:100%;gap:6px;flex-wrap:nowrap;align-items:center}
+  .xp{flex:1 1 auto;padding:4px 10px 4px 4px;gap:8px;min-width:0}
+  .xp .lvl{font-size:11px;padding:3px 7px}
+  .xp .bar{flex:1 1 40px;width:auto;min-width:30px}
+  .xp .num{font-size:12px;white-space:nowrap}
+  .ghost,.verlink{font-size:12px;padding:6px 8px;white-space:nowrap}
+  .confirm{font-size:12px}
   nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);margin:10px -16px 14px;padding:6px 16px;border-bottom:1px solid var(--line)}
   nav.tabs button{padding:10px 12px;font-size:15px}
   .chips{gap:6px}
