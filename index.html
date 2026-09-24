@@ -178,7 +178,8 @@ textarea{width:100%;min-height:74px;border:1.5px solid var(--line);border-radius
 .pill.good{background:var(--good);color:#fff}.pill.warn{background:var(--warn);color:#fff}.pill.bad{background:var(--bad);color:#fff}
 .two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
 @media (max-width:820px){.two{grid-template-columns:1fr}}
-.tbl-wrap{overflow-x:auto}
+.tbl-wrap{overflow-x:auto;max-width:100%;min-width:0;contain:inline-size}
+.panel,.two>*,.sheet>*{min-width:0}
 table.mrd{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
 table.mrd th,table.mrd td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:right}
 table.mrd th:first-child,table.mrd td:first-child{text-align:left}
