@@ -237,6 +237,14 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
 .float{position:fixed;font-family:var(--mono);font-weight:700;color:var(--good);pointer-events:none;animation:up 1s ease-out forwards;z-index:9}
 @keyframes up{to{transform:translateY(-40px);opacity:0}}
 .confirm{display:inline-flex;gap:6px;align-items:center;font-size:13px}
+.who{font-weight:700;color:var(--ink);border-color:var(--accent)}
+.modal{position:fixed;inset:0;z-index:60;background:rgba(74,36,56,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+.modal-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;max-width:420px;width:100%;box-shadow:var(--shadow)}
+.modal-card h2{font-size:24px}
+.wholist{display:flex;flex-wrap:wrap;gap:8px}
+.wholist button{border:1.5px solid var(--line);background:var(--surface2);border-radius:999px;padding:9px 14px;font-weight:700;min-height:42px}
+.wholist button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.wholist .del{border:0;background:transparent;color:var(--muted);font-weight:400;padding:4px 6px;min-height:0;font-size:12px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -270,6 +278,7 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
         <span class="bar"><i id="xpbar" style="width:0%"></i></span>
         <span class="num" id="xpnum">0 XP</span>
       </div>
+      <button class="ghost who" id="whoBtn" title="Switch who is studying">👤 <span id="whoName">Add your name</span></button>
       <span id="resetArea"><button class="ghost" id="resetBtn">Start over</button></span>
       <a class="verlink" href="phone.html">Phone version →</a>
     </div>
@@ -292,6 +301,18 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
   <p class="note"><span class="src">Manual p.__</span> means the rule is taken straight from the clinic manual (printed page number). <span class="src std">Standard teaching</span> means the manual doesn’t cover it and the answer comes from standard dental hygiene textbooks. Check those against your class notes, because your instructors grade on what they taught. This is a study aid, not an answer key.</p>
 </div>
 <div class="toast" id="toast"></div>
+<div class="modal" id="whoModal" hidden>
+  <div class="modal-card" role="dialog" aria-labelledby="whoTitle">
+    <h2 id="whoTitle">Who’s studying?</h2>
+    <p class="muted" style="margin:4px 0 12px">Your name keeps your answers, XP and flashcard progress separate from anyone else who uses this page on this device.</p>
+    <div id="whoList" class="wholist"></div>
+    <form id="whoForm" class="row" style="margin-top:10px">
+      <input id="whoInput" type="text" maxlength="24" placeholder="Type a name" autocomplete="off" style="flex:1 1 160px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;background:var(--surface2);color:var(--ink)">
+      <button class="btn acc" type="submit">Start</button>
+    </form>
+    <div class="row" id="whoCancelRow" hidden><button class="btn soft" type="button" id="whoCancel">Cancel</button></div>
+  </div>
+</div>
 
 <script>
 /* ============ DATA ============ */
@@ -741,10 +762,18 @@ const GENQ = [
  {id:"g10",topic:"Calculus",q:"Explorer binds, rings around teeth, &gt;90 areas. Calculus class?",opts:["2","3","4"],ans:2,why:"<b>Class 4</b>: heavy, circumferential rings, &gt;90 areas.",src:"Manual p.124"}
 ];
 
+/* ============ WHO (profiles) ============ */
+function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
+function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
+function lsDel(k){try{localStorage.removeItem(k);}catch(e){}}
+let NAME=lsGet("hcl-name")||"";
+function profiles(){try{return JSON.parse(lsGet("hcl-profiles")||"[]");}catch(e){return [];}}
+function slug(n){return n.trim().toLowerCase().replace(/[^a-z0-9]+/g,"-");}
+const KEY=NAME?"hcl-v1-"+slug(NAME):"hcl-v1";
+
 /* ============ STATE ============ */
-const KEY="hcl-v1";
 let S={xp:0,ans:{},cards:{},best:0};
-try{const raw=localStorage.getItem(KEY); if(raw) S=Object.assign(S,JSON.parse(raw));}catch(e){}
+try{const raw=lsGet(KEY); if(raw) S=Object.assign(S,JSON.parse(raw));}catch(e){}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 const $=(s,r=document)=>r.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -1036,6 +1065,32 @@ $("#resetArea").addEventListener("click",e=>{
 
 /* petals */
 (function(){const p=$("#petals");if(!p)return;let h="";for(let i=0;i<18;i++){const l=Math.random()*100,d=9+Math.random()*10,dl=-Math.random()*20,s=.7+Math.random()*.8;h+=`<span style="left:${l}%;animation-duration:${d}s;animation-delay:${dl}s;transform:scale(${s})"></span>`;}p.innerHTML=h;})();
+
+/* who: modal + switching */
+function renderWho(){
+  $("#whoName").textContent=NAME||"Add your name";
+  const list=profiles();
+  $("#whoList").innerHTML=list.map(n=>`<span><button type="button" data-pick="${esc(n)}" aria-pressed="${n===NAME}">${esc(n)}</button>${list.length>1||n!==NAME?`<button type="button" class="del" data-del="${esc(n)}" title="Remove ${esc(n)} and their progress">✕</button>`:""}</span>`).join("");
+  $("#whoCancelRow").hidden=!NAME;
+}
+function openWho(){renderWho();$("#whoModal").hidden=false;setTimeout(()=>$("#whoInput").focus(),50);}
+function chooseName(n){
+  n=n.trim().slice(0,24); if(!n)return;
+  const list=profiles(); if(!list.includes(n)){list.push(n);lsSet("hcl-profiles",JSON.stringify(list));}
+  // first name on a device that already has unnamed progress: carry it over
+  const newKey="hcl-v1-"+slug(n);
+  if(!lsGet(newKey)&&!NAME&&lsGet("hcl-v1")){lsSet(newKey,lsGet("hcl-v1"));lsDel("hcl-v1");}
+  lsSet("hcl-name",n); location.reload();
+}
+$("#whoBtn").addEventListener("click",openWho);
+$("#whoCancel").addEventListener("click",()=>{$("#whoModal").hidden=true;});
+$("#whoForm").addEventListener("submit",e=>{e.preventDefault();chooseName($("#whoInput").value);});
+$("#whoList").addEventListener("click",e=>{
+  const p=e.target.closest("[data-pick]"); if(p){chooseName(p.dataset.pick);return;}
+  const d=e.target.closest("[data-del]"); if(d){const n=d.dataset.del;if(d.dataset.sure!=="1"){d.dataset.sure="1";d.textContent="remove?";return;}
+    lsSet("hcl-profiles",JSON.stringify(profiles().filter(x=>x!==n)));lsDel("hcl-v1-"+slug(n));if(n===NAME){lsDel("hcl-name");location.reload();}else renderWho();}
+});
+if(!NAME) openWho();
 
 /* boot */
 renderHUD();
