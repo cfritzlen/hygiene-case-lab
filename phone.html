@@ -1133,7 +1133,7 @@ $("#whoList").addEventListener("click",e=>{
   const d=e.target.closest("[data-del]"); if(d){const n=d.dataset.del;if(d.dataset.sure!=="1"){d.dataset.sure="1";d.textContent="remove?";return;}
     lsSet("hcl-profiles",JSON.stringify(profiles().filter(x=>x!==n)));lsDel("hcl-v1-"+slug(n));if(n===NAME){lsDel("hcl-name");location.reload();}else renderWho();}
 });
-if(!NAME) openWho();
+renderWho(); if(!NAME) openWho();
 
 /* boot */
 renderHUD();
