@@ -17,9 +17,15 @@ Study page for a dental hygiene student (user's stepdaughter) at Northampton Com
 - Unknowns: Grace's and Robert's weights, Jack's BP.
 
 ## Where she opens it
-**https://cfritzlen.github.io/hygiene-case-lab/** — GitHub Pages from `cfritzlen/hygiene-case-lab` (public, `main` branch root). No login needed. The repo holds only `index.html`, `README.md`, `.gitignore`; `.gitignore` blocks everything else (manual, scans) from ever being pushed.
+**https://cfritzlen.github.io/hygiene-case-lab/** — GitHub Pages from `cfritzlen/hygiene-case-lab` (public, `main` branch root). No login needed.
 
-To update: edit `case-lab.html`, copy it over `index.html`, commit, `git push`. Pages rebuilds in about a minute.
+Two builds from one source, made by `build.py`:
+- `index.html` — web layout. A tiny script redirects phones to `phone.html` unless the viewer chose "Web version" (`?web`, remembered in localStorage).
+- `phone.html` — phone layout forced at every width (questions first, chart as a slide-up sheet, big buttons). Clears the remembered choice.
+
+The repo holds only those two pages, `build.py`, `README.md`, `.gitignore`; `.gitignore` blocks everything else (manual, scans) from ever being pushed.
+
+To update: edit `case-lab.html` → `python build.py` → commit → `git push`. Pages rebuilds in about a minute. Republish `case-lab.html` to the artifact separately if wanted (the artifact host adds its own viewport tag; the GitHub build adds one itself).
 
 ## Rules for edits
 - Every answer is tagged "Manual p.__" (printed page) or "Standard teaching". Keep that.
