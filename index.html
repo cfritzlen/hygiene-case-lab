@@ -205,6 +205,7 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
 .face .hint{position:absolute;bottom:12px;right:16px;font-size:12px;color:var(--muted)}
 .face.back .src{background:rgba(255,255,255,.35);color:var(--accent-ink)}
 .cardnav{display:flex;justify-content:center;gap:8px;margin-top:14px;flex-wrap:wrap}
+.cardnav .navrow{display:flex;gap:8px}
 
 /* quiz */
 .score{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
@@ -892,7 +893,7 @@ function renderCards(){
     <div class="face front"><span class="deck-t">${esc(c.d)} · ${cardIdx+1}/${d.length}</span><div class="big">${c.f}</div><span class="hint">tap or press space to flip</span></div>
     <div class="face back"><span class="deck-t">${esc(c.d)}</span><div>${c.b}</div><div>${srcTag(c.s)}</div></div>
   </div></div>
-  <div class="cardnav"><button class="btn soft" id="prev">← Prev</button><button class="btn bad" id="again">Review again</button><button class="btn good" id="know">Know it</button><button class="btn soft" id="next">Next →</button></div>`
+  <div class="cardnav"><div class="navrow"><button class="btn bad" id="again">Review again</button><button class="btn good" id="know">Know it</button></div><div class="navrow"><button class="btn soft" id="prev">← Prev</button><button class="btn soft" id="next">Next →</button></div></div>`
   :`<div class="panel" style="text-align:center"><h3>Review pile is empty</h3><p class="muted">Cards you mark “Review again” land here.</p></div>`}`;
 }
 function moveCard(n){const len=deck().length;if(!len)return;cardIdx=(cardIdx+n+len)%len;flipped=false;renderCards();}
