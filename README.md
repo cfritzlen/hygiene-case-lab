@@ -29,6 +29,14 @@ In the code: `TESTS` (the dropdown), `T2` (sections and questions), `CARDS2`, `r
 
 Test 2 answers are tagged with deck and slide number ("Indices slide 37"). A ★ or "class note" means it came from the handwriting. Multiple-choice options are shuffled once per question id so the right answer is not always in the same slot.
 
+### Slide links and online backup (Supabase, added 2026-09-28)
+Settings are the `SB` object at the top of the script in `case-lab.html`: project `url`, publishable `key`, and `bucket` name (`slides`). **While `url` is empty, both features are off on the live site.** On localhost the slide links read from the local `slides/` folder so they can be tested.
+
+- **Slides:** one JPEG per slide in `slides/test2/{indices,sealants,srp}/001.jpg` (263 files, 26.5 MB, never pushed to GitHub). Upload that `test2` folder to a **public** bucket named `slides`. Every source tag ("Indices slide 37") then opens that slide in a viewer. Re-export with PyMuPDF if the decks change.
+- **Photo questions:** four "name this fulcrum" questions show the photo side of slides 158–161. The image is cropped by CSS (`.qimg`) because the handwritten answer is on the other side of the slide. They are left out when slides are off.
+- **Online backup:** `supabase/setup.sql` creates the `hcl_sync` table and two functions. The table has row level security on with no policies; the only access is through `hcl_push` and `hcl_pull`, which need the family code. The code is stored only as a hash. Backup is one-way: it saves her work and lets another device read it. It does not merge progress between devices.
+- The publishable key is meant to be public. Never put the service role key or a database password in the page or the repo.
+
 ### Themes (added 2026-09-28)
 The 🎨 button in the header switches the look: **Sakura** (original, follows the device's light/dark setting), **Anime** (ink outlines, hard comic shadows, stars, an original chibi tooth mascot), **Wednesday** (dark, spider web), **Steelers** (black and gold stripes, football; colors only, no team logo), **Hazelnut** (the student's light brown bunny, hazelnuts and clover). Shape rules for each theme sit at the end of the stylesheet, just above the reduced-motion rule. The choice is saved per student name under `<profile>-skin`. In the code: `SKINS` and `applySkin()`; colors are the `:root[data-skin="..."]` blocks; corner art is the `.deco-anime`, `.deco-wed`, `.deco-steel` and `.deco-hazel` SVGs. All artwork is original; no show characters or logos. To add a theme, add a `SKINS` entry and a matching `:root[data-skin]` block.
 

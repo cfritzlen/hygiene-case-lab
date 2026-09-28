@@ -346,6 +346,10 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
   .q{padding:14px 12px}
   .q .prompt{font-size:17px}
   .opt{padding:13px 14px;min-height:48px;font-size:16px}
+  .src{font-size:13px;padding:5px 8px}
+  .src .sl{padding:8px 10px;margin:-3px 1px;background:rgba(255,255,255,.45)}
+  .modal.slidebox{padding:6px}
+  .slidebox .slide-card{padding:10px 8px}
   .btn{padding:12px 16px;min-height:46px;font-size:15px}
   .filters button{padding:8px 13px;font-size:14px;min-height:38px}
   textarea{min-height:96px;font-size:16px}
@@ -368,6 +372,24 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
 @keyframes up{to{transform:translateY(-40px);opacity:0}}
 .confirm{display:inline-flex;gap:6px;align-items:center;font-size:13px}
 .who{font-weight:700;color:var(--ink);border-color:var(--accent)}
+/* slide links, slide viewer, saved answers */
+.sl{font:inherit;color:inherit;background:none;border:0;padding:1px 3px;border-radius:4px;text-decoration:underline;text-underline-offset:2px;cursor:pointer}
+.sl:hover{background:rgba(255,255,255,.45)}
+.slidebox{z-index:70;padding:12px}
+.slide-card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:12px;width:100%;max-width:1000px;max-height:100%;overflow:auto;box-shadow:var(--shadow)}
+.slide-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.slide-head b{font-family:var(--display);font-size:18px}
+.slide-img{background:var(--surface2);border-radius:10px;overflow:hidden;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;text-align:center}
+.slide-img img{width:100%;height:100%;object-fit:contain;display:block}
+.slide-nav{justify-content:space-between;align-items:center;flex-wrap:nowrap}
+.slide-tools{display:flex;gap:6px;align-items:center;flex:none}
+.slide-tools a{text-decoration:none;white-space:nowrap}
+.slide-nav .btn:disabled{opacity:.4;cursor:default}
+.qimg{overflow:hidden;border-radius:10px;border:1px solid var(--line);max-width:440px;aspect-ratio:1.14;margin:0 0 10px;background:var(--surface2)}
+.qimg img{width:156.25%;max-width:none;display:block} /* shows the photo side of the slide only; the written answer is on the other side */
+.codein{flex:1 1 160px;border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;background:var(--surface2);color:var(--ink);min-width:0}
+.pull-card{max-width:720px;max-height:100%;overflow:auto}
+.report{white-space:pre-wrap;font:inherit;font-size:14px;margin:6px 0 0;max-height:340px;overflow:auto;background:var(--surface2);border-radius:10px;padding:10px 12px}
 .modal{position:fixed;inset:0;z-index:60;background:rgba(74,36,56,.45);display:flex;align-items:center;justify-content:center;padding:16px}
 .modal-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;max-width:420px;width:100%;box-shadow:var(--shadow)}
 .modal-card h2{font-size:24px}
@@ -578,7 +600,34 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
   </div>
 </div>
 
+<div class="modal slidebox" id="slideBox" hidden>
+  <div class="slide-card" role="dialog" aria-labelledby="slideTitle">
+    <div class="slide-head"><b id="slideTitle"></b><span class="slide-tools"><a class="ghost" id="slideFull" target="_blank" rel="noopener">Full size</a><button class="ghost" id="slideClose">Close ✕</button></span></div>
+    <div class="slide-img"><img id="slideImg" alt=""><p class="muted" id="slideErr" hidden>Couldn’t load this slide. Check your connection and try again.</p></div>
+    <div class="row slide-nav"><button class="btn soft" id="slidePrev">← Prev</button><span class="prog" id="slideNum"></span><button class="btn soft" id="slideNext">Next →</button></div>
+  </div>
+</div>
+<div class="modal" id="pullModal" hidden>
+  <div class="modal-card pull-card" role="dialog" aria-labelledby="pullTitle">
+    <div class="slide-head"><h2 id="pullTitle">Saved answers</h2><button class="ghost" id="pullClose">Close ✕</button></div>
+    <p class="muted" style="margin:0 0 10px">Type the family code to read the answers and progress saved under it.</p>
+    <form id="pullForm" class="row">
+      <input id="pullInput" class="codein" type="text" maxlength="40" placeholder="Family code" aria-label="Family code" autocomplete="off">
+      <button class="btn acc" type="submit">Get answers</button>
+    </form>
+    <div id="pullOut" style="margin-top:12px"></div>
+  </div>
+</div>
+
 <script>
+/* ============ SLIDES + ONLINE BACKUP (Supabase) ============ */
+// url: the project URL, like https://abcdefgh.supabase.co. Left empty, slide links and backup stay off.
+const SB={url:"",key:"sb_publishable_r66fLJcqlUPc7m1wmrIksQ_rIwoTNyb",bucket:"slides"};
+const LOCAL=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+const SLIDE_BASE=SB.url?SB.url+"/storage/v1/object/public/"+SB.bucket+"/test2/":(LOCAL?"slides/test2/":"");
+const DECKS={Indices:{dir:"indices",n:59},Sealants:{dir:"sealants",n:36},SRP:{dir:"srp",n:168}};
+function slideURL(deck,n){return SLIDE_BASE+DECKS[deck].dir+"/"+String(n).padStart(3,"0")+".jpg";}
+
 /* ============ DATA ============ */
 const CASES = [
 {
@@ -1675,6 +1724,23 @@ const T2 = [
      opts:["Grasp close to the working-end; rest on the teeth","Grasp farther from the working-end; stabilize the hand against the underlying bone of the jaw","Palm grasp; no rest","Grasp the shank; rest on the lip"],ans:1,
      why:"Grasp the handle <b>farther away from the working-end</b> and stabilize against the <b>underlying bone of the patient’s jaw</b>. Basic extraoral fulcrum: dominant hand rests against the cheek or chin, <b>palm facing out</b>. Two techniques: <b>knuckle rest</b> and <b>chin cup</b>.",
      src:"SRP slide 149–153"},
+    {id:"t2p-pic158",topic:"Fulcrums",type:"mc",mix:1,img:{deck:"SRP",n:158},q:"Photo from the slides: name this fulcrum.",
+     opts:["Knuckle rest","Chin cup","Cross arch","Finger-on-finger"],ans:0,
+     why:"The answer written on the slide is <b>knuckle rest</b>: an extraoral fulcrum where the length of the middle, ring and little fingers rests against the mandible. The grasp is farther from the working-end.",
+     src:"SRP slide 158 class note"},
+    {id:"t2p-pic159",topic:"Fulcrums",type:"mc",mix:1,img:{deck:"SRP",n:159},q:"Photo from the slides: the slide says “name this advanced fulcrum.” What is it?",
+     opts:["A standard intraoral fulcrum, not an advanced one","Opposite arch","Finger assist","Knuckle rest"],ans:0,
+     why:"The answer written on the slide is <b>standard</b>. The finger rest is on a tooth next to the working area in the same arch, which is the standard intraoral fulcrum. The slide title is a trick.",
+     defend:"This answer comes from her handwriting on the slide. Confirm it with the instructor.",
+     src:"SRP slide 159 class note"},
+    {id:"t2p-pic160",topic:"Fulcrums",type:"mc",mix:1,img:{deck:"SRP",n:160},q:"Photo from the slides: name this fulcrum.",
+     opts:["Chin cup","Knuckle rest","Modified intraoral","Opposite arch"],ans:0,
+     why:"The answer written on the slide is <b>chin cup</b>: an extraoral fulcrum where the palm cups the chin and the mandible rests in the hand.",
+     src:"SRP slide 160 class note"},
+    {id:"t2p-pic161",topic:"Fulcrums",type:"mc",mix:1,img:{deck:"SRP",n:161},q:"Photo from the slides: name this fulcrum.",
+     opts:["Opposite arch","Cross arch","Finger-on-finger","Chin cup"],ans:0,
+     why:"The answer written on the slide is <b>opposite arch</b>: the finger rest is on the other jaw from the teeth being worked on.",
+     src:"SRP slide 161 class note"},
     {id:"t2p-rev1",topic:"Fulcrums",type:"open",q:"Review slide: you are scaling a 5 mm pocket on the distolingual of #15 with a Gracey 13/14. Which advanced fulcrum helps you adapt the blade at 70° to the distal root surface, and where do you sit?",
      model:"The handwritten answer on the slide is <b>opposite arch</b> fulcrum, seated at <b>8 o’clock</b>.<br>An opposite arch fulcrum rests on the mandibular teeth while you work on the maxillary teeth. It improves parallelism of the lower shank to the molar and gives easier access to maxillary second and third molars.<div class='defend'><b>Check:</b> this answer comes from her handwriting on the slide. Confirm the clock position against your own notes.</div>",
      src:"SRP slide 162 class note"},
@@ -1685,12 +1751,15 @@ const T2 = [
 }
 ];
 
+// Photo questions need the slide images; without them they are left out.
+if(!SLIDE_BASE)T2.forEach(s=>{s.qs=s.qs.filter(q=>!q.img);});
+
 // Spread the right answers across the option slots. The shuffle is fixed per question id,
 // so a saved pick still points at the same option next visit. Short scales (0–3, Code 0–4,
 // Excellent–Poor) stay in their natural order.
 (function(){
   for(const q of T2.flatMap(s=>s.qs)){
-    if(q.type!=="mc"||q.opts.every(o=>o.length<=20))continue;
+    if(q.type!=="mc"||(!q.mix&&q.opts.every(o=>o.length<=20)))continue;
     let h=2166136261; for(const ch of q.id){h^=ch.charCodeAt(0);h=Math.imul(h,16777619);}
     const rnd=()=>{h=Math.imul(h^(h>>>15),2246822507);h=Math.imul(h^(h>>>13),3266489909);h^=h>>>16;return (h>>>0)/4294967296;};
     const order=q.opts.map((_,i)=>i);
@@ -1826,7 +1895,7 @@ const ASK = [
   app:"Not in Practice. Textbooks say no: the ultrasonic grasp is lighter and relaxed, with almost no lateral pressure. Confirm before relying on that.",src:"SRP slide 83"},
  {id:"pics",g:"Scaling & root planing",hi:1,q:"Will the test show pictures to identify (fulcrums, grasps, instruments, inserts)?",
   why:"Several slides are picture questions: “Evaluate the following” grasps A–E, “Which picture shows correct placement of the Gracey 1/2,” “Where would you establish a fulcrum,” and four “Name this advanced fulcrum” slides. The handwritten answers are knuckle rest, standard, chin cup and opposite arch. The grasp slide has no answers written.",
-  app:"This page has no photos, so it cannot quiz pictures. Study slides 127, 133, 134 and 158–161 directly.",src:"SRP slide 127, 133–134, 158–161"},
+  app:"Practice quizzes the four “name this fulcrum” photos. Slides 127, 133 and 134 are not quizzed because their answers are not confirmed. Tap the slide numbers below to study them.",src:"SRP slide 127, 133–134, 158–161"},
  {id:"rev163",g:"Scaling & root planing",hi:1,q:"Review slide, #29 distolingual, 7 mm pocket: the question asks for an opposite arch approach, but my note says “cross arch fulcrum.” Which is right, and what clock position?",
   why:"The slide asks for an opposite arch approach. The handwriting under it says “11” and “cross arch fulcrum.”",
   app:"The handwritten answer is shown as written, with a note that it needs checking.",src:"SRP slide 163"},
@@ -1880,14 +1949,22 @@ const KEY=NAME?"hcl-v1-"+slug(NAME):"hcl-v1";
 /* ============ STATE ============ */
 let S={xp:0,ans:{},cards:{},best:0};
 try{const raw=lsGet(KEY); if(raw) S=Object.assign(S,JSON.parse(raw));}catch(e){}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){} syncSoon();}
 const $=(s,r=document)=>r.querySelector(s);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("show");clearTimeout(toast._t);toast._t=setTimeout(()=>el.classList.remove("show"),1600);}
 function floatXP(el,n){const r=el.getBoundingClientRect();const f=document.createElement("div");f.className="float";f.textContent="+"+n+" XP";f.style.left=(r.left+r.width/2-24)+"px";f.style.top=(r.top-6)+"px";document.body.appendChild(f);setTimeout(()=>f.remove(),1000);}
 function addXP(n,el){S.xp+=n;save();renderHUD();if(el)floatXP(el,n);}
 function renderHUD(){const lvl=Math.floor(S.xp/100)+1;$("#lvl").textContent="LV "+lvl;$("#xpnum").textContent=S.xp+" XP";$("#xpbar").style.width=(S.xp%100)+"%";}
-function srcTag(s){const std=/^Standard/.test(s);return `<span class="src${std?" std":""}">${esc(s)}</span>`;}
+// "Indices slide 12–16 ★" → each slide number opens that slide
+function srcTag(s){
+  const std=/^Standard/.test(s); let h=esc(s);
+  const m=SLIDE_BASE&&/^(Indices|Sealants|SRP) slide /.exec(s);
+  if(m){const rest=s.slice(m[0].length), nums=(/^[\d,\s–-]+/.exec(rest)||[""])[0];
+    h=esc(m[0])+nums.replace(/\d+(?:\s*[–-]\s*\d+)?/g,t=>`<button type="button" class="sl" data-deck="${m[1]}" data-n="${parseInt(t,10)}" aria-label="Open ${m[1]} slide ${parseInt(t,10)}">${t}</button>`)+esc(rest.slice(nums.length));}
+  return `<span class="src${std?" std":""}">${h}</span>`;
+}
+function qImg(q){return q.img?`<div class="qimg"><img loading="lazy" src="${slideURL(q.img.deck,q.img.n)}" alt="Photo of a clinician’s hands using a fulcrum while scaling"></div>`:"";}
 
 /* ============ TESTS (title dropdown) ============ */
 const TESTS=[
@@ -2014,7 +2091,7 @@ function qHTML(q){
                :`<div class="row"><button class="btn good" data-self="${q.id}" data-ok="1">I had it</button><button class="btn bad" data-self="${q.id}" data-ok="0">I missed stuff</button></div>`;
     }
   }
-  return `<div class="${cls}" id="q-${q.id}"><div class="topic">${esc(q.topic)}</div><div class="prompt">${esc(q.q)}</div>${body}</div>`;
+  return `<div class="${cls}" id="q-${q.id}"><div class="topic">${esc(q.topic)}</div><div class="prompt">${esc(q.q)}</div>${qImg(q)}${body}</div>`;
 }
 function renderCases(){
   const c=CASES.find(x=>x.id===curCase);
@@ -2064,24 +2141,65 @@ function renderAsk(){
     <div class="row"><button class="btn soft" id="askCopy">Copy the open questions</button></div>
     <div class="lbl">Your answers</div>
     <p style="margin:0 0 4px">Everything you’ve written here, plus your practice progress, in one message you can text or email.</p>
-    <div class="row">${navigator.share?`<button class="btn acc" id="ansShare">Send my answers</button>`:""}<button class="btn ${navigator.share?"soft":"acc"}" id="ansCopy">Copy my answers</button></div></div>
+    <div class="row">${navigator.share?`<button class="btn acc" id="ansShare">Send my answers</button>`:""}<button class="btn ${navigator.share?"soft":"acc"}" id="ansCopy">Copy my answers</button></div>
+    ${syncBox()}</div>
   <div class="filters">${groups.map(g=>`<button data-askfilter="${esc(g)}" aria-pressed="${g===askFilter}">${esc(g)}</button>`).join("")}</div>
   ${shown.map(askHTML).join("")||`<div class="panel" style="text-align:center"><h3>Nothing left here</h3><p class="muted">${askFilter==="Answered"?"No answers written yet.":"Every question in this group has an answer."}</p></div>`}`;
 }
-function hasAns(a){const st=askState(a.id);return !!(st.done||(st.note&&st.note.trim()));}
-function answersText(){
-  const got=ASK.filter(hasAns), t2q=T2.flatMap(x=>x.qs);
-  let out=`Test 2 answers${NAME?" from "+NAME:""}, ${new Date().toLocaleDateString()}\n\nINSTRUCTOR ANSWERS: ${got.length} of ${ASK.length}\n`;
-  got.forEach(a=>{const n=(askState(a.id).note||"").trim();out+=`\n[${a.id}] ${a.q} (${a.src})\nAnswer: ${n||"(marked answered, nothing written)"}\n`;});
+function hasAns(a,st){const x=((st||S).ask||{})[a.id]||{};return !!(x.done||(x.note&&x.note.trim()));}
+// st and who default to this device; the saved-answers view passes in what it pulled
+function answersText(st,who,when){
+  st=st||S; if(who===undefined)who=NAME; const ans=st.ans||{}, ask=st.ask||{};
+  const got=ASK.filter(a=>hasAns(a,st)), t2q=T2.flatMap(x=>x.qs);
+  let out=`Test 2 answers${who?" from "+who:""}, ${(when||new Date()).toLocaleDateString()}\n\nINSTRUCTOR ANSWERS: ${got.length} of ${ASK.length}\n`;
+  got.forEach(a=>{const n=((ask[a.id]||{}).note||"").trim();out+=`\n[${a.id}] ${a.q} (${a.src})\nAnswer: ${n||"(marked answered, nothing written)"}\n`;});
   out+="\nPRACTICE PROGRESS\n";
-  T2.forEach(x=>{const g=secProg(x);out+=`${x.name}: ${g.done}/${g.n} done, ${g.right} right\n`;});
-  out+=`Best quiz score: ${S.best_t2||0}/10\n`;
-  const miss=t2q.filter(q=>S.ans[q.id]&&!S.ans[q.id].ok);
+  T2.forEach(x=>{const d=x.qs.filter(q=>ans[q.id]);out+=`${x.name}: ${d.length}/${x.qs.length} done, ${d.filter(q=>ans[q.id].ok).length} right\n`;});
+  out+=`Best quiz score: ${st.best_t2||0}/10\n`;
+  const miss=t2q.filter(q=>ans[q.id]&&!ans[q.id].ok);
   if(miss.length){out+="\nMISSED OR MARKED FOR REVIEW\n";miss.forEach(q=>{out+=`- [${q.id}] ${q.q}\n`;});}
-  const wrote=t2q.filter(q=>q.type==="open"&&(S.ans["draft-"+q.id]||"").trim());
-  if(wrote.length){out+="\nWRITTEN ANSWERS\n";wrote.forEach(q=>{out+=`\n[${q.id}] ${q.q}\nWrote: ${S.ans["draft-"+q.id].trim()}\n`;});}
+  const wrote=t2q.filter(q=>q.type==="open"&&String(ans["draft-"+q.id]||"").trim());
+  if(wrote.length){out+="\nWRITTEN ANSWERS\n";wrote.forEach(q=>{out+=`\n[${q.id}] ${q.q}\nWrote: ${String(ans["draft-"+q.id]).trim()}\n`;});}
   return out;
 }
+
+/* online backup: her saved work goes to Supabase under a family code, so it can be read from another device */
+let SYNC=lsGet("hcl-sync")||"", syncAt=null, syncT=null, syncErr="";
+function sbCall(fn,body,keep){return fetch(SB.url+"/rest/v1/rpc/"+fn,{method:"POST",keepalive:!!keep,headers:{"Content-Type":"application/json",apikey:SB.key,Authorization:"Bearer "+SB.key},body:JSON.stringify(body)}).then(r=>r.ok?r.json():r.text().then(t=>{throw new Error(t||String(r.status));}));}
+function syncStatus(){return syncErr||(syncAt?"Backup is on. Last saved at "+syncAt.toLocaleTimeString([],{hour:"numeric",minute:"2-digit"})+".":"Backup is on.");}
+function syncLine(){const el=$("#syncLine");if(el)el.textContent=syncStatus();}
+function syncNow(keep){clearTimeout(syncT);syncT=null;if(!SB.url||!SYNC)return Promise.resolve();
+  return sbCall("hcl_push",{p_code:SYNC,p_name:NAME||"(no name)",p_data:S},keep).then(t=>{syncAt=new Date(t);syncErr="";},()=>{syncErr="Couldn’t save online just now. It will try again after your next answer.";}).then(syncLine);}
+function syncSoon(){if(!SB.url||!SYNC)return;clearTimeout(syncT);syncT=setTimeout(syncNow,2500);}
+document.addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"&&syncT)syncNow(true);});
+function syncBox(){
+  if(!SB.url)return "";
+  const see=`<button class="btn soft" type="button" id="pullOpen">See saved answers</button>`;
+  return `<div class="lbl">Online backup</div>`+(SYNC
+    ?`<p style="margin:0 0 4px" id="syncLine" role="status">${esc(syncStatus())}</p><div class="row">${see}<button class="btn soft" type="button" id="syncOff">Turn off backup</button></div>`
+    :`<p style="margin:0 0 4px">Pick a family code, 6 or more letters or numbers. Your answers save online under it, so they can be read on another phone or computer by typing the same code.</p>
+      <form class="row" id="syncForm"><input id="syncInput" class="codein" type="text" minlength="6" maxlength="40" placeholder="Family code" aria-label="Family code" autocomplete="off"><button class="btn acc" type="submit">Turn on backup</button></form><div class="row">${see}</div>`);
+}
+let pulled=[];
+function openPull(){$("#pullModal").hidden=false;$("#pullOut").innerHTML="";const i=$("#pullInput");i.value=SYNC;if(SYNC)runPull(SYNC);else setTimeout(()=>i.focus(),50);}
+function runPull(code){
+  const out=$("#pullOut"); out.innerHTML=`<p class="muted" role="status">Getting answers…</p>`;
+  sbCall("hcl_pull",{p_code:code}).then(rows=>{pulled=rows||[];
+    out.innerHTML=pulled.length?pulled.map((r,i)=>{const when=new Date(r.updated_at);
+      return `<div class="q"><div class="topic">${esc(r.name)} · saved ${esc(when.toLocaleString([],{dateStyle:"medium",timeStyle:"short"}))}</div><pre class="report" tabindex="0">${esc(answersText(r.data||{},r.name,when))}</pre><div class="row"><button class="btn soft" type="button" data-copyrow="${i}">Copy</button></div></div>`;}).join("")
+      :`<p role="status">Nothing is saved under that code. Check the spelling, and that backup is turned on where the answers were typed.</p>`;
+  },()=>{out.innerHTML=`<p role="status">Couldn’t reach the online backup. Check your connection and try again.</p>`;});
+}
+$("#pullForm").addEventListener("submit",e=>{e.preventDefault();const c=$("#pullInput").value.trim();if(c.length<6){toast("The code is 6 or more characters");return;}runPull(c);});
+$("#pullModal").addEventListener("click",e=>{
+  if(e.target.id==="pullModal"||e.target.closest("#pullClose")){$("#pullModal").hidden=true;return;}
+  const b=e.target.closest("[data-copyrow]"); if(b){const r=pulled[+b.dataset.copyrow];copyText(answersText(r.data||{},r.name,new Date(r.updated_at)),"Copied.");}
+});
+$("#view-ask").addEventListener("submit",e=>{
+  if(e.target.id!=="syncForm")return; e.preventDefault();
+  const c=$("#syncInput").value.trim(); if(c.length<6){toast("Use 6 or more characters");return;}
+  SYNC=c;lsSet("hcl-sync",c);syncErr="";syncAt=null;renderAsk();syncNow().then(()=>{if(!syncErr)toast("Backup is on");});
+});
 function copyText(txt,msg){const done=()=>toast(msg);
   const old=()=>{const ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(err){toast("Couldn’t copy on this device");}ta.remove();};
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(done,old); else old();
@@ -2099,7 +2217,32 @@ $("#view-ask").addEventListener("click",e=>{
   if(t.id==="askCopy"){copyText(askText(),"Copied. Paste it into a note or email.");return;}
   if(t.id==="ansCopy"){copyText(answersText(),"Copied. Paste it into a text or email.");return;}
   if(t.id==="ansShare"){const txt=answersText();navigator.share({title:"Test 2 answers",text:txt}).catch(err=>{if(!err||err.name!=="AbortError")copyText(txt,"Copied instead. Paste it into a text or email.");});return;}
+  if(t.id==="pullOpen"){openPull();return;}
+  if(t.id==="syncOff"){SYNC="";lsDel("hcl-sync");clearTimeout(syncT);syncT=null;renderAsk();toast("Backup is off on this device");return;}
 });
+
+/* ============ SLIDE VIEWER ============ */
+let SL=null, slBack=null;
+function showSlide(){
+  const d=DECKS[SL.deck], img=$("#slideImg"), label=SL.deck+" slide "+SL.n;
+  $("#slideTitle").textContent=label; $("#slideNum").textContent=SL.n+" of "+d.n;
+  img.hidden=false; $("#slideErr").hidden=true; img.alt=label; img.src=slideURL(SL.deck,SL.n); $("#slideFull").href=img.src;
+  $("#slidePrev").disabled=SL.n<=1; $("#slideNext").disabled=SL.n>=d.n;
+}
+function openSlide(deck,n){if(!DECKS[deck]||!SLIDE_BASE)return;SL={deck,n:Math.min(Math.max(1,n||1),DECKS[deck].n)};slBack=document.activeElement;$("#slideBox").hidden=false;showSlide();$("#slideClose").focus();}
+function closeSlide(){$("#slideBox").hidden=true;$("#slideImg").removeAttribute("src");SL=null;if(slBack&&document.contains(slBack))slBack.focus();}
+function stepSlide(k){if(!SL)return;const n=SL.n+k;if(n<1||n>DECKS[SL.deck].n)return;SL.n=n;showSlide();}
+$("#slideImg").addEventListener("error",()=>{if(!SL)return;$("#slideImg").hidden=true;$("#slideErr").hidden=false;});
+// capture phase, so a slide link inside a flashcard opens the slide instead of flipping the card
+document.addEventListener("click",e=>{const b=e.target.closest&&e.target.closest(".sl");if(b){e.preventDefault();e.stopPropagation();openSlide(b.dataset.deck,+b.dataset.n);}},true);
+$("#slideBox").addEventListener("click",e=>{if(e.target.id==="slideBox"||e.target.closest("#slideClose"))closeSlide();else if(e.target.closest("#slidePrev"))stepSlide(-1);else if(e.target.closest("#slideNext"))stepSlide(1);});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&!$("#pullModal").hidden&&!SL){$("#pullModal").hidden=true;return;}
+  if(!SL)return;
+  if(e.key==="Escape"){e.stopPropagation();closeSlide();}
+  else if(e.key==="ArrowLeft"){e.stopPropagation();e.preventDefault();stepSlide(-1);}
+  else if(e.key==="ArrowRight"){e.stopPropagation();e.preventDefault();stepSlide(1);}
+},true);
 $("#view-ask").addEventListener("input",e=>{const id=e.target.dataset.asknote;if(id)askSet(id,{note:e.target.value});});
 
 /* ============ PRACTICE (Test 2: questions by slide deck) ============ */
@@ -2229,7 +2372,7 @@ function renderQuiz(){
   v.innerHTML=`<div class="panel" style="max-width:680px;margin:0 auto">
     <div class="qhead"><span class="prog">Question ${Q.i+1} of ${Q.items.length}</span><span class="prog">Score ${Q.score}</span></div>
     <div class="qbar"><i style="width:${Q.i/Q.items.length*100}%"></i></div>
-    <div class="q" style="border:0;padding:0"><div class="topic">${esc(q.topic)} · ${esc(qFrom(q))}</div><div class="prompt">${esc(q.q)}</div>
+    <div class="q" style="border:0;padding:0"><div class="topic">${esc(q.topic)} · ${esc(qFrom(q))}</div><div class="prompt">${esc(q.q)}</div>${qImg(q)}
     <div class="opts">${q.opts.map((o,i)=>{let c="opt";if(Q.picked!==null){if(i===q.ans)c+=" right";else if(i===Q.picked)c+=" wrong";}return `<button class="${c}" data-qi="${i}" ${Q.picked!==null?"disabled":""}>${esc(o)}</button>`;}).join("")}</div>
     ${Q.picked!==null?`<div class="why">${q.why}<div>${srcTag(q.src)}</div></div><div class="row"><button class="btn" id="nextQ">${Q.i+1<Q.items.length?"Next →":"See score"}</button></div>`:""}</div></div>`;
 }
