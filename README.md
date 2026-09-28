@@ -8,6 +8,32 @@ Study page for a dental hygiene student (user's stepdaughter) at Northampton Com
 - `Xerox Scan_09162026195955.pdf` — scan of the other three cases (Jack/John Williams, Grace, Robert). No text layer; `scan/` has PNG renders.
 - `casefiles.zip` — original upload.
 
+## Two tests in one page (added 2026-09-28)
+The page title is a dropdown that switches tests. Each test has its own tabs, flashcard progress, quiz best score and remembered tab. XP and level are shared. First visit opens the newest test; after that it opens whichever was used last.
+
+- **Case Lab** (Test 1): Cases, Anesthetic lab, Flashcards, Quiz, Cram sheet. Unchanged.
+- **Test 2 Lab**: Practice (142 questions in three sections), Flashcards (57), Quiz, Cram sheet.
+
+Test 2 sources are three slide decks in `Docs/Study Materials/Test 2/`, exported with her handwritten notes on them:
+- `Perio index.pdf`: Dental Indices, 59 slides (PSR, PerioWise, and the indices).
+- `Sealants .pdf`: Pit and Fissure Sealants, 36 slides.
+- `SCALING AND ROOT PLANING .pdf`: Nonsurgical Periodontal Therapy, 168 slides.
+
+In the code: `TESTS` (the dropdown), `T2` (sections and questions), `CARDS2`, `renderCram2()`. Test 2 question ids start `t2i-`, `t2s-`, `t2p-`. Saved keys: `<profile>-test`, `<profile>-tab-t2`, card keys `t2-<n>`, `best_t2`. To add a Test 3, add an entry to `TESTS` and follow the same pattern.
+
+Test 2 answers are tagged with deck and slide number ("Indices slide 37"). A ★ or "class note" means it came from the handwriting. Multiple-choice options are shuffled once per question id so the right answer is not always in the same slot.
+
+### Themes (added 2026-09-28)
+The 🎨 button in the header switches the look: **Sakura** (original, follows the device's light/dark setting), **Anime** (bright, sparkles, halftone dots), **Wednesday** (dark, spider web). The choice is saved per student name under `<profile>-skin`. In the code: `SKINS` and `applySkin()`; colors are the `:root[data-skin="..."]` blocks; corner art is the `.deco-anime` and `.deco-wed` SVGs. All artwork is original; no show characters or logos. To add a theme, add a `SKINS` entry and a matching `:root[data-skin]` block.
+
+### Test 2 items to check with the instructor
+- PSR Code 3: the slide says both "chart the affected sextant or full mouth, depending on how many sextants" and "a complete examination is required."
+- Periodontal Index: slide says clinical exam alone or with radiographs; her note says "must be done with radiographs."
+- OHI-S rating table (slide 36) has two columns, "OHI" and "OHI-S". The page uses the OHI-S column.
+- Review slides 162–164: the answers shown are her handwriting (opposite arch at 8 o'clock; knuckle rest and finger assist).
+- Re-evaluation is 4–8 weeks in this deck. Test 1 content says 4–6 weeks.
+- Root anatomy comes from her handwritten notes; tooth lengths in the notes were left out because they were hard to read.
+
 ## Decisions baked into the page (check against her class notes)
 - Alison: ASA III (not IV), generalized Stage III Grade C, lido 1:100k or articaine 1:200k, avoid prilocaine/benzocaine (pernicious anemia).
 - Jack: no BP on form → must take vitals; ASA III; localized Stage III Grade B; INR/medical referral for Coumadin; taste loss = enalapril.
@@ -28,5 +54,6 @@ The repo holds only those two pages, `build.py`, `README.md`, `.gitignore`; `.gi
 To update: edit `case-lab.html` → `python build.py` → commit → `git push`. Pages rebuilds in about a minute. Republish `case-lab.html` to the artifact separately if wanted (the artifact host adds its own viewport tag; the GitHub build adds one itself).
 
 ## Rules for edits
-- Every answer is tagged "Manual p.__" (printed page) or "Standard teaching". Keep that.
+- Every answer is tagged "Manual p.__" (printed page) or "Standard teaching". Keep that. Test 2 answers are tagged with the deck and slide number.
+- The slide PDFs are too large to read directly. Render them to page images with PyMuPDF (`fitz`, installed) and read the images; the handwriting only shows up in the images, not the text layer.
 - Edit `case-lab.html`, syntax-check the script, republish to the same artifact URL.

@@ -10,7 +10,7 @@
 <title>Hygiene Case Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&family=M+PLUS+Rounded+1c:wght@700;800&family=Cinzel:wght@700;800&display=swap">
 <script>
 (function(){try{
   var q=location.search;
@@ -53,6 +53,48 @@
   --petal:#7A3D57; --petal2:#5B2E44; --branch:#B08A7A;
   --shadow:0 1px 2px rgba(0,0,0,.3),0 6px 18px rgba(0,0,0,.3);
 }
+/* ---- themes (picked from the palette button; Sakura is the default above) ---- */
+:root[data-skin="anime"]{
+  color-scheme:light;
+  --bg:#F2F7FF; --surface:#FFFFFF; --surface2:#EAF1FF; --ink:#1B2250; --muted:#565F8C; --line:#C6D5F5;
+  --accent:#6A3DF0; --accent-ink:#FFFFFF; --accent-soft:#E7DFFF;
+  --bleed:#E0285A; --chart:#FF5FA2; --chart-soft:#FFE3EF; --cyan:#D9F3FF;
+  --good:#16864C; --good-soft:#DDF5E7; --warn:#A85F00; --warn-soft:#FFF1CC; --bad:#CC2346; --bad-soft:#FFE1E7;
+  --petal:#FFC93C; --petal2:#FF8AC0; --branch:#6A3DF0;
+  --shadow:0 2px 0 #C6D5F5,5px 6px 0 rgba(106,61,240,.14);
+  --display:"M PLUS Rounded 1c","Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+}
+:root[data-skin="wednesday"]{
+  color-scheme:dark;
+  --bg:#0E0D10; --surface:#18161C; --surface2:#221F28; --ink:#ECE8F1; --muted:#A9A1B6; --line:#37323F;
+  --accent:#B79AE8; --accent-ink:#160F22; --accent-soft:#2D2440;
+  --bleed:#F0695E; --chart:#8E78B8; --chart-soft:#2A2338; --cyan:#2A2338;
+  --good:#6FCF97; --good-soft:#16301F; --warn:#E0B15A; --warn-soft:#3A2D14; --bad:#F0737D; --bad-soft:#401C20;
+  --petal:#4A3A66; --petal2:#2F2742; --branch:#8B8496;
+  --shadow:0 1px 2px rgba(0,0,0,.5),0 8px 22px rgba(0,0,0,.45);
+  --display:"Cinzel","Bricolage Grotesque",ui-serif,Georgia,serif;
+}
+:root[data-skin="anime"] body{background-image:radial-gradient(var(--line) 1.2px,transparent 1.4px);background-size:18px 18px}
+:root[data-skin="wednesday"] body{background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.022) 0 1px,transparent 1px 30px)}
+.deco{position:absolute;top:0;right:0;width:min(520px,70vw);height:auto;pointer-events:none;z-index:0;display:none}
+:root[data-skin="anime"] .sakura,:root[data-skin="wednesday"] .sakura{display:none}
+:root[data-skin="anime"] .deco-anime,:root[data-skin="wednesday"] .deco-wed{display:block}
+:root[data-skin="anime"] .brand h1 .probe::before{content:"✦";color:var(--chart)}
+:root[data-skin="wednesday"] .brand h1 .probe::before{content:"☾"}
+/* falling sparkles instead of petals */
+:root[data-skin="anime"] .petals span{width:13px;height:13px;border-radius:0;opacity:.85;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
+:root[data-skin="anime"] .petals span:nth-child(even){background:var(--petal2)}
+:root[data-skin="wednesday"] .petals span{opacity:.8}
+:root[data-skin="wednesday"] .brand h1{letter-spacing:.01em}
+:root[data-skin="wednesday"] nav.tabs button{font-size:15px;letter-spacing:.03em}
+:root[data-skin="wednesday"] .modal{background:rgba(0,0,0,.6)}
+.hud{position:relative}
+.skinmenu{left:0;top:calc(100% + 6px)}
+.skinmenu button{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;align-items:center}
+.skinmenu button small{grid-column:2}
+.sw3{grid-row:1 / span 2;display:inline-flex;border-radius:8px;overflow:hidden;border:1px solid var(--line)}
+.sw3 i{display:block;width:14px;height:34px}
+
 *{box-sizing:border-box}
 body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.5;margin:0;position:relative;overflow-x:hidden}
 /* sakura branch, top right */
@@ -76,6 +118,17 @@ header.top{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:flex-end;justif
 .brand h1{font-size:clamp(28px,5vw,44px);font-weight:800;letter-spacing:-.02em}
 .brand h1 .probe{display:inline-block;margin-left:.2em}
 .brand p{margin:4px 0 0;color:var(--muted);font-size:14px}
+/* title = test switcher */
+.titlewrap{position:relative;display:inline-block;max-width:100%}
+.titlebtn{font:inherit;color:inherit;letter-spacing:inherit;background:none;border:0;padding:0;text-align:left;border-radius:8px}
+.titlebtn .caret{font-size:.4em;color:var(--accent);margin-left:.5em;vertical-align:.35em}
+.titlemenu{position:absolute;left:0;top:calc(100% + 6px);z-index:50;width:max-content;max-width:min(360px,calc(100vw - 32px));background:var(--surface);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:6px;display:grid;gap:4px}
+.titlemenu[hidden]{display:none}
+.titlemenu button{text-align:left;border:1.5px solid transparent;background:transparent;border-radius:10px;padding:10px 12px;font-family:var(--display);font-weight:800;font-size:18px;line-height:1.2;min-height:48px}
+.titlemenu button small{display:block;font-family:var(--body);font-weight:400;font-size:13px;color:var(--muted);margin-top:2px}
+.titlemenu button:hover{background:var(--surface2)}
+.titlemenu button[aria-checked="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.star{color:var(--accent);font-weight:700}
 .hud{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .xp{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px 6px 6px;box-shadow:var(--shadow)}
 .xp .lvl{background:var(--accent);color:var(--accent-ink);font-family:var(--mono);font-weight:700;font-size:12px;border-radius:999px;padding:4px 9px}
@@ -265,12 +318,37 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
   <use href="#flower" x="405" y="160"/><use href="#flower" x="395" y="128" transform="scale(1)"/><use href="#flower" x="290" y="150"/><use href="#flower" x="315" y="140"/><use href="#flower" x="280" y="215"/><use href="#flower" x="305" y="192"/><use href="#flower" x="242" y="238"/><use href="#flower" x="490" y="95"/><use href="#flower" x="465" y="52"/><use href="#flower" x="350" y="125"/><use href="#flower" x="335" y="168"/><use href="#flower" x="420" y="105"/><use href="#flower" x="265" y="225"/>
   <g fill="var(--petal2)"><use href="#flower" x="440" y="80" transform="translate(440 80) scale(.7) translate(-440 -80)"/><use href="#flower" x="255" y="190" transform="translate(255 190) scale(.7) translate(-255 -190)"/><use href="#flower" x="380" y="145" transform="translate(380 145) scale(.6) translate(-380 -145)"/></g>
 </svg>
+<svg class="deco deco-anime" viewBox="0 0 520 260" aria-hidden="true">
+  <path fill="var(--petal2)" opacity=".45" d="M513 70L505 189L495 188Z M496 104L472 238L459 235Z M491 79L427 281L411 275Z M465 108L417 216L406 210Z M465 81L364 247L350 237Z M471 57L371 182L361 173Z M437 75L311 199L301 187Z M447 51L335 138L327 127Z M409 59L273 140L266 126Z M424 37L310 87L306 75Z M442 19L250 75L247 60Z M404 14L300 33L298 21Z"/>
+  <defs><path id="spark" d="M0 -16Q1.5 -1.5 16 0Q1.5 1.5 0 16Q-1.5 1.5 -16 0Q-1.5 -1.5 0 -16Z"/></defs>
+  <g fill="var(--petal)"><use href="#spark" transform="translate(440 70) scale(1.7)"/><use href="#spark" transform="translate(350 38) scale(.9)"/><use href="#spark" transform="translate(300 150) scale(1.1)"/><use href="#spark" transform="translate(480 170) scale(.8)"/></g>
+  <g fill="var(--chart)"><use href="#spark" transform="translate(390 120) scale(1.2)"/><use href="#spark" transform="translate(262 84) scale(.7)"/><use href="#spark" transform="translate(492 22) scale(.75)"/></g>
+  <g fill="var(--accent)"><use href="#spark" transform="translate(330 96) scale(.55)"/><use href="#spark" transform="translate(430 205) scale(.6)"/></g>
+</svg>
+<svg class="deco deco-wed" viewBox="0 0 520 260" aria-hidden="true">
+  <g fill="none" stroke="var(--branch)" stroke-linecap="round" opacity=".75">
+    <path stroke-width="1.6" d="M520 0L520 250 M520 0L451 240 M520 0L388 212 M520 0L334 167 M520 0L295 110 M520 0L274 43 M520 0L270 0"/>
+    <path stroke-width="1.2" d="M520 55Q513 47 505 53 M505 53Q501 43 491 47 M491 47Q490 36 479 37 M479 37Q481 26 471 24 M471 24Q475 15 466 10 M466 10Q473 4 465 0 M520 100Q508 85 492 96 M492 96Q485 79 467 85 M467 85Q465 66 446 67 M446 67Q449 48 430 44 M430 44Q438 27 422 17 M422 17Q434 7 420 0 M520 150Q502 128 479 144 M479 144Q468 118 441 127 M441 127Q437 99 409 100 M409 100Q413 72 385 66 M385 66Q397 40 372 26 M372 26Q391 11 370 0 M520 205Q495 175 463 197 M463 197Q448 161 411 174 M411 174Q407 135 368 137 M368 137Q374 99 336 90 M336 90Q352 54 318 36 M318 36Q344 15 315 0"/>
+    <path stroke-width="1" d="M368 137L368 208"/>
+  </g>
+  <g transform="translate(368 220)">
+    <g fill="none" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" opacity=".9">
+      <path d="M-5 -2Q-14 -10 -19 -3 M-6 1Q-17 -2 -21 6 M-6 4Q-16 6 -18 15 M-4 7Q-11 13 -10 21"/>
+      <path d="M5 -2Q14 -10 19 -3 M6 1Q17 -2 21 6 M6 4Q16 6 18 15 M4 7Q11 13 10 21"/>
+    </g>
+    <ellipse cx="0" cy="4" rx="7" ry="8.5" fill="var(--ink)"/><circle cx="0" cy="-6" r="4.2" fill="var(--ink)"/>
+    <path d="M-2.5 2L0 6L2.5 2Z" fill="var(--accent)"/>
+  </g>
+</svg>
 <div class="petals" id="petals" aria-hidden="true"></div>
 <div class="wrap">
   <header class="top">
     <div class="brand">
-      <h1>Hygiene Case Lab<span class="probe" aria-hidden="true"></span></h1>
-      <p>Case test prep · answers checked against the Litwak Dental Clinic Manual 26–27</p>
+      <div class="titlewrap">
+        <h1><button class="titlebtn" id="titleBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="titleMenu" title="Switch test"><span id="titleText">Hygiene Case Lab</span><span class="probe" aria-hidden="true"></span><span class="caret" aria-hidden="true">▼</span></button></h1>
+        <div class="titlemenu" id="titleMenu" role="menu" aria-label="Which test" hidden></div>
+      </div>
+      <p id="brandSub">Case test prep · answers checked against the Litwak Dental Clinic Manual 26–27</p>
     </div>
     <div class="hud">
       <div class="xp" title="Earn points for right answers">
@@ -279,26 +357,23 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
         <span class="num" id="xpnum">0 XP</span>
       </div>
       <button class="ghost who" id="whoBtn" title="Switch who is studying">👤 <span id="whoName">Add your name</span></button>
+      <button class="ghost" id="skinBtn" aria-haspopup="menu" aria-expanded="false" aria-controls="skinMenu" title="Change theme" aria-label="Change theme">🎨 <span class="skinlbl">Theme</span></button>
+      <div class="titlemenu skinmenu" id="skinMenu" role="menu" aria-label="Theme" hidden></div>
       <span id="resetArea"><button class="ghost" id="resetBtn">Start over</button></span>
       <a class="verlink" href="phone.html">Phone version →</a>
     </div>
   </header>
 
-  <nav class="tabs" role="tablist" id="tabs">
-    <button role="tab" data-tab="cases" aria-selected="true">Cases</button>
-    <button role="tab" data-tab="la" aria-selected="false">Anesthetic lab</button>
-    <button role="tab" data-tab="cards" aria-selected="false">Flashcards</button>
-    <button role="tab" data-tab="quiz" aria-selected="false">Quiz</button>
-    <button role="tab" data-tab="cram" aria-selected="false">Cram sheet</button>
-  </nav>
+  <nav class="tabs" role="tablist" id="tabs"></nav>
 
-  <section id="view-cases"></section>
+  <section id="view-cases" hidden></section>
+  <section id="view-topics" hidden></section>
   <section id="view-la" hidden></section>
   <section id="view-cards" hidden></section>
   <section id="view-quiz" hidden></section>
   <section id="view-cram" hidden></section>
 
-  <p class="note"><span class="src">Manual p.__</span> means the rule is taken straight from the clinic manual (printed page number). <span class="src std">Standard teaching</span> means the manual doesn’t cover it and the answer comes from standard dental hygiene textbooks. Check those against your class notes, because your instructors grade on what they taught. This is a study aid, not an answer key.</p>
+  <p class="note" id="note"></p>
 </div>
 <div class="toast" id="toast"></div>
 <div class="modal" id="whoModal" hidden>
@@ -762,6 +837,719 @@ const GENQ = [
  {id:"g10",topic:"Calculus",q:"Explorer binds, rings around teeth, &gt;90 areas. Calculus class?",opts:["2","3","4"],ans:2,why:"<b>Class 4</b>: heavy, circumferential rings, &gt;90 areas.",src:"Manual p.124"}
 ];
 
+/* ============ TEST 2 DATA: indices, sealants, scaling & root planing ============ */
+const T2 = [
+{
+  id:"idx", name:"Indices", deck:"Dental Indices · 59 slides",
+  blurb:"PSR and PerioWise screening, then the indices for plaque, gingiva, caries, perio, malocclusion and fluorosis.",
+  stars:[
+    "<b>PSR codes 0–4 and *</b>: “must know coding for test.”",
+    "PSR uses a <b>special (WHO) probe</b>, <b>0.5 mm ball</b>, recorded in <b>sextants</b>.",
+    "The gingival and periodontal assessment is <b>critical</b>. Full-mouth probing, every patient, every time.",
+    "<b>DMFT</b>: gold standard; no third molars. <b>Lowercase (dmft) = primary teeth only.</b>",
+    "<b>Sulcular Bleeding Index</b> (three stars): done with a <b>probe</b>, 4 areas per tooth, wait 30 seconds.",
+    "<b>Gingival Bleeding Index</b>: done with <b>floss</b>, wait 30 seconds.",
+    "<b>Eastman Interdental</b>: “just know <b>wooden wedge</b>.”",
+    "<b>CAMBRA</b>: “know what this stands for and what it is.”",
+    "<b>Plaque-free score</b>: teeth × 4 surfaces. Or subtract the PCR % from 100.",
+    "<b>Periodontal Index</b> scores are 0, 1, 2, 4, 6, 8 (the 6 is circled).",
+    "“Know what each index does, or its intent / findings.”",
+    "<b>TSIF</b> is starred: which surfaces get a score."
+  ],
+  mix:[
+    "<b>Probe vs floss vs wedge:</b> Sulcular Bleeding Index = probe · Gingival Bleeding Index = floss · Eastman = wooden wedge.",
+    "<b>30 vs 15 seconds:</b> probe and floss wait 30; the wedge waits 15.",
+    "<b>PI vs PDI vs PLI:</b> Periodontal Index (0–8, populations) · Periodontal Disease Index (0–6, attachment loss) · Plaque Index (0–3, plaque thickness).",
+    "<b>PSR 3 vs 4:</b> band partly visible = 3 · band gone = 4.",
+    "<b>DDE vs Dean’s:</b> DDE = the less damaged of the two worst teeth · Dean’s = second-worst tooth in each quadrant."
+  ],
+  qs:[
+    {id:"t2i-probe",topic:"PSR",type:"mc",q:"Which probe is used for PSR, and what does it look like?",
+     opts:["A UNC-15 probe with a pointed tip","A WHO probe: 0.5 mm ball on the end and a colored band from 3.5 to 5.5 mm","A Nabers probe with a curved working end","Any probe; PSR only changes how you record"],ans:1,
+     why:"PSR uses a <b>special probe (the WHO probe)</b>. It has a <b>0.5 mm ball</b> on the end and a <b>colored band from 3.5 to 5.5 mm</b>. It can be metal or plastic. The class note repeats it: “ball is ½ a mm.”",
+     src:"Indices slide 10 ★"},
+    {id:"t2i-record",topic:"PSR",type:"mc",q:"How is a PSR score recorded?",
+     opts:["One score for every tooth","One score per quadrant","One score per sextant: the highest code found in that sextant","Six scores per tooth, like a full chart"],ans:2,
+     why:"Divide the mouth into <b>sextants</b>. You still walk the probe around <b>six sites on each tooth</b>, but only the <b>worst finding</b> in the sextant is written down (code 0–4). Natural teeth and implants are treated the same.",
+     src:"Indices slide 9, 11 ★"},
+    {id:"t2i-code1",topic:"PSR",type:"mc",q:"Colored band completely visible, bleeding on probing, no calculus and no defective margins. PSR code?",
+     opts:["Code 0","Code 1","Code 2","Code 3"],ans:1,
+     why:"<b>Code 1.</b> Band visible + <b>bleeding</b> and nothing else. Code 0 is the same picture with no bleeding. Care: reinforce oral hygiene instruction and remove subgingival plaque.",
+     src:"Indices slide 12–13 ★"},
+    {id:"t2i-code2",topic:"PSR",type:"mc",q:"Colored band completely visible, and you find calculus or a defective restoration margin. PSR code?",
+     opts:["Code 1","Code 2","Code 3","Code 4"],ans:1,
+     why:"<b>Code 2.</b> The band is <b>still visible</b> (depths 1–3 mm), but there is <b>calculus or a defective restoration</b>. Bleeding is likely. Care: OHI, plaque and calculus removal, and correction of plaque-retentive margins.",
+     src:"Indices slide 14 ★"},
+    {id:"t2i-code3",topic:"PSR",type:"mc",q:"The colored band is only partially visible. What is the code and the probing depth?",
+     opts:["Code 2, 1–3 mm","Code 3, about 4–5 mm (3.5–5.5 mm)","Code 4, over 5.5 mm","Code *, recession"],ans:1,
+     why:"<b>Code 3.</b> Band <b>partially visible</b>. The slide gives the depth as 4–5 mm; the band itself runs 3.5–5.5 mm.",
+     src:"Indices slide 15"},
+    {id:"t2i-code3do",topic:"PSR",type:"mc",q:"One sextant scores a Code 3. What happens next?",
+     opts:["Nothing extra; give OHI","Record it and recheck in 6 months","A more detailed periodontal exam: chart that sextant, or the full mouth if several sextants are Code 3","Refer straight to a periodontist"],ans:2,
+     why:"A Code 3 needs a <b>more detailed periodontal examination</b>. That can be full-mouth charting or charting of the affected sextant, <b>depending on how many sextants are Code 3</b>.",
+     defend:"The same slide also says in large type, “If one sextant scores a Code 3, a complete examination is required.” The class note reads “if you have one sextant of code 3 you must do a full perio assessment on that sextant.” If the test asks for one answer, ask which wording your instructor wants.",
+     src:"Indices slide 15 + class note"},
+    {id:"t2i-code4",topic:"PSR",type:"mc",q:"The colored band has disappeared into the pocket. Code, depth, and what’s required?",
+     opts:["Code 3; chart that sextant","Code 4; deeper than 5.5 mm; a comprehensive full-mouth periodontal exam and charting","Code *; note it and continue","Code 2; remove calculus"],ans:1,
+     why:"<b>Code 4.</b> Band <b>not visible</b>, probing depth <b>greater than 5.5 mm</b> (the comparison table on slide 54 says 6 mm or deeper). A <b>complete full-mouth exam</b> is required: probing depths, attachment levels, bleeding, mobility, mucogingival problems, furcations, radiographs. Class note: “must do a full perio chart.”",
+     src:"Indices slide 16, 54 ★"},
+    {id:"t2i-star",topic:"PSR",type:"mc",q:"What does an asterisk (*) added to a PSR code mean?",
+     opts:["The sextant has no teeth","Furcation involvement, mobility, a mucogingival problem, or recession over 3.5 mm","Bleeding on probing","The patient refused probing"],ans:1,
+     why:"The <b>*</b> is <b>added to the number</b> for a sextant (for example 2*). It flags <b>furcation involvement, mobility, mucogingival problems, or recession greater than 3.5 mm</b>. Class note: it “tells us there is some other periodontal factor that affects the care, such as a frenum pull.” With a Code 3 or 4 plus *, a comprehensive exam is needed.",
+     src:"Indices slide 17 + class note"},
+    {id:"t2i-notfor",topic:"PSR",type:"mc",q:"PSR should NOT be used on which patients?",
+     opts:["Patients with implants","Children, and people who have had periodontal treatment in the past","Adults over 65","New patients"],ans:1,
+     why:"The slide lists two groups: <b>children</b>, and <b>people who have received treatment for perio in the past</b>. Implants are fine: natural teeth and implants are treated the same.",
+     src:"Indices slide 8, 9"},
+    {id:"t2i-pros",topic:"PSR",type:"open",q:"List the advantages of PSR, then its main limitation.",
+     model:"<b>Advantages:</b><ul><li><b>Early detection</b>: every site is evaluated.</li><li><b>Speed</b>: a few minutes once you know the technique.</li><li><b>Simplicity</b>: easy to do and easy for patients to understand.</li><li><b>Cost-effective</b>: all you need is the ball-tipped probe.</li><li><b>Ease of recording</b>: one number per sextant.</li><li><b>Risk management</b>: documents perio status for standard of care and legal requirements.</li></ul><b>Limitation:</b> it is a <b>screening</b>. It does not replace full perio charting and gives no tooth-by-tooth record to compare during maintenance. Not for children or previously treated perio patients.",
+     src:"Indices slide 7, 8, 11"},
+    {id:"t2i-pw1",topic:"PerioWise",type:"mc",q:"PerioWise probe: green is visible, and there is bleeding on probing. Preliminary diagnosis?",
+     opts:["Health","Gingivitis","Periodontitis","Cannot tell without radiographs"],ans:1,
+     why:"<b>Gingivitis.</b> Health = green visible, no bleeding. Gingivitis = green visible + bleeding. Periodontitis? = the <b>red band is reached</b> while the gingiva is at its normal position. Green = go, red = stop.",
+     src:"Indices slide 20, 22–25"},
+    {id:"t2i-pw2",topic:"PerioWise",type:"mc",q:"Which statement about the PerioWise probe is true?",
+     opts:["It is metal and cannot be used around implants","It is always plastic, color coded, safe around implants, and can be sterilized","It is single use only","It has a 0.5 mm ball on the end"],ans:1,
+     why:"PerioWise is <b>always plastic</b> and <b>color coded</b>. It is easier to read, good for patient education, more comfortable, economical, <b>safe around implants</b>, and can be sterilized by <b>autoclave, chemiclave or dry heat</b>. It comes as 3-5-7-10 mm or 3-6-9-12 mm. The 0.5 mm ball belongs to the WHO/PSR probe.",
+     src:"Indices slide 20 ★"},
+    {id:"t2i-whatis",topic:"Index basics",type:"mc",q:"Which is the best definition of an index?",
+     opts:["A list of a patient’s restorations","A standardized, quantitative method for measuring, scoring and analyzing oral conditions in individuals or groups","A radiographic survey","A treatment plan code"],ans:1,
+     why:"An index is a <b>standardized quantitative method</b> for measuring, scoring and analyzing oral conditions in individuals or groups. It is a number on a graduated scale with definite upper and lower limits, so populations scored the same way can be compared. Class note: “there are indexes for every oral condition.”",
+     src:"Indices slide 29"},
+    {id:"t2i-types",topic:"Index basics",type:"mc",q:"A plaque score can improve after the patient brushes better. That makes it which kind of index?",
+     opts:["Simple","Cumulative","Reversible","Irreversible"],ans:2,
+     why:"<b>Reversible</b> indices measure things that can be changed (class note example: the plaque control record). <b>Irreversible</b> = cannot be changed (class note example: past exposure to perio). <b>Simple</b> = presence or absence. <b>Cumulative</b> = total experience with a condition. An index is reversible or irreversible, not both.",
+     src:"Indices slide 30 + class note"},
+    {id:"t2i-dmfttype",topic:"Index basics",type:"mc",q:"According to the class note, DMFT is which kind of index?",
+     opts:["Reversible","Cumulative, simple, irreversible","Simple and reversible","None of these"],ans:1,
+     why:"The note written beside DMFT/dmft reads <b>cumulative, simple, irreversible</b>. It counts total lifetime caries experience, and a tooth that has been decayed, filled or lost cannot go back.",
+     src:"Indices slide 32 class note ★"},
+    {id:"t2i-ramf",topic:"Index basics",type:"mc",q:"Which are the Ramfjord teeth?",
+     opts:["#3, 8, 14, 19, 24, 30","#3, 9, 12, 19, 25, 28","#2, 7, 15, 18, 23, 31","All first molars and central incisors"],ans:1,
+     why:"<b>#3, 9, 12, 19, 25, 28.</b> Six teeth used as a representative sample of the whole mouth: faster than a full-mouth exam, shown to represent overall periodontal condition, and the same teeth can be tracked over time.",
+     src:"Indices slide 31 + class note"},
+    {id:"t2i-sm",topic:"Index basics",type:"mc",q:"An index name ends in -S or -M, such as OHI-S or PHP-M. What does that tell you?",
+     opts:["It is for seniors or minors","It is Simplified or Modified: a smaller sample than the full mouth was scored, such as the Ramfjord teeth","It uses study models","It was scored by a student"],ans:1,
+     why:"<b>S = simplified, M = modified.</b> Used when the Ramfjord teeth or another smaller sample is scored instead of the full mouth.",
+     src:"Indices slide 31, 33"},
+    {id:"t2i-php",topic:"Plaque & debris",type:"mc",q:"Patient Hygiene Performance (PHP): how is each tooth scored?",
+     opts:["0–3 for plaque thickness at the margin","Tooth divided into 5 sections; 1 point for each section with disclosing solution left; total ÷ number of teeth","Present or absent on 4 surfaces","Thirds of the crown covered, 0–3"],ans:1,
+     why:"Disclose, then divide each tooth into <b>5 sections</b> (2 interproximal portions plus the flat surface in thirds). <b>1 point per section</b> with stain remaining, so 0–5 per tooth. Add and divide by the number of teeth. Surfaces: facial of incisors and maxillary molars, lingual of mandibular molars. PHP-M uses the Ramfjord teeth.",
+     src:"Indices slide 33"},
+    {id:"t2i-phprate",topic:"Plaque & debris",type:"mc",q:"A patient’s PHP score is 2.4. What is the rating?",
+     opts:["Excellent","Good","Fair","Poor"],ans:2,
+     why:"<b>Fair.</b> Excellent 0 · Good 0.1–1.7 · <b>Fair 1.8–3.4</b> · Poor 3.5–5.",
+     src:"Indices slide 33"},
+    {id:"t2i-ohi",topic:"Plaque & debris",type:"mc",q:"OHI-S (Greene and Vermillion) is made of which two parts?",
+     opts:["Plaque Index + Gingival Index","Debris Index + Calculus Index","DMFT + RCI","PSR + CPITN"],ans:1,
+     why:"<b>Debris Index (DI)</b> + <b>Calculus Index (CI)</b>. The mouth is divided into six segments, scored on buccal and lingual surfaces, each 0–3. Class note: it scores plaque, stain and calculus.",
+     src:"Indices slide 35"},
+    {id:"t2i-ohiscore",topic:"Plaque & debris",type:"mc",q:"OHI-S debris: soft debris covers more than 1/3 but not more than 2/3 of the tooth. Score?",
+     opts:["0","1","2","3"],ans:2,
+     why:"<b>2.</b> 0 = no debris or stain · 1 = not more than 1/3, or stain without debris · <b>2 = more than 1/3 but not more than 2/3</b> · 3 = more than 2/3.",
+     src:"Indices slide 35"},
+    {id:"t2i-ohicalc",topic:"Plaque & debris",type:"mc",q:"Debris scores for the six segments are 1, 2, 1, 0, 2, 0. Calculus scores are 1, 1, 0, 0, 1, 0. What is the OHI-S?",
+     opts:["0.5","1.0","1.5","9"],ans:2,
+     why:"Debris: 6 ÷ 6 segments = <b>1.0</b>. Calculus: 3 ÷ 6 = <b>0.5</b>. OHI-S is the <b>sum</b>: 1.0 + 0.5 = <b>1.5</b>. On the slide’s OHI-S scale that is Fair (0 excellent · 0.1–1.2 good · 1.3–3 fair · 3.1–6 poor).",
+     src:"Indices slide 35–36"},
+    {id:"t2i-pfs",topic:"Plaque & debris",type:"mc",q:"A patient has 20 teeth. Disclosing solution shows plaque on 16 surfaces. What is the plaque-free score?",
+     opts:["20%","64%","80%","84%"],ans:2,
+     why:"20 teeth × <b>4 surfaces</b> = 80 available surfaces. 80 − 16 with plaque = 64 plaque-free. 64 ÷ 80 × 100 = <b>80%</b>. Shortcut from the class note: the PCR here is 20%, and 100 − 20 = 80.",
+     src:"Indices slide 46 + class note ★"},
+    {id:"t2i-pli",topic:"Plaque & debris",type:"mc",q:"The Plaque Index (PLI, Silness and Löe) measures what, and with what?",
+     opts:["Percent of surfaces with plaque, using disclosing solution","Thickness of plaque at the gingival margin, using a probe","Calculus by thirds, using an explorer","Bleeding, using floss"],ans:1,
+     why:"<b>Thickness of plaque at the gingival margin</b>, assessed with a <b>probe</b>, on 4 surfaces per tooth. 0 = free · 1 = small amount · 2 = moderate (visible) · 3 = large amount (visible and in the sulcus). Add the scores and divide by the number of teeth.",
+     src:"Indices slide 47 ★"},
+    {id:"t2i-sbi",topic:"Gingival",type:"mc",q:"Sulcular Bleeding Index: what do you use, how many areas per tooth, and how long do you wait?",
+     opts:["Floss; 2 areas; 15 seconds","A probe; 4 areas; 30 seconds","A wooden wedge; 2 areas; 15 seconds","Disclosing solution; 5 areas; no wait"],ans:1,
+     why:"Done with a <b>probe</b> (“you PROBE a sulcus”). Evaluate <b>4 areas</b> on each tooth and <b>wait 30 seconds</b> before evaluating. Scored 0–5, from healthy with no bleeding up to spontaneous bleeding with color change and swelling. This slide has three stars on it.",
+     src:"Indices slide 37 ★★★"},
+    {id:"t2i-gbi",topic:"Gingival",type:"mc",q:"Which index is performed with floss?",
+     opts:["Sulcular Bleeding Index","Gingival Bleeding Index (Carter and Barnes)","Eastman Interdental Bleeding Index","Plaque Index"],ans:1,
+     why:"The <b>Gingival Bleeding Index (Carter and Barnes)</b> records presence or absence of inflammation by <b>flossing</b>, waiting <b>30 seconds</b>, and adding up the bleeding points.",
+     src:"Indices slide 48 ★"},
+    {id:"t2i-eibi",topic:"Gingival",type:"mc",q:"The Eastman Interdental Bleeding Index uses which tool?",
+     opts:["A WHO probe","Dental floss","A wooden wedge inserted 1–2 mm","An explorer"],ans:2,
+     why:"A <b>wooden wedge</b> inserted 1–2 mm to provoke bleeding. Wait <b>15 seconds</b>, then divide the number of bleeding sites by the total surfaces evaluated. Class note: “just know wooden wedge.”",
+     src:"Indices slide 49 ★"},
+    {id:"t2i-gi",topic:"Gingival",type:"mc",q:"Gingival Index: redness, edema, glazing, and bleeding on probing. Score?",
+     opts:["0","1","2","3"],ans:2,
+     why:"<b>2 = moderate inflammation</b> with bleeding on probing (it is circled in the notes). 0 normal · 1 slight color or texture change, no bleeding (mild) · <b>3</b> marked redness, ulceration and <b>spontaneous bleeding</b> (severe). GI looks at color, consistency and bleeding on 4 surfaces per tooth.",
+     src:"Indices slide 38"},
+    {id:"t2i-dmft",topic:"Caries",type:"mc",q:"Which teeth are NOT counted in DMFT?",
+     opts:["First molars","Third molars, supernumerary teeth, and retained primary teeth","Teeth with crowns","Anterior teeth"],ans:1,
+     why:"DMFT (Decayed, Missing, Filled Teeth) is the <b>gold standard</b> index and is for the <b>permanent</b> dentition. It does <b>not</b> use <b>third molars</b>, <b>supernumerary</b> teeth, or <b>retained primary</b> teeth. Each tooth is D, M, F or nothing.",
+     src:"Indices slide 39 ★"},
+    {id:"t2i-lower",topic:"Caries",type:"mc",q:"A chart says dmft in lowercase. What does that tell you?",
+     opts:["It was done quickly","It is for primary teeth only","It counts surfaces instead of teeth","It excludes filled teeth"],ans:1,
+     why:"<b>Lowercase = primary teeth only.</b> Capital letters are always for permanent teeth. Same rules otherwise.",
+     src:"Indices slide 40 ★"},
+    {id:"t2i-dmfs",topic:"Caries",type:"mc",q:"How does DMFS differ from DMFT?",
+     opts:["It is for primary teeth","It counts surfaces, so it is more detailed, and it requires radiographs","It ignores missing teeth","It is only for seniors"],ans:1,
+     why:"The <b>S is surfaces</b>. DMFS is <b>more detailed</b> and <b>requires radiographs</b>.",
+     src:"Indices slide 39"},
+    {id:"t2i-cambra",topic:"Caries",type:"mc",q:"What does CAMBRA stand for, and what is it?",
+     opts:["Caries And Malocclusion Basic Risk Analysis; an ortho index","Caries Management by Risk Assessment; a survey of caries risk from diet and environmental factors","Calculus And Marginal Bleeding Risk Assessment; a perio index","Children’s Assessment of Mouth Bacteria; a saliva test"],ans:1,
+     why:"<b>Caries Management by Risk Assessment.</b> A <b>survey</b> that addresses caries risk through diet and environmental factors. There are <b>two surveys</b>: one for adults, one for age 6 and under. Class note: a risk assessment of the likelihood of developing decay.",
+     src:"Indices slide 44 ★"},
+    {id:"t2i-rci",topic:"Caries",type:"mc",q:"12 teeth have exposed root surfaces. 3 of those have root caries. What is the Root Caries Index?",
+     opts:["3%","25%","36%","400%"],ans:1,
+     why:"Teeth with root caries ÷ teeth with <b>exposed root surfaces</b>, × 100. 3 ÷ 12 = 0.25 → <b>25%</b>. The bottom number is exposed roots, not all teeth.",
+     src:"Indices slide 45 + class note"},
+    {id:"t2i-bss",topic:"Caries",type:"open",q:"Basic Screening Survey (BSS): who uses it, and which indicators are collected?",
+     model:"All states that send oral health surveillance data to the <b>National Oral Health Surveillance System (NOHSS)</b> use the BSS method. Class note: it looks at decay rates in children.<ul><li><b>Untreated decay</b> (yes / no)</li><li><b>Treated decay</b> (yes / no)</li><li><b>Dental sealants on permanent molars</b> (yes / no)</li><li><b>Treatment urgency</b> (none, early, urgent)</li></ul><b>Preschool:</b> untreated decay, treated decay, urgency (no sealants).<br><b>School-aged:</b> all four, with sealants on permanent first and second molars.",
+     src:"Indices slide 41–42"},
+    {id:"t2i-pi",topic:"Perio indices",type:"mc",q:"Periodontal Index (PI): which set of scores is possible?",
+     opts:["0, 1, 2, 3","0, 1, 2, 4, 6, 8","0 through 6","0 through 4 plus *"],ans:1,
+     why:"<b>0, 1, 2, 4, 6, 8.</b> There is no 3, 5 or 7. PI measures disease in <b>populations</b>; each tooth is scored and the scores are averaged. Class note: it measures gingivitis or bone destruction.",
+     defend:"The slide says PI is based on a clinical exam alone <i>or</i> with radiographs. The handwritten note says “must be done with radiographs.” Scores 4, 6 and 8 have radiographic criteria. If asked, go with what your instructor said in class.",
+     src:"Indices slide 50 + class note"},
+    {id:"t2i-pi6",topic:"Perio indices",type:"mc",q:"A PI score of 6 means what?",
+     opts:["Mild gingivitis","Gingivitis with pocketing; radiographs show horizontal bone loss up to half the root length","Advanced destruction with bone loss over half the root","Normal"],ans:1,
+     why:"<b>6 = gingivitis with pocketing</b>, horizontal bone loss <b>up to half</b> the root length. 8 = advanced destruction, bone loss of <b>more than half</b> the root. 4 is radiographic only (alveolar crest resorption). The 6 is circled in the notes.",
+     src:"Indices slide 50"},
+    {id:"t2i-pdi",topic:"Perio indices",type:"mc",q:"Periodontal Disease Index (PDI): attachment loss of 3–6 mm anywhere on the tooth. Score?",
+     opts:["3","4","5","6"],ans:2,
+     why:"<b>5.</b> Scores 0–3 describe the gingiva (3 = severe gingivitis). Scores 4–6 are attachment loss: <b>4</b> = under 3 mm · <b>5</b> = 3–6 mm · <b>6</b> = over 6 mm. PDI needs a full clinical evaluation with a probe and shows the perio status of a group or population.",
+     src:"Indices slide 52"},
+    {id:"t2i-cpitn",topic:"Perio indices",type:"mc",q:"CPITN classification 2 means the person needs what?",
+     opts:["No treatment","Oral hygiene instruction only","Oral hygiene instruction plus scaling and root planing and removal of defective margins","Complex therapy such as surgery"],ans:2,
+     why:"CPITN (Community Periodontal Index of Treatment Needs) classifies <b>treatment needs</b>. 0 = none · 1 = OHI · <b>2 = OHI + scaling and root planing + removal of defective margins</b> · 3 = 1 and 2 plus complex therapy such as surgery. Each sextant is probed with a <b>WHO probe</b> for the deepest reading.",
+     src:"Indices slide 53"},
+    {id:"t2i-each",topic:"Perio indices",type:"open",q:"In one line each, say what these measure: PI, GPI, PDI, CPITN, PSR.",
+     model:"<ul><li><b>PI (Periodontal Index):</b> disease in populations, gingivitis through bone destruction; 0, 1, 2, 4, 6, 8.</li><li><b>GPI (Gingival Periodontal Index):</b> a combination of the gingival index and the periodontal index; more detail.</li><li><b>PDI (Periodontal Disease Index):</b> prevalence and severity of gingivitis and periodontal disease in a group; 0–6, with 4–6 based on attachment loss.</li><li><b>CPITN:</b> the treatment needs of a person or group; WHO probe, by sextant; 0–3.</li><li><b>PSR:</b> quick screening by sextant with the WHO probe; codes 0–4 and *; highest reading in the sextant is recorded.</li></ul>",
+     src:"Indices slide 50–54 ★"},
+    {id:"t2i-tpi",topic:"Other",type:"mc",q:"The Treatment Priority Index measures what? And a rating of 7–9 means?",
+     opts:["Caries risk; high risk","Malocclusion; severe handicap, treatment highly desired","Fluorosis; advanced changes","Perio treatment need; surgery"],ans:1,
+     why:"It ranks <b>malocclusion</b> by severity (class note: used in ortho offices). 0 = virtually classic normal occlusion · 1–3 minor · 4–6 definite malocclusion, treatment elective · <b>7–9 severe handicap, treatment highly desired</b> · over 10 very severe, treatment mandatory.",
+     src:"Indices slide 55"},
+    {id:"t2i-dde",topic:"Fluorosis",type:"mc",q:"DDE index (Developmental Defects of Dental Enamel): which tooth do you score?",
+     opts:["The worst tooth in the mouth","Pick the two worst teeth, then score the less damaged of the two","The second-worst tooth in each quadrant","Every anterior tooth"],ans:1,
+     why:"Look for enamel mottling, select the <b>two worst teeth</b>, and score the <b>least damaged of the two</b>. <b>Dry for two minutes.</b> It rates enamel opacities <b>regardless of origin</b> (class note: “any white spot counts”). 0 = none · 1–2 mild · 3–9 advanced changes.",
+     src:"Indices slide 56"},
+    {id:"t2i-dean",topic:"Fluorosis",type:"mc",q:"Dean’s index of fluorosis: which tooth is scored?",
+     opts:["The worst tooth overall","The second-worst tooth in each quadrant","The less damaged of the two worst teeth","The Ramfjord teeth"],ans:1,
+     why:"Dean’s is used within <b>populations</b>. Identify the <b>second-worst tooth in each quadrant</b> and <b>dry for two minutes</b>.",
+     src:"Indices slide 57"},
+    {id:"t2i-dean2",topic:"Fluorosis",type:"mc",q:"Dean’s index: small paper-white areas covering less than 25% of the tooth. Classification?",
+     opts:["Questionable","Very mild","Mild","Moderate"],ans:1,
+     why:"<b>Very mild</b> = less than 25%. Normal = smooth, glossy, creamy white · Questionable = a few white spots · <b>Mild</b> = less than 50% · Moderate = all tooth structure affected, wear on biting surfaces, brown stain possible · Severe = all surfaces affected, <b>pitting</b> and brown stain.",
+     src:"Indices slide 57"},
+    {id:"t2i-fri",topic:"Fluorosis",type:"mc",q:"Fluorosis Risk Index: Class I is enamel formed when?",
+     opts:["Before birth","During the first year of life","During years 3–6","After age 12"],ans:1,
+     why:"The enamel is divided into two zones by when it developed. <b>Class I = first year of life.</b> <b>Class II = years 3–6.</b> Each zone is scored negative, mild to moderate (less than 50%), or severe (50% or pitting).",
+     src:"Indices slide 58"},
+    {id:"t2i-tsif",topic:"Fluorosis",type:"mc",q:"Tooth Surface Index of Fluorosis (TSIF): pitting with staining. Score?",
+     opts:["4","5","6","7"],ans:2,
+     why:"<b>6.</b> 0 none · 1 parchment white under 33% · 2 between 33% and 66% · 3 over 66% · <b>4 staining</b> with any of those · <b>5 pitting without staining</b> · <b>6 pitting with staining</b> · 7 pitting, staining and large pieces of enamel missing. Done within a population; scores facial and lingual of anteriors, and buccal, lingual and occlusal of posteriors.",
+     src:"Indices slide 59 ★"}
+  ]
+},
+{
+  id:"seal", name:"Sealants", deck:"Pit and Fissure Sealants · 36 slides",
+  blurb:"What a sealant is, who gets one, the material, the placement steps with their times, and caries detection devices.",
+  stars:[
+    "Definition: a <b>thin plastic resinous coating</b>; works best placed <b>before cavitation</b>.",
+    "<b>Preventive vs therapeutic</b> sealants (both starred).",
+    "The tooth surface <b>must be etched</b>. Etch lets liquid resin <b>penetrate the micropores and create a bond</b>.",
+    "<b>Salivary contamination</b> is the most common reason for failure: “it gets wet.”",
+    "Autopolymerization <b>starts as soon as mixing begins</b>.",
+    "Light-cure time is usually <b>20–30 seconds</b>.",
+    "<b>Do not overfill.</b>",
+    "<b>Fluoride goes on after the sealants.</b>",
+    "Sealants are <b>no guarantee</b> against caries; they are one part of preventive care.",
+    "Teeth must be <b>fully erupted</b>.",
+    "Sealants can go on an <b>anterior</b> tooth if there is a deep cingulum."
+  ],
+  mix:[
+    "<b>The times:</b> etch 15–60 s · rinse at least 30 s · dry 15–20 s · wait 10 s after spreading · cure 20–30 s · re-etch about 15 s.",
+    "<b>Monomer vs polymer:</b> liquid sealant = resin = monomer → polymerization → hard sealant = polymer.",
+    "<b>Filled vs unfilled:</b> unfilled wears down to the right height; filled needs adjusting.",
+    "<b>Auto vs photo:</b> self-cure sets itself once mixed; light-cure needs the blue light.",
+    "<b>Detection rates:</b> explorer 57% · radiographs 67% · Diagnodent 90%."
+  ],
+  qs:[
+    {id:"t2s-level",topic:"Basics",type:"mc",q:"Which level of prevention are sealants?",
+     opts:["Preventive sealants are primary prevention; therapeutic sealants are secondary","All sealants are tertiary prevention","Preventive sealants are secondary; therapeutic are tertiary","Sealants are not prevention"],ans:0,
+     why:"The slide shows primary, secondary and tertiary prevention. The handwritten notes put <b>sealants under primary</b> and <b>therapeutic sealants under secondary</b>, because a therapeutic sealant treats an early lesion that already exists.",
+     src:"Sealants slide 2 class note"},
+    {id:"t2s-def",topic:"Basics",type:"mc",q:"A pit and fissure sealant is best described as what?",
+     opts:["A fluoride-releasing varnish painted on smooth surfaces","A thin plastic resinous coating that acts as a physical barrier to oral bacteria and carbohydrates","A temporary filling for cavitated lesions","A desensitizing agent"],ans:1,
+     why:"A <b>thin plastic resinous coating</b> that is a <b>physical barrier</b> to oral bacteria and carbohydrates. It keeps debris, food and bacteria out of pits and fissures. Placed early, <b>before cavitation</b>, it is an effective barrier.",
+     src:"Sealants slide 5 ★"},
+    {id:"t2s-90",topic:"Basics",type:"mc",q:"About how much of the caries in permanent teeth occurs in pits and fissures?",
+     opts:["20%","57%","76%","90%"],ans:3,
+     why:"About <b>90%</b>, with <b>molars</b> the most susceptible. Do not confuse it with <b>76%</b>, which is the reduction in risk of new carious lesions for children and adolescents who get sealants.",
+     src:"Sealants slide 4"},
+    {id:"t2s-access",topic:"Basics",type:"mc",q:"What do the slides say about sealants and family income?",
+     opts:["Income makes no difference","Fewer than 20% of children living in poverty have sealants, compared with 32% in higher-income homes","Children in poverty get more sealants through school programs","90% of children have sealants"],ans:1,
+     why:"<b>Less than 20%</b> of children living in poverty have received sealants, compared with <b>32%</b> of children in higher-income homes.",
+     src:"Sealants slide 4"},
+    {id:"t2s-pvt",topic:"Basics",type:"mc",q:"What is a therapeutic sealant?",
+     opts:["One placed on a completely healthy, caries-free tooth","One applied to a tooth with an early, non-cavitated (incipient) enamel lesion","One placed over a cavitated lesion into dentin","One placed on a primary tooth about to exfoliate"],ans:1,
+     why:"<b>Therapeutic</b> = applied to teeth with <b>early, non-cavitated (incipient) lesions in enamel</b>; minor, superficial drilling may occur. <b>Preventive</b> = placed on completely healthy, sound, caries-free teeth.",
+     src:"Sealants slide 6 ★"},
+    {id:"t2s-sealed",topic:"Basics",type:"mc",q:"Early caries gets sealed over with a well-placed sealant. What usually happens?",
+     opts:["The caries speeds up","The caries process typically stops, because the food source is cut off","The sealant dissolves","Nothing changes"],ans:1,
+     why:"The caries process typically <b>stops</b> because a <b>food source is no longer available</b>. If the sealant is poorly placed, the margins can leak and the caries can continue.",
+     src:"Sealants slide 5"},
+    {id:"t2s-effects",topic:"Basics",type:"open",q:"Name the three primary preventive effects of sealants.",
+     model:"<ol><li>They provide a <b>mechanical barrier</b> in the pit and fissure.</li><li>They <b>eliminate the environment</b> that favors <i>Streptococcus mutans</i>.</li><li>They make the occlusal pits and fissures <b>easier to clean</b> by brushing and chewing.</li></ol>",
+     src:"Sealants slide 7"},
+    {id:"t2s-ind",topic:"Who gets one",type:"open",q:"List the indications for sealants.",
+     model:"<ul><li>Children with <b>newly erupted teeth</b> that have pits and fissures (class note: teeth must be <b>fully erupted</b>)</li><li>Older individuals with <b>reduced salivary flow</b></li><li>Clients in <b>orthodontics</b></li><li><b>Incipient caries</b></li><li><b>Caries history</b></li><li>Anyone who wants them and for whom it is technically feasible</li></ul>Tooth selection: not every tooth needs one. Recommended for <b>steep cuspal inclines</b> and <b>deep, sticky fissures</b>.",
+     src:"Sealants slide 8–9"},
+    {id:"t2s-contra",topic:"Who gets one",type:"mc",q:"Which of these is a contraindication for a sealant?",
+     opts:["A fully erupted molar with deep, sticky fissures","A partially erupted molar with an operculum","A patient in orthodontic treatment","An older adult with reduced salivary flow"],ans:1,
+     why:"<b>Insufficiently erupted teeth / operculum</b> is on the contraindication list: you cannot keep the tooth dry. The other three are indications.",
+     src:"Sealants slide 8, 10"},
+    {id:"t2s-contra2",topic:"Who gets one",type:"open",q:"List the contraindications for sealants.",
+     model:"<ul><li>Behavior / lack of patient cooperation</li><li><b>Clinically evident caries</b></li><li><b>Proximal decay</b> (seen interproximally)</li><li><b>Insufficiently erupted</b> teeth / operculum</li><li>Primary teeth with a <b>short life expectancy</b></li><li><b>Radiographic evidence</b> of decay</li><li><b>Self-cleaning</b> pits and fissures</li><li><b>Allergy to methacrylate</b> (it is in the sealant material)</li><li><b>Previous restoration</b></li></ul>",
+     src:"Sealants slide 10"},
+    {id:"t2s-fail",topic:"Retention",type:"mc",q:"What is the most common reason a sealant fails?",
+     opts:["The curing light was too far away","Salivary contamination during placement","The patient chewed too soon","Too little etch"],ans:1,
+     why:"<b>Salivary contamination</b> during placement. Class note: “it gets wet.” Saliva is detrimental to the etched surface, which is why you isolate, use suction, and change cotton rolls.",
+     src:"Sealants slide 11, 23 ★"},
+    {id:"t2s-retain",topic:"Retention",type:"open",q:"For good retention, what four things must be true of the tooth surface?",
+     model:"<ol><li><b>Maximum surface area</b> (class note: cover as much area as possible)</li><li><b>Deep, irregular</b> pits and fissures</li><li><b>Clean</b></li><li><b>Completely dry</b> at placement and <b>uncontaminated with saliva</b></li></ol>Sequence: the surface is <b>etched</b>, an optional primer is applied, then the adhesive resin.",
+     src:"Sealants slide 11–12 ★"},
+    {id:"t2s-etchwhy",topic:"Retention",type:"mc",q:"What does the acid etch (conditioner) do?",
+     opts:["Hardens the sealant","Produces micropores in the enamel so the liquid resin can flow in and bond","Whitens the tooth permanently","Kills the pulp bacteria"],ans:1,
+     why:"It produces <b>irregularities or micropores</b> in the enamel so the liquid resin can <b>penetrate and create a bond</b> (micromechanical). It also removes contamination, has an antibacterial action, and increases the surface area. An etched tooth looks <b>chalky white</b>.",
+     src:"Sealants slide 13, 22 ★"},
+    {id:"t2s-etchwhat",topic:"Placement",type:"mc",q:"Which etchant is used, and at what strength?",
+     opts:["Hydrofluoric acid 10%","Phosphoric acid, most commonly 37% (range 15–50%)","Citric acid 50%","Hydrogen peroxide 3%"],ans:1,
+     why:"<b>Phosphoric acid, most commonly 37%</b> (the slide gives a range of 15–50%). It comes as liquid, gel or semi-gel.",
+     src:"Sealants slide 20, 22"},
+    {id:"t2s-etchtime",topic:"Placement",type:"mc",q:"How long do you etch, and what must you avoid?",
+     opts:["5 seconds; avoid drying the tooth","A minimum of 15–60 seconds depending on the manufacturer; avoid contact with oral tissues","2 minutes; avoid rinsing","20–30 seconds under the curing light"],ans:1,
+     why:"Etch a minimum of <b>15–60 seconds</b>, depending on the manufacturer. <b>Do not contact oral tissues</b> (class note: it can cause irritation or a chemical burn).",
+     src:"Sealants slide 22 + class note"},
+    {id:"t2s-rinse",topic:"Placement",type:"mc",q:"After etching, how long do you rinse and how long do you dry?",
+     opts:["Rinse 5 s, dry 5 s","Rinse at least 30 s, dry 15–20 s","Rinse 15 s, dry 60 s","No rinse; air dry 10 s"],ans:1,
+     why:"<b>Rinse at least 30 seconds</b>, use suction (high volume if possible), change cotton rolls, then <b>dry 15–20 seconds</b>. Check the air stream for moisture first. Look for the <b>white, chalky</b> surface.",
+     src:"Sealants slide 23"},
+    {id:"t2s-steps",topic:"Placement",type:"open",q:"Write the sealant placement steps in order.",
+     model:"<ol><li><b>Clean</b> the tooth surface and <b>isolate</b></li><li><b>Etch</b> the enamel with 37% phosphoric acid</li><li><b>Rinse</b> with water</li><li><b>Dry</b> the enamel</li><li><b>Bonding</b> agent (optional)</li><li><b>Place</b> the sealant</li><li><b>Cure</b></li><li><b>Wipe</b> the cured surface with gauze or a cotton roll (oxygen-inhibited layer)</li></ol>Then check the bite, check retention, and apply fluoride.",
+     src:"Sealants slide 20"},
+    {id:"t2s-clean",topic:"Placement",type:"mc",q:"Which is a method the slides list for cleaning the tooth before a sealant?",
+     opts:["Pumice and a bristle brush on a slow-speed handpiece","Prophy paste with fluoride and oil","Chlorhexidine rinse only","Ultrasonic scaling"],ans:0,
+     why:"The slide lists: hydrogen peroxide, air/powder polishing, acid etch (the conditioner helps clean enamel), <b>pumice and bristle brush on a slow-speed handpiece</b>, and a wet toothbrush.",
+     src:"Sealants slide 21"},
+    {id:"t2s-apply",topic:"Placement",type:"mc",q:"When you apply the sealant material, which is correct?",
+     opts:["Overfill so it covers the cusps","Spread it with an explorer, wait 10 seconds, then cure with the light held a few millimeters above","Cure first, then spread","Touch the light tip to the resin"],ans:1,
+     why:"Place the material in the pits and fissures and <b>do not overfill</b>. Spread with an <b>explorer</b> and <b>wait 10 seconds</b>. Cure with the light held <b>a few millimeters above</b> the resin. Always use the dark yellow disk to filter the blue light.",
+     src:"Sealants slide 25 ★"},
+    {id:"t2s-cure",topic:"Material",type:"mc",q:"How long is the usual light-cure time?",
+     opts:["5–10 seconds","20–30 seconds","60 seconds","2 minutes"],ans:1,
+     why:"Usually <b>20–30 seconds</b>, depending on the manufacturer. It is a <b>blue light</b>, so use the protective shield or glasses.",
+     src:"Sealants slide 17, 25 ★"},
+    {id:"t2s-auto",topic:"Material",type:"mc",q:"Which is true of autopolymerized (self-curing) sealants?",
+     opts:["They harden only under blue light","Polymerization starts as soon as mixing begins; they are common in school-based programs","They never need a dry field","They take 30 minutes to set"],ans:1,
+     why:"Self-cure mixes a universal liquid monomer with a catalyst, and <b>polymerization starts as soon as mixing begins</b>. Commonly used in <b>school-based sealant programs</b>. You must keep the field dry while mixing.",
+     src:"Sealants slide 17 ★"},
+    {id:"t2s-mono",topic:"Material",type:"mc",q:"Liquid sealant is the ____; hardened sealant is the ____.",
+     opts:["polymer; monomer","monomer (resin); polymer","filler; catalyst","etchant; primer"],ans:1,
+     why:"<b>Liquid sealant = resin = monomer.</b> Polymerization turns it into the <b>hard sealant = polymer</b>. Polymerization is the process by which sealants harden.",
+     src:"Sealants slide 17–18"},
+    {id:"t2s-comp",topic:"Material",type:"mc",q:"What is sealant material made of?",
+     opts:["Amalgam alloy","A resin based on a dimethacrylate monomer, such as bis-GMA or UDMA, similar to composite resin","Zinc oxide eugenol","Calcium hydroxide"],ans:1,
+     why:"It is <b>similar to composite resin</b>. The resin component is a dimethacrylate monomer: <b>bis-GMA</b> (bisphenol A-glycidyl methacrylate) or <b>UDMA</b> (urethane dimethacrylate), with small filler particles.",
+     src:"Sealants slide 15"},
+    {id:"t2s-types",topic:"Material",type:"open",q:"Give the three ways sealants are classified, and name the four types of material.",
+     model:"<b>Classified by:</b><ul><li><b>Type:</b> glass ionomer and resin</li><li><b>Polymerization method:</b> autopolymerized and photopolymerized</li><li><b>Filler:</b> filled and unfilled</li></ul><b>Four types of material:</b><ol><li>Resin-based sealants</li><li>Polyacid-modified resin sealants</li><li>Glass ionomer cements</li><li>Resin-modified glass ionomer sealants</li></ol>",
+     src:"Sealants slide 16"},
+    {id:"t2s-ideal",topic:"Material",type:"mc",q:"Which is an ideal property of a sealant material?",
+     opts:["Thick, high viscosity so it stays on the cusps","Free-flowing and low viscosity so it can enter narrow fissures","Sets only when wet","Needs a complex application"],ans:1,
+     why:"Ideal properties: <b>prolonged bonding</b> to enamel, <b>biocompatible</b> with oral tissue, a <b>simple application</b> procedure, and a <b>free-flowing, low-viscosity</b> material that can enter narrow fissures.",
+     src:"Sealants slide 14"},
+    {id:"t2s-color",topic:"Material",type:"mc",q:"Why would a clinician choose a colored sealant?",
+     opts:["It bonds better","It is easier to see during application and to re-evaluate at recall","It releases more fluoride","It cures faster"],ans:1,
+     why:"Sealants come clear, tinted, opaque or white. <b>Colored sealants are easier to see</b> during application and at recall appointments.",
+     src:"Sealants slide 19"},
+    {id:"t2s-voids",topic:"Placement",type:"mc",q:"After curing, you find a void with the explorer. What can you do?",
+     opts:["Nothing; the sealant must be drilled out","Add more material, as long as the surface is not contaminated","Re-etch for 60 seconds over the sealant","Polish it away"],ans:1,
+     why:"Check for voids with an <b>explorer</b>. <b>More material can be added if the surface is not contaminated.</b>",
+     src:"Sealants slide 25"},
+    {id:"t2s-occl",topic:"Placement",type:"mc",q:"How do you check and fix a high spot on a new sealant?",
+     opts:["Ask the patient to chew gum","Articulating paper to find it; a scaler or curette to remove the excess","Re-cure for 60 seconds","Apply more etch"],ans:1,
+     why:"Use <b>articulating paper</b> (the blue paper) to check for high spots, a <b>scaler or curette</b> to remove excess, and <b>dental floss</b> to check the interproximal areas.",
+     src:"Sealants slide 26"},
+    {id:"t2s-filled",topic:"Placement",type:"mc",q:"Which sealant needs its height adjusted after placement?",
+     opts:["Unfilled","Filled","Neither","Both equally"],ans:1,
+     why:"<b>Filled</b> sealants <b>require adjustment</b>. <b>Unfilled</b> sealants wear down to the correct height on their own.",
+     src:"Sealants slide 26"},
+    {id:"t2s-redo",topic:"Placement",type:"mc",q:"You check the finished sealant with an explorer and it lifts off. What now?",
+     opts:["Leave it and recheck in 6 months","Repeat the placement, with only about 15 seconds of etching; if two attempts fail, postpone until remineralization occurs","Etch for 2 minutes and place a thicker layer","Place it without etching"],ans:1,
+     why:"Repeat the procedure with only about <b>15 seconds</b> of etching. If <b>two attempts</b> are unsuccessful, <b>postpone</b> until remineralization occurs.",
+     src:"Sealants slide 27"},
+    {id:"t2s-fl",topic:"Follow-up",type:"mc",q:"When is the fluoride treatment done on a sealant visit?",
+     opts:["Before etching","Between etch and sealant","After the sealants are placed","Fluoride is never given the same day"],ans:2,
+     why:"<b>After</b> the sealants are placed, to promote remineralization. It is starred and handwritten on the slide.",
+     src:"Sealants slide 28 ★"},
+    {id:"t2s-maint",topic:"Follow-up",type:"mc",q:"How often are sealants checked, and what do you tell the patient?",
+     opts:["Every 5 years; they are permanent","Every 6 months; sealants are no guarantee against caries, only one part of preventive care","Only if one falls off","Every month"],ans:1,
+     why:"Check <b>every 6 months</b> for deficiencies. Sealants provide <b>no guarantee</b> that the patient will not get caries; they are only a part of preventive care.",
+     src:"Sealants slide 29 ★"},
+    {id:"t2s-dx90",topic:"Caries detection",type:"mc",q:"According to the slides, which is most effective at detecting decay?",
+     opts:["Explorer (57%)","Radiographs (67%)","Diagnodent laser (90%)","Disclosing solution"],ans:2,
+     why:"Explorers <b>57%</b> · radiographs <b>67%</b> · Diagnodent <b>90%</b>. The Diagnodent measures <b>laser fluorescence</b> in tooth structure. It finds hidden caries, avoids exploratory opening of suspect teeth, uses light energy (no x-ray exposure), and takes about 5 minutes.",
+     src:"Sealants slide 31–32"},
+    {id:"t2s-dxval",topic:"Caries detection",type:"mc",q:"A Diagnodent reading of 25 means what?",
+     opts:["No active care","No active care; prevention recommended","Preventive treatment or active care, depending on the patient’s caries risk","Active treatment required"],ans:2,
+     why:"<b>0–14</b> no active care · <b>15–20</b> no active care, prevention recommended · <b>21–30</b> preventive treatment or active care depending on caries risk · <b>over 30</b> active treatment.",
+     src:"Sealants slide 33"},
+    {id:"t2s-carivu",topic:"Caries detection",type:"mc",q:"How does the CariVu device show caries?",
+     opts:["Laser fluorescence gives a number","Transillumination: enamel looks transparent, and caries and cracks look dark","It stains decay blue","It uses low-dose x-rays"],ans:1,
+     why:"CariVu uses <b>transillumination</b>. Enamel appears transparent; <b>caries and cracks absorb light and appear dark</b>.",
+     src:"Sealants slide 35"}
+  ]
+},
+{
+  id:"nspt", name:"Scaling & root planing", deck:"Nonsurgical Periodontal Therapy · 168 slides",
+  blurb:"Goals of nonsurgical periodontal therapy, appointment planning and consent, root anatomy, hand and ultrasonic technique, specialized instruments, and advanced fulcrums.",
+  stars:[
+    "<b>Management of modifiable risk factors</b> is part of initial therapy.",
+    "Goals: <b>reduce pocket depths</b> and <b>eliminate bleeding on probing</b>. #1 is less gingival inflammation and BOP.",
+    "<b>Calculus is NOT a direct cause</b> of gingival inflammation. “It is the biofilm that lives on top.”",
+    "<b>Preserve cementum.</b> It allows for reattachment.",
+    "“Important to know <b>root anatomy</b>.”",
+    "Curette: <b>always adapt the toe third</b>.",
+    "Root planing: <b>stay sub</b>. Get in the pocket and stay in the pocket.",
+    "Multi-rooted teeth: <b>treat each root as though it is a single-rooted tooth</b>.",
+    "<b>Langer:</b> face at 90° to the lower shank. <b>Extended shank</b> = pockets over 4 mm.",
+    "<b>Mini Gracey:</b> shorter working-end, good for mandibular anteriors.",
+    "<b>Vision Curvette:</b> the + mark shows the lower cutting edge.",
+    "<b>O’Hehir:</b> working-end is a tiny circular disk.",
+    "<b>Finger assist</b> (stabilized fulcrum) is starred.",
+    "Scale a quadrant <b>to completion before</b> moving to the next one."
+  ],
+  mix:[
+    "<b>Curette vs ultrasonic direction:</b> curette starts at the base of the pocket and works toward the CEJ; powered tip starts near the CEJ and works apically.",
+    "<b>Frequency vs amplitude:</b> frequency = how many vibrations per second; amplitude = how far the tip moves. The power knob changes amplitude.",
+    "<b>Standard vs extended shank:</b> 4 mm or less vs greater than 4 mm. Extended lower shank is 3 mm longer.",
+    "<b>Cross arch vs opposite arch:</b> cross arch = other side of the same arch; opposite arch = the other jaw.",
+    "<b>Finger-on-finger vs finger assist:</b> finger-on-finger is a rest for the fulcrum; finger assist pushes on the shank for lateral pressure.",
+    "<b>Horizontal strokes on proximal surfaces</b> use the opposite working-end (G11 vertical → G12 horizontal). On facial and lingual, same end.",
+    "<b>Re-evaluation</b> in this deck is 4–8 weeks after NSPT is finished."
+  ],
+  qs:[
+    {id:"t2p-gold",topic:"NSPT goals",type:"mc",q:"What is the gold standard of initial periodontal therapy?",
+     opts:["Systemic antibiotics","Periodontal debridement","Periodontal surgery","Chlorhexidine rinse"],ans:1,
+     why:"<b>Periodontal debridement = gold standard.</b> Initial therapy also includes managing modifiable risk factors, patient education, antimicrobials as appropriate (class note example: Arestin), eliminating local factors (overhanging restorations), and re-evaluation to see whether the patient needs surgery or maintenance.",
+     src:"SRP slide 2 ★"},
+    {id:"t2p-success",topic:"NSPT goals",type:"open",q:"Long-term success of NSPT depends on which four things?",
+     model:"<ol><li><b>Daily biofilm control by the patient</b> (class note: what they do at home)</li><li><b>Management of modifiable risk factors</b></li><li><b>Regular periodontal maintenance</b> (class note: how often they come to the clinic)</li><li>A <b>skilled clinician</b> providing definitive debridement at the start and on an ongoing basis</li></ol>Class note on patient education: doing it without any change at home is basically worthless.",
+     src:"SRP slide 3, 9"},
+    {id:"t2p-flora",topic:"NSPT goals",type:"mc",q:"Before treatment, the predominant subgingival flora in periodontal infection is what?",
+     opts:["Aerobic, gram-positive, nonmotile cocci","Anaerobic, gram-negative, motile (spirochetes, motile rods)","Fungal","Viral"],ans:1,
+     why:"<b>Before:</b> anaerobic, gram-negative, motile, spirochetes and motile rods, pathogenic; very high microbial count; many leukocytes. <b>After:</b> aerobic, gram-positive, nonmotile, coccoid forms, nonpathogenic; much lower counts; fewer leukocytes.",
+     src:"SRP slide 7"},
+    {id:"t2p-aims",topic:"NSPT goals",type:"open",q:"List the five aims and expected outcomes of NSPT.",
+     model:"<ol><li><b>Interrupt or arrest</b> the progress of disease (less biofilm, slower repopulation of pathogens, change patient habits).</li><li><b>Create an environment that encourages health</b> and resolution of inflammation: reduce pocket depths, eliminate bleeding on probing, restore normal tissue, increase attachment level, remove calculus and restorative irregularities.</li><li><b>Induce positive changes</b> in the quality and quantity of subgingival flora.</li><li><b>Provide initial preparation for surgery</b> in advanced disease.</li><li><b>Education and motivation</b>: the patient takes on the co-therapist role.</li></ol>",
+     src:"SRP slide 5–9 ★"},
+    {id:"t2p-calc",topic:"NSPT goals",type:"mc",q:"What is the role of calculus in gingival inflammation?",
+     opts:["It is the direct cause","It is NOT a direct cause; it holds biofilm against the tissue","It protects the root","It has no role"],ans:1,
+     why:"<b>Calculus is not a direct cause</b> of gingival inflammation. It <b>causes biofilm retention</b>. Class note: “it is the biofilm that lives on top.” Ideal endpoint: disrupt biofilm and remove calculus while <b>preserving cementum</b>.",
+     src:"SRP slide 18 ★"},
+    {id:"t2p-cem",topic:"NSPT goals",type:"mc",q:"Why should cementum be preserved as much as possible?",
+     opts:["It is harder than enamel","It is a source of growth factors for new attachment","It prevents stain","It cannot be removed anyway"],ans:1,
+     why:"Some cementum removal during calculus removal is inevitable, but cementum is a <b>source of growth factors for new attachment</b>. Class note: our goal is preservation of cementum; it allows for reattachment.",
+     src:"SRP slide 17"},
+    {id:"t2p-endo",topic:"NSPT goals",type:"mc",q:"Endotoxins (lipopolysaccharides) come from where?",
+     opts:["The cell walls of gram-negative bacteria","Saliva","Calculus crystals","Gram-positive cocci"],ans:0,
+     why:"They come from the <b>cell walls of gram-negative bacteria</b> and trigger the inflammatory host response that leads to periodontitis. They exist in biofilm and <b>can be removed with scaling</b>.",
+     src:"SRP slide 17"},
+    {id:"t2p-ging",topic:"NSPT goals",type:"mc",q:"For biofilm-induced gingivitis, what is the therapeutic goal?",
+     opts:["Pocket reduction surgery","Reversal of inflammation to establish gingival health by eliminating the cause","Occlusal stabilization","Bone grafting"],ans:1,
+     why:"<b>Reversal of inflammation to establish gingival health</b> through elimination of etiologic factors: complete scaling plus the patient’s daily biofilm removal. For Stage I–II periodontitis the goals are less inflammation and BOP, reduced pocket depths, CAL stabilized or improved, and less biofilm.",
+     src:"SRP slide 11–12 ★"},
+    {id:"t2p-sev",topic:"NSPT goals",type:"mc",q:"What is added for moderate-to-severe periodontitis (Stage III or IV)?",
+     opts:["Nothing; same as gingivitis","Adjunctive chemotherapeutics and specialized instruments for deep pockets and furcations","Only a prophy","Fluoride trays"],ans:1,
+     why:"Supplemental measures such as <b>adjunctive chemotherapeutics</b> (class note: Arestin) may be needed, and <b>specialized instruments</b> for deep pockets, furcations and complex anatomy. Goals are the same as mild-to-moderate, plus radiographic improvement in osseous lesions and <b>occlusal stabilization</b>.",
+     src:"SRP slide 13"},
+    {id:"t2p-surg",topic:"NSPT goals",type:"mc",q:"A patient will need periodontal surgery. What does NSPT do for them first?",
+     opts:["Replaces the surgery","Prepares the tissues by reducing the bacterial load and the inflammation","Numbs the area","Nothing"],ans:1,
+     why:"NSPT <b>prepares the tissues for surgery by reducing the bacterial load and reducing inflammation</b>. Surgical categories: gingival augmentation (grafts), regenerative (bone grafting, guided tissue regeneration), and resective (flaps, osseous surgery, gingivectomy).",
+     src:"SRP slide 8, 14"},
+    {id:"t2p-comp",topic:"NSPT goals",type:"open",q:"Name the four components of NSPT and give an example of each.",
+     model:"<ol><li><b>Preventive:</b> oral–systemic education, fluoride varnish, home antimicrobials and irrigation, smoking cessation, dietary counseling, desensitizing, implant care.</li><li><b>Dental biofilm removal:</b> biofilm and endotoxin are removed with scaling.</li><li><b>Calculus removal:</b> calculus retains biofilm; preserve cementum.</li><li><b>Restorative biofilm-retentive factors:</b> removal of <b>overhanging restorations is critical</b>.</li></ol>",
+     src:"SRP slide 15–19"},
+    {id:"t2p-single",topic:"Planning & consent",type:"mc",q:"Which patient fits a single-appointment plan?",
+     opts:["Generalized Stage III with 6 mm pockets","Gingivitis, minimal inflammation, small deposits, reasonable self-care","Heavy subgingival calculus in all quadrants","A patient who needs anesthesia in four quadrants"],ans:1,
+     why:"Single appointment: diagnosis of <b>gingivitis</b>, minimal inflammation and small deposits, localized involvement, anesthesia may not be needed, reasonable self-care and an acceptable biofilm score.",
+     src:"SRP slide 25"},
+    {id:"t2p-multi",topic:"Planning & consent",type:"mc",q:"Quadrant scaling appointments are spaced how far apart, and why?",
+     opts:["The same day","About 1 week, for oral self-care and healing of the treated areas","3 months","6 months"],ans:1,
+     why:"<b>1-week intervals</b>, for oral self-care and healing of previously treated areas. Plan by quadrant or sextant depending on severity. <b>Stage I–II</b> patients can have <b>2 quadrants</b> in one appointment. Class note: scale a quad to completion before moving on to the next one.",
+     src:"SRP slide 26 + class note"},
+    {id:"t2p-reeval",topic:"Planning & consent",type:"mc",q:"When is re-evaluation best done after NSPT is completed?",
+     opts:["The next day","1 week","4–8 weeks, to allow for connective tissue healing","1 year"],ans:2,
+     why:"<b>4–8 weeks</b> after completion, to allow <b>connective tissue healing</b>. Healing is also checked at each appointment. Any residual calculus is removed, then you set the <b>maintenance interval and/or refer for surgical treatment</b>.",
+     src:"SRP slide 26"},
+    {id:"t2p-consent",topic:"Planning & consent",type:"open",q:"What has to be covered for informed consent?",
+     model:"<ul><li>Expected successful outcomes</li><li><b>Risks</b> involved</li><li>Possible unexpected results</li><li><b>Alternative</b> approaches</li><li>Possible <b>consequences of refusing</b> treatment</li><li><b>Costs</b></li><li>The patient’s <b>capacity to consent</b> (age, mental, language)</li><li><b>Written consent</b> by the patient</li></ul>Two-way communication is the best way to start the process.",
+     src:"SRP slide 21–23"},
+    {id:"t2p-written",topic:"Planning & consent",type:"mc",q:"Which form of consent is the most legally sound?",
+     opts:["Implied","Verbal","Written: the plan signed by the patient and the hygienist in the chart","All are equal"],ans:2,
+     why:"<b>Written consent</b>: the plan signed by the patient and the hygienist in the patient chart. Verbal or implied consent is not as legally sound.",
+     src:"SRP slide 23"},
+    {id:"t2p-refuse",topic:"Planning & consent",type:"mc",q:"A fully informed patient refuses periodontal therapy and asks for “just a regular cleaning.” What applies?",
+     opts:["Do the prophy; the patient chooses","The patient may refuse; document it with a refusal form. Refusing perio therapy does not make a prophy the right treatment","Dismiss the patient immediately","Do the SRP anyway"],ans:1,
+     why:"Patients may refuse treatment after being fully informed, and specific treatments (radiographs, fluoride) can be refused. <b>Include the refusal form</b> with the informed consent. Class note: if a patient declines perio therapy, it does not mean you can just do a prophy; “it’s like putting a bandaid on a gunshot wound.”",
+     src:"SRP slide 23–24 + class note"},
+    {id:"t2p-prep",topic:"Hand technique",type:"open",q:"What do you review and examine before you start instrumenting?",
+     model:"<ol><li>The patient’s <b>assessment record</b></li><li><b>Radiographic findings</b> (class note: we need radiographs)</li><li>The <b>care plan and treatment records</b></li><li><b>Patient preparation</b></li><li><b>Supragingival examination</b> (class note: blow air)</li><li><b>Subgingival examination</b></li><li><b>Formulate a strategy</b> for instrumentation</li></ol>",
+     src:"SRP slide 46"},
+    {id:"t2p-toe",topic:"Hand technique",type:"mc",q:"A curette working-end is divided into thirds. Which third is adapted to the tooth?",
+     opts:["Shank third","Middle third","Toe third","All three at once"],ans:2,
+     why:"The working-end is shank third, middle third and <b>toe third</b>. Class note: <b>always adapt the toe third</b>.",
+     src:"SRP slide 49 class note"},
+    {id:"t2p-ang",topic:"Hand technique",type:"mc",q:"A curette is inserted subgingivally at what angulation, and worked at what angulation?",
+     opts:["Inserted at 90°, worked at 0°","Inserted at about 0° (closed face), worked between 45° and 90°","Inserted and worked at 0–15°","Inserted at 45°, worked at 120°"],ans:1,
+     why:"Insert with the face <b>closed, near 0°</b>, then open to a working angulation <b>between 45° and 90°</b>. The review slide uses <b>70°</b>. Do not confuse this with the ultrasonic tip, which works at 0–15°.",
+     src:"SRP slide 50, 162"},
+    {id:"t2p-dir",topic:"Hand technique",type:"mc",q:"Removing calculus with a curette: where does the stroke start?",
+     opts:["At the CEJ, working apically","Apical to the deposit, at the base of the pocket, working toward the CEJ","In the middle of the deposit","On the enamel"],ans:1,
+     why:"With a <b>curette</b>, position the working-end <b>apical to the deposit</b>: start at the <b>base of the pocket</b> and work toward the CEJ. A <b>powered</b> tip is the opposite: start at the coronal-most part of the deposit near the CEJ and work apically.",
+     src:"SRP slide 78"},
+    {id:"t2p-rp",topic:"Hand technique",type:"mc",q:"Which describes root planing strokes?",
+     opts:["Short, heavy strokes in one direction only","Stay subgingival; overlapping vertical, oblique and horizontal strokes; lighten the grasp and pressure for finishing strokes","Strokes above the gingival margin","A single long pull"],ans:1,
+     why:"Class notes on these slides: <b>stay sub</b> (get in the pocket and stay in the pocket); <b>overlapping, multidirectional strokes</b> (vertical, oblique, horizontal); <b>lighten the grasp and pressure for finishing strokes</b>. Channel scaling works the same way: overlapping channels so nothing is missed.",
+     src:"SRP slide 50, 52, 54 ★"},
+    {id:"t2p-horiz",topic:"Hand technique",type:"mc",q:"Why are horizontal strokes needed in root concavities?",
+     opts:["They are faster","A vertical stroke often spans across the concavity and misses the deposit","They remove more cementum","They need less pressure"],ans:1,
+     why:"Horizontal strokes remove deposits from <b>root concavities and depressions</b>. Vertical strokes are not effective there because the working-end <b>“spans across” the concavity</b> and misses the deposit.",
+     src:"SRP slide 63"},
+    {id:"t2p-g12",topic:"Hand technique",type:"mc",q:"You used the Gracey 11 for vertical strokes on a mesial surface. Which end makes horizontal strokes on that same surface?",
+     opts:["The Gracey 11 again","The Gracey 12, toe-down","The Gracey 13","The Gracey 14"],ans:1,
+     why:"On <b>proximal</b> surfaces you switch ends: <b>G11 vertical → G12 horizontal</b> (toe-down), and for distals <b>G13 vertical → G14 horizontal</b>, and vice versa. The G11’s lower cutting edge does not adapt for a horizontal stroke on the mesial. On <b>facial and lingual</b> surfaces, use the <b>same</b> working-end for both.",
+     src:"SRP slide 64–69"},
+    {id:"t2p-trunk",topic:"Multi-rooted teeth",type:"mc",q:"Instrumenting a multi-rooted tooth: where do you begin, and then what?",
+     opts:["Furcation first, then the crown","The root trunk first; then each root branch, treated as if it were the root of a single-rooted tooth","Distal root only","Apex first"],ans:1,
+     why:"<b>Step 1: root trunk.</b> Distal curette from the distofacial line angle onto the distal surface; mesial curette from the distofacial line angle across the facial and onto the mesial. <b>Step 2: root branches.</b> Treat each root branch <b>as if it were the root of a single-rooted tooth</b>.",
+     src:"SRP slide 56–57 ★"},
+    {id:"t2p-branch",topic:"Multi-rooted teeth",type:"mc",q:"Mandibular molar: which curette is used on the distal portion of the MESIAL root?",
+     opts:["Mesial curette","Distal curette","Universal only","A file"],ans:1,
+     why:"Go by the <b>surface</b>, not the root’s name. <b>Distal portion</b> of either root = <b>distal curette</b>. <b>Mesial portion</b> of either root = <b>mesial curette</b>.",
+     src:"SRP slide 58–62"},
+    {id:"t2p-max6",topic:"Root anatomy",type:"mc",q:"Maxillary first molar: how many roots, and where are the furcations?",
+     opts:["Two roots; facial and lingual furcations","Three roots (mesiobuccal, distobuccal, palatal); furcations on the facial, mesial and distal","One root","Three roots; one furcation on the lingual"],ans:1,
+     why:"<b>Trifurcated:</b> MB, DB and palatal roots. Furcations on the <b>facial, mesial and distal</b>. Class note: the buccal furcation is easy to access; the mesial and distal are not.",
+     src:"SRP slide 34 class note"},
+    {id:"t2p-man6",topic:"Root anatomy",type:"mc",q:"Mandibular first molar: which is correct?",
+     opts:["Three roots with a palatal root","Two roots, mesial and distal; facial and lingual furcations; the furcation begins just apical to the CEJ","One fused root","Two roots, buccal and lingual"],ans:1,
+     why:"<b>Two roots</b>, mesial and distal (the mesial is larger). <b>Facial and lingual furcations.</b> The mesial root has a concavity. The furcation begins <b>just apical to the CEJ</b>.",
+     src:"SRP slide 41 class note"},
+    {id:"t2p-max4",topic:"Root anatomy",type:"mc",q:"Which tooth has a bifurcated root with buccal and lingual branches and a prominent mesial concavity?",
+     opts:["Maxillary canine","Maxillary first premolar","Mandibular first premolar","Maxillary second premolar"],ans:1,
+     why:"<b>Maxillary first premolar:</b> bifurcated (buccal and lingual roots), <b>prominent mesial concavity</b>, CEJ curvature higher on the mesial, furcations on the mesial and distal in the <b>apical third</b>. The maxillary second premolar is single rooted with longer roots and a mesial root concavity.",
+     src:"SRP slide 32–33 class note"},
+    {id:"t2p-trunk2",topic:"Root anatomy",type:"mc",q:"Compared with first molars, second molars have what kind of root trunk?",
+     opts:["Shorter","Longer, because the roots are closer together","None","The same"],ans:1,
+     why:"Class notes for both the maxillary and mandibular second molars: the <b>root trunk is longer</b> (roots are closer together). Mandibular second molar: bifurcated, buccal and lingual furcations, roots curve distally, and it <b>might have cervical enamel projections</b>.",
+     src:"SRP slide 35, 42 class note ★"},
+    {id:"t2p-canine",topic:"Root anatomy",type:"mc",q:"Maxillary canine root: which is correct?",
+     opts:["Shortest root in the mouth","Longest root, oval in cross section, with proximal root concavities","Always bifurcated","Round with no concavities"],ans:1,
+     why:"Class notes: <b>longest root</b>, <b>oval cross section</b>, <b>proximal root concavities</b>. The curve of the crown on the distal can hinder access to the mesial of the first premolar. The mandibular canine is single rooted but can have a bifurcation, usually in the apical third.",
+     src:"SRP slide 31, 38 class note"},
+    {id:"t2p-pgg",topic:"Root anatomy",type:"mc",q:"A palatogingival groove is most associated with which tooth?",
+     opts:["Maxillary lateral incisor","Mandibular first molar","Maxillary first premolar","Mandibular canine"],ans:0,
+     why:"The class note on the <b>maxillary lateral incisor</b> lists a <b>palatal gingival groove</b>, along with cone shaped, single rooted, and thinner than the central. Palatogingival grooves are also on the slide of root form variations.",
+     src:"SRP slide 30, 45 class note"},
+    {id:"t2p-var",topic:"Root anatomy",type:"open",q:"List the variations in root form from the slides.",
+     model:"<ul><li>Fused roots, fusion, and concrescence</li><li>Accessory roots</li><li>Palatogingival grooves</li><li>Hypercementosis</li><li>Cervical enamel projections</li><li>Enamel pearls</li><li>Dilaceration</li></ul>Other things to think about: root shape, number of roots, furcations, root concavities, tooth alignment. Third molar roots vary greatly; mandibular third molar roots can be fused and are shorter and less developed than the second.",
+     src:"SRP slide 36, 43–45"},
+    {id:"t2p-gracey",topic:"Instruments",type:"mc",q:"Gracey 13/14 is used where on posterior teeth?",
+     opts:["Mesial surfaces","Distal surfaces","Buccal and lingual only","All surfaces"],ans:1,
+     why:"<b>13/14 and 17/18 = posterior distal.</b> 11/12 and 15/16 = posterior facial, lingual and mesial. 7/8 and 9/10 = premolars and molars, <b>buccal and lingual only</b>. 1/2, 3/4, 5/6 = anterior teeth, all surfaces.",
+     src:"SRP slide 113"},
+    {id:"t2p-g78",topic:"Instruments",type:"mc",q:"Gracey 7/8 and 9/10 are designed for which surfaces?",
+     opts:["Anterior teeth, all surfaces","Premolars and molars, buccal and lingual","Posterior mesial","Posterior distal"],ans:1,
+     why:"<b>Premolars and molars; buccal and lingual.</b> The class note adds “only.”",
+     src:"SRP slide 113 + class note"},
+    {id:"t2p-langer",topic:"Instruments",type:"mc",q:"Which Langer curette is for mandibular posterior teeth?",
+     opts:["Langer 1/2","Langer 3/4","Langer 5/6","Langer 17/18"],ans:0,
+     why:"<b>1/2 = mandibular posterior</b> · 3/4 = maxillary posterior · 5/6 = anterior · 17/18 = posterior. Langers have the face at <b>90° to the lower shank</b>, <b>two cutting edges</b> per working-end, a long complex shank, and each is limited to certain areas.",
+     src:"SRP slide 108, 110 ★"},
+    {id:"t2p-ext",topic:"Instruments",type:"mc",q:"Standard area-specific curettes are designed for pockets of what depth? And extended-shank (modified) curettes?",
+     opts:["Standard over 6 mm; extended under 3 mm","Standard 4 mm or less; extended greater than 4 mm","Both any depth","Standard supragingival only"],ans:1,
+     why:"<b>Standard: 4 mm or less.</b> <b>Modified / extended shank: greater than 4 mm.</b> The lower shank of the extended curette is <b>3 mm longer</b>, and the working-end is thinner.",
+     src:"SRP slide 109, 112, 114 ★"},
+    {id:"t2p-mini",topic:"Instruments",type:"mc",q:"How does a miniature Gracey differ from an extended-shank Gracey?",
+     opts:["Shorter shank","It also has a shorter working-end","Thicker working-end","It has no cutting edge"],ans:1,
+     why:"Both have a longer lower shank and thinner working-end. The <b>mini</b> adds a <b>shorter working-end</b>, which works well even on the tiny roots of the mandibular anteriors. The <b>micro-mini</b> is 20% thinner than the mini and its working-end is 50% shorter than a standard Gracey; used in special areas of difficult access and for fine deposit removal.",
+     src:"SRP slide 115–117 ★"},
+    {id:"t2p-match",topic:"Instruments",type:"mc",q:"Which instrument has a working-end that is a tiny circular disk, with the entire circumference as a cutting edge?",
+     opts:["Quétin furcation curette","O’Hehir / DeMarco debridement curette","Vision Curvette","Diamond-coated instrument"],ans:1,
+     why:"<b>O’Hehir / DeMarco:</b> tiny circular disk, cutting edge all the way around. <b>Quétin:</b> miniature hoe, one straight cutting edge with rounded corners, for furcations. <b>Vision Curvette:</b> working-end half the standard length and more curved, raised bands at 5 and 10 mm, + mark at the lower cutting edge. <b>Diamond-coated:</b> no cutting edges; used like an emery board.",
+     src:"SRP slide 119–122 ★"},
+    {id:"t2p-vision",topic:"Instruments",type:"mc",q:"On a Vision Curvette, what do the raised bands on the lower shank and the + mark tell you?",
+     opts:["Bands show wear; + marks the toe","Bands at 5 and 10 mm estimate pocket depth; the + marks the lower cutting edge","Bands mark the grip; + means posterior","They are decorative"],ans:1,
+     why:"Two raised bands at <b>5 and 10 mm</b> give a visual estimate of pocket depth. The <b>+</b> on the handle near the shank indicates the <b>lower cutting edge</b>.",
+     src:"SRP slide 119 ★"},
+    {id:"t2p-file",topic:"Instruments",type:"mc",q:"What is a periodontal file for?",
+     opts:["Final root planing","Crushing or roughening a heavy or burnished deposit so another instrument can remove it","Probing furcations","Polishing enamel"],ans:1,
+     why:"A file <b>prepares calculus for removal</b>: it <b>crushes large deposits</b>, <b>roughens burnished</b> deposits, and can smooth overhanging amalgam. It is limited to <b>enamel surfaces or the outer surface of a calculus deposit</b>. The shank is rigid, so tactile information is limited.",
+     src:"SRP slide 102–104 ★"},
+    {id:"t2p-file2",topic:"Instruments",type:"mc",q:"How is a periodontal file used?",
+     opts:["Push stroke with the corner of the cutting edge","Two-point contact (working-end on the deposit, lower shank resting on the tooth), face flat, vertical pull stroke","Horizontal stroke in the furcation","Circular motion"],ans:1,
+     why:"Keep the <b>face flat</b> against the deposit so the corners do not gouge root or tissue. Use <b>two-point contact</b>: working-end on the calculus AND lower shank against the tooth. Activate a <b>pull stroke in a vertical direction</b>. Each file fits only certain surfaces, so you need a <b>set</b>.",
+     src:"SRP slide 103, 105"},
+    {id:"t2p-class",topic:"Ultrasonics",type:"mc",q:"How are powered instruments classified?",
+     opts:["Hand and rotary","Ultrasonic (piezo and magneto) and sonic","Air and water","Standard and mini"],ans:1,
+     why:"Powered instrumentation splits into <b>ultrasonic</b> and <b>sonic</b>. Ultrasonic splits into <b>piezo</b> and <b>magneto</b>.",
+     src:"SRP slide 71"},
+    {id:"t2p-freq",topic:"Ultrasonics",type:"mc",q:"When you turn the power up on the ultrasonic unit, what are you changing?",
+     opts:["Frequency: how many times the tip vibrates per second","Amplitude: how far the tip moves back and forth","Water temperature","Tip length"],ans:1,
+     why:"<b>Amplitude</b> (stroke length) is how far the working-end moves; higher amplitude = a stronger stroke. <b>Frequency</b> is how many times it vibrates per second. Class note: amplitude is the one “we can adjust.”",
+     src:"SRP slide 74, 76 + class note"},
+    {id:"t2p-power",topic:"Ultrasonics",type:"mc",q:"What do the slides say about the power setting?",
+     opts:["Always use high","It should rarely be placed above medium","Low power cannot remove biofilm","Power does not matter"],ans:1,
+     why:"Research finds <b>no difference in efficiency</b> between high and medium power. For patient comfort and to limit damage to the tooth, the setting should <b>rarely be above medium</b>.",
+     src:"SRP slide 76"},
+    {id:"t2p-eff",topic:"Ultrasonics",type:"mc",q:"Which combination is ideal for removing plaque biofilm?",
+     opts:["High frequency, high amplitude","Low frequency, low amplitude","High frequency, no water","Any, held still on the tooth"],ans:1,
+     why:"<b>Low frequency, low amplitude</b> (fewer vibrations, shorter strokes) = biofilm. <b>High frequency, high amplitude</b> = tenacious calculus.",
+     src:"SRP slide 77"},
+    {id:"t2p-3a",topic:"Ultrasonics",type:"mc",q:"The 3 A’s of ultrasonic instrumentation: which set is right?",
+     opts:["Adaptation 2–3 mm of the tip · Angulation 0–15° · Activation 1–2 mm short overlapping strokes","Adaptation 10 mm · Angulation 70° · Activation long pull strokes","Adaptation the point · Angulation 90° · Activation tapping","Adaptation 1 mm · Angulation 45° · Activation none"],ans:0,
+     why:"<b>Adaptation:</b> 2–3 mm of the insert tip. <b>Angulation:</b> 0–15°. <b>Activation:</b> 1–2 mm short overlapping strokes, horizontal, oblique and vertical. Class note: never put the tip on the tooth, but it can go on calculus.",
+     src:"SRP slide 82 + class note"},
+    {id:"t2p-mode",topic:"Ultrasonics",type:"mc",q:"How does a powered tip remove calculus, and what does the water do?",
+     opts:["It cuts with a sharp edge; water is for taste","Rapid vibrations create microfractures in the deposit; water (fluid lavage) cools and flushes the pocket","It dissolves calculus chemically","Heat melts it"],ans:1,
+     why:"Rapid vibrations create <b>microfractures</b>. The constant stream of water near the tip is <b>fluid lavage</b>: it <b>dissipates heat</b> and <b>flushes toxic products and bacteria</b> from the pocket. It is not a magic wand: use <b>slow, repetitive strokes</b>.",
+     src:"SRP slide 73, 80"},
+    {id:"t2p-staged",topic:"Ultrasonics",type:"mc",q:"Staged instrumentation: which tip and power for initial debridement?",
+     opts:["Slim tip, low power","Standard tip, higher power, for gross removal of moderate–heavy calculus or stain","Curved tip, no water","Diamond tip"],ans:1,
+     why:"<b>Initial debridement:</b> gross removal of moderate–heavy calculus or stain with a <b>standard</b> insert and <b>higher</b> power. <b>Definitive debridement:</b> light deposits, biofilm and endotoxin with a <b>slim/modified</b> insert and <b>lower</b> power. Slim perio tips are up to 40% smaller with longer, more complex shanks.",
+     src:"SRP slide 87, 90"},
+    {id:"t2p-curved",topic:"Ultrasonics",type:"mc",q:"A curved slim tip is labeled “right.” What does that mean?",
+     opts:["Use it on the patient’s right side only","It describes the direction the tip itself curves, not where you use it","It is for right-handed clinicians","It is the correct tip"],ans:1,
+     why:"“Right” or “left” refers to the <b>direction of the curvature of the tip</b>, not where it is used in the mouth. <b>Both</b> are needed to finish the dentition. For efficiency, do every surface that takes the right tip, then switch. Curved tips improve adaptation on posterior roots, concavities and furcations.",
+     src:"SRP slide 94, 96–98"},
+    {id:"t2p-stub",topic:"Ultrasonics",type:"open",q:"A calculus deposit will not come off with the ultrasonic. What are your options?",
+     model:"<ul><li>Spend <b>adequate time</b> on it; a single quick stroke will not remove it.</li><li>Keep proper <b>control and adaptation</b>; use a <b>combination of strokes in different directions</b> with the correct tip surface.</li><li><b>Change to a different tip</b>, one that works at medium power.</li><li>Start with a hand-activated <b>periodontal file</b> to fracture a tenacious deposit, then use the powered tip.</li><li>You may need to <b>increase the power</b> setting.</li></ul>",
+     src:"SRP slide 99–100"},
+    {id:"t2p-strengths",topic:"Ultrasonics",type:"open",q:"List the strengths of powered instrumentation.",
+     model:"<ul><li>Removes supra- and subgingival <b>calculus</b></li><li>Removes subgingival <b>biofilm</b></li><li>Slim tips reach <b>deeper into pockets</b> than hand instruments</li><li>Slim tips give access to <b>furcations</b></li><li>Water irrigation <b>flushes bacterial products</b> from pockets</li><li><b>Less instrumentation time</b></li></ul>",
+     src:"SRP slide 72"},
+    {id:"t2p-fulwhy",topic:"Fulcrums",type:"open",q:"Why is a fulcrum important, and what are the key points of a good one?",
+     model:"<b>Why:</b> stability · control of the whole hand as a unit · prevents injury · patient comfort · controls the length of the stroke.<br><b>Key points:</b><ul><li>Positioned so you can use <b>wrist motion</b></li><li>Close enough that the <b>middle and fourth fingers stay together</b></li><li><b>Frequently adjusted</b> to maintain angulation</li></ul>Standard intraoral fulcrums give the best stability, leverage, strength and control, better tactile sense, and are the safest.",
+     src:"SRP slide 128–130"},
+    {id:"t2p-adv",topic:"Fulcrums",type:"mc",q:"Which statement about advanced fulcrums is true?",
+     opts:["They replace the standard intraoral fulcrum","They are variations used to reach root surfaces in pockets; they do not replace the standard fulcrum or fix poor technique","They give better tactile sense","They put less strain on the fingers than a standard fulcrum"],ans:1,
+     why:"An advanced fulcrum is a <b>variation</b> of the conventional fulcrum used to gain access to root surfaces in pockets. They are <b>not intended to replace</b> standard intraoral fulcrums, which put the <b>least strain</b> on the fingers. Poor skills with a standard fulcrum <b>cannot be corrected</b> by an advanced one.",
+     src:"SRP slide 131–132"},
+    {id:"t2p-disadv",topic:"Fulcrums",type:"mc",q:"Which is a disadvantage of advanced fulcrums?",
+     opts:["Easier access to maxillary second and third molars","Reduced tactile information and a greater risk of instrument stick","Neutral wrist position","Better parallelism of the lower shank"],ans:1,
+     why:"Disadvantages: need <b>more muscle coordination and skill</b>, <b>greater risk of instrument stick</b>, <b>reduced tactile information</b>, may cause muscle strain. Extraoral fulcrums are also <b>not well tolerated by patients with TMJ problems</b>. The other three options are advantages.",
+     src:"SRP slide 136, 138, 148"},
+    {id:"t2p-cross",topic:"Fulcrums",type:"mc",q:"You fulcrum on the left mandibular posteriors while working on the lingual of the right mandibular posteriors. Which fulcrum is this?",
+     opts:["Opposite arch","Cross arch","Finger-on-finger","Finger assist"],ans:1,
+     why:"<b>Cross arch:</b> the rest is on the <b>opposite side of the same arch</b>. <b>Opposite arch</b> is a rest on the <b>other jaw</b> (fulcrum on mandibular teeth while working on maxillary teeth).",
+     src:"SRP slide 140, 142"},
+    {id:"t2p-fof",topic:"Fulcrums",type:"mc",q:"Finger-on-finger fulcrum: what is the resting point?",
+     opts:["The patient’s chin","A finger of the non-dominant (mirror) hand","The opposite arch","The knuckles against the mandible"],ans:1,
+     why:"A finger of the <b>non-dominant hand</b> serves as the resting point for the dominant hand. For a right-handed clinician, the fulcrum finger of the right hand rests on the left index finger.",
+     src:"SRP slide 144"},
+    {id:"t2p-assist",topic:"Fulcrums",type:"mc",q:"What does a finger assist (stabilized fulcrum) do?",
+     opts:["Retracts the cheek","A finger of the non-dominant hand concentrates lateral pressure against the shank","Replaces the grasp","Holds the mirror"],ans:1,
+     why:"A finger of the <b>non-dominant hand</b> pushes behind the <b>shank</b> to concentrate <b>lateral pressure</b>. Right-handed clinician: the left index finger presses behind the shank, pushing the working-end forward against the distal surface.",
+     src:"SRP slide 155–156 ★"},
+    {id:"t2p-mod",topic:"Fulcrums",type:"mc",q:"How is a modified intraoral fulcrum different from a split fulcrum?",
+     opts:["They are the same","In the modified fulcrum the ring finger still touches the middle finger, at a lower point of contact; in a split fulcrum they do not touch","The modified fulcrum is extraoral","The split fulcrum uses both hands"],ans:1,
+     why:"Modified intraoral fulcrum = an <b>altered point of contact</b> between the middle and ring fingers, lower against the middle finger. It is <b>not</b> a split fulcrum, where the ring finger does not touch the middle finger.",
+     src:"SRP slide 139"},
+    {id:"t2p-extra",topic:"Fulcrums",type:"mc",q:"For an extraoral fulcrum, how do you hold the instrument and where do you stabilize?",
+     opts:["Grasp close to the working-end; rest on the teeth","Grasp farther from the working-end; stabilize the hand against the underlying bone of the jaw","Palm grasp; no rest","Grasp the shank; rest on the lip"],ans:1,
+     why:"Grasp the handle <b>farther away from the working-end</b> and stabilize against the <b>underlying bone of the patient’s jaw</b>. Basic extraoral fulcrum: dominant hand rests against the cheek or chin, <b>palm facing out</b>. Two techniques: <b>knuckle rest</b> and <b>chin cup</b>.",
+     src:"SRP slide 149–153"},
+    {id:"t2p-rev1",topic:"Fulcrums",type:"open",q:"Review slide: you are scaling a 5 mm pocket on the distolingual of #15 with a Gracey 13/14. Which advanced fulcrum helps you adapt the blade at 70° to the distal root surface, and where do you sit?",
+     model:"The handwritten answer on the slide is <b>opposite arch</b> fulcrum, seated at <b>8 o’clock</b>.<br>An opposite arch fulcrum rests on the mandibular teeth while you work on the maxillary teeth. It improves parallelism of the lower shank to the molar and gives easier access to maxillary second and third molars.<div class='defend'><b>Check:</b> this answer comes from her handwriting on the slide. Confirm the clock position against your own notes.</div>",
+     src:"SRP slide 162 class note"},
+    {id:"t2p-rev2",topic:"Fulcrums",type:"open",q:"Review slide: describe extraoral fulcrums to support instrumentation on the upper right molar buccal interproximals.",
+     model:"The handwritten answer on the slide is <b>knuckle rest</b> and <b>finger assist</b>.<ul><li><b>Knuckle rest:</b> the length of the middle, ring and little fingers rests securely against the mandible.</li><li><b>Finger assist:</b> the non-dominant index finger presses behind the shank to add lateral pressure.</li><li>Grasp farther from the working-end; palm faces out.</li></ul>The other review slide (7 mm pocket, distolingual of #29) has “11” and “cross arch fulcrum” written on it.",
+     src:"SRP slide 163–164 class note"}
+  ]
+}
+];
+
+// Spread the right answers across the option slots. The shuffle is fixed per question id,
+// so a saved pick still points at the same option next visit. Short scales (0–3, Code 0–4,
+// Excellent–Poor) stay in their natural order.
+(function(){
+  for(const q of T2.flatMap(s=>s.qs)){
+    if(q.type!=="mc"||q.opts.every(o=>o.length<=20))continue;
+    let h=2166136261; for(const ch of q.id){h^=ch.charCodeAt(0);h=Math.imul(h,16777619);}
+    const rnd=()=>{h=Math.imul(h^(h>>>15),2246822507);h=Math.imul(h^(h>>>13),3266489909);h^=h>>>16;return (h>>>0)/4294967296;};
+    const order=q.opts.map((_,i)=>i);
+    for(let i=order.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[order[i],order[j]]=[order[j],order[i]];}
+    const right=q.ans;
+    q.opts=order.map(i=>q.opts[i]); q.ans=order.indexOf(right);
+  }
+})();
+
+const CARDS2 = [
+ {d:"PSR",f:"PSR codes 0 through 4: what you see",b:"<ul><li><b>0</b> band visible · no bleeding · no calculus or defective margins</li><li><b>1</b> band visible · <b>bleeding</b></li><li><b>2</b> band visible · <b>calculus or defective restoration</b></li><li><b>3</b> band <b>partially</b> visible · 4–5 mm</li><li><b>4</b> band <b>not visible</b> · over 5.5 mm</li></ul>",s:"Indices slide 12–16 ★"},
+ {d:"PSR",f:"PSR code * (asterisk)",b:"Added to the number. Means <b>furcation involvement, mobility, mucogingival problem, or recession over 3.5 mm</b>. With a Code 3 or 4, do a comprehensive exam.",s:"Indices slide 17"},
+ {d:"PSR",f:"PSR: what each code needs",b:"<ul><li><b>0</b> preventive care, review plaque control</li><li><b>1</b> OHI + subgingival plaque removal</li><li><b>2</b> OHI + plaque and calculus removal + fix plaque-retentive margins</li><li><b>3</b> more detailed perio exam: that sextant, or full mouth if several</li><li><b>4</b> comprehensive full-mouth exam and charting</li></ul>",s:"Indices slide 12–16"},
+ {d:"PSR",f:"The PSR probe",b:"<b>WHO probe.</b> 0.5 mm ball on the end. Colored band from <b>3.5 to 5.5 mm</b>. Metal or plastic. Six sites per tooth, highest code per <b>sextant</b>. Implants are treated like natural teeth.",s:"Indices slide 9–11 ★"},
+ {d:"PSR",f:"Who should NOT get a PSR?",b:"<b>Children</b>, and people who have <b>had periodontal treatment in the past</b>. It is a screening and does not replace full charting.",s:"Indices slide 7–8"},
+ {d:"PSR",f:"PerioWise: health, gingivitis, periodontitis",b:"<ul><li><b>Health:</b> green visible, no bleeding</li><li><b>Gingivitis:</b> green visible + bleeding on probing</li><li><b>Periodontitis?:</b> red band reached with gingiva at its normal position</li></ul>Always plastic · color coded · safe around implants · autoclave, chemiclave or dry heat.",s:"Indices slide 20–25 ★"},
+ {d:"Indices",f:"Simple, cumulative, reversible, irreversible",b:"<ul><li><b>Simple:</b> presence or absence</li><li><b>Cumulative:</b> total experience with a condition</li><li><b>Reversible:</b> can be changed (plaque record)</li><li><b>Irreversible:</b> cannot be changed</li></ul>DMFT is cumulative, simple, irreversible.",s:"Indices slide 30, 32 + class note"},
+ {d:"Indices",f:"Ramfjord teeth",b:"<b>#3, 9, 12, 19, 25, 28.</b> Six teeth as a sample of the whole mouth. An index ending in <b>-S</b> (simplified) or <b>-M</b> (modified) used a smaller sample like this.",s:"Indices slide 31"},
+ {d:"Indices",f:"Probe, floss, or wooden wedge?",b:"<ul><li><b>Sulcular Bleeding Index:</b> probe · 4 areas · wait 30 s</li><li><b>Gingival Bleeding Index</b> (Carter and Barnes): floss · wait 30 s</li><li><b>Eastman Interdental:</b> wooden wedge 1–2 mm · wait 15 s</li></ul>",s:"Indices slide 37, 48, 49 ★"},
+ {d:"Indices",f:"Gingival Index (GI) scores",b:"<ul><li><b>0</b> normal</li><li><b>1</b> slight color/texture change, no bleeding (mild)</li><li><b>2</b> redness, edema, glazing, <b>bleeding on probing</b> (moderate)</li><li><b>3</b> marked redness, ulceration, <b>spontaneous bleeding</b> (severe)</li></ul>4 surfaces per tooth.",s:"Indices slide 38"},
+ {d:"Indices",f:"Plaque Index (PLI)",b:"Silness and Löe. <b>Thickness of plaque at the gingival margin</b>, with a <b>probe</b>, 4 surfaces.<br>0 free · 1 small amount · 2 moderate (visible) · 3 large (visible and in the sulcus).",s:"Indices slide 47 ★"},
+ {d:"Indices",f:"OHI-S: parts and math",b:"Greene and Vermillion. <b>Debris Index + Calculus Index.</b> Six segments, each scored 0–3 by thirds covered. Each index = total ÷ 6. <b>OHI-S = DI + CI.</b>",s:"Indices slide 35"},
+ {d:"Indices",f:"PHP (Patient Hygiene Performance)",b:"Disclose. Each tooth in <b>5 sections</b>, 1 point per section with stain. Total ÷ teeth.<br>Excellent 0 · Good 0.1–1.7 · Fair 1.8–3.4 · Poor 3.5–5.",s:"Indices slide 33"},
+ {d:"Indices",f:"Plaque-free score formula",b:"Teeth × <b>4 surfaces</b> = available surfaces. Subtract surfaces with plaque. Divide by available, × 100.<br>Shortcut: <b>100 − PCR %</b>.",s:"Indices slide 46 ★"},
+ {d:"Indices",f:"DMFT rules",b:"Decayed, Missing, Filled Teeth. <b>Gold standard.</b> Permanent teeth, capital letters. <b>No third molars</b>, no supernumerary, no retained primary teeth.<br><b>dmft</b> lowercase = primary only. <b>DMFS</b> = surfaces, more detailed, needs radiographs.",s:"Indices slide 39–40 ★"},
+ {d:"Indices",f:"CAMBRA",b:"<b>Caries Management by Risk Assessment.</b> A survey of caries risk from diet and environmental factors. Two forms: adults, and age 6 and under.",s:"Indices slide 44 ★"},
+ {d:"Indices",f:"Root Caries Index",b:"Teeth with root caries ÷ teeth with <b>exposed root surfaces</b> × 100. Reported as a percentage.",s:"Indices slide 45"},
+ {d:"Indices",f:"Basic Screening Survey: 4 indicators",b:"Untreated decay · treated decay · sealants on permanent molars · treatment urgency (none, early, urgent). Reported to <b>NOHSS</b>. Preschoolers: no sealant indicator.",s:"Indices slide 41–42"},
+ {d:"Indices",f:"PI vs PDI vs CPITN",b:"<ul><li><b>PI:</b> populations · 0, 1, 2, 4, 6, 8 · 6 = gingivitis with pocketing</li><li><b>PDI:</b> 0–6 · 4 = attachment loss under 3 mm · 5 = 3–6 mm · 6 = over 6 mm</li><li><b>CPITN:</b> treatment needs · WHO probe · 0 none, 1 OHI, 2 + SRP, 3 + surgery</li></ul><b>GPI</b> = gingival index + periodontal index.",s:"Indices slide 50–53"},
+ {d:"Indices",f:"Treatment Priority Index",b:"<b>Malocclusion.</b> 0 normal · 1–3 minor · 4–6 definite, elective · 7–9 severe handicap, highly desired · over 10 very severe, mandatory.",s:"Indices slide 55"},
+ {d:"Indices",f:"Four fluorosis indices: what makes each different",b:"<ul><li><b>DDE:</b> any opacity regardless of origin · two worst teeth, score the less damaged</li><li><b>Dean’s:</b> populations · second-worst tooth in each quadrant</li><li><b>Fluorosis Risk Index:</b> Class I first year of life · Class II years 3–6</li><li><b>TSIF:</b> scores 0–7 by surface</li></ul>DDE and Dean’s: dry 2 minutes.",s:"Indices slide 56–59"},
+ {d:"Sealants",f:"Define a pit and fissure sealant",b:"A <b>thin plastic resinous coating</b> that acts as a <b>physical barrier</b> to oral bacteria and carbohydrates. Best placed before cavitation.",s:"Sealants slide 5 ★"},
+ {d:"Sealants",f:"Preventive vs therapeutic sealant",b:"<b>Preventive:</b> healthy, sound, caries-free tooth (primary prevention).<br><b>Therapeutic:</b> early, non-cavitated enamel lesion; minor superficial drilling may occur (secondary).",s:"Sealants slide 2, 6 ★"},
+ {d:"Sealants",f:"Sealant numbers: 90%, 76%, 20% vs 32%",b:"<b>90%</b> of caries in permanent teeth is in pits and fissures. <b>76%</b> reduction in risk of new lesions with sealants. <b>Under 20%</b> of children in poverty have sealants vs <b>32%</b> in higher-income homes.",s:"Sealants slide 4"},
+ {d:"Sealants",f:"Contraindications for sealants",b:"Uncooperative patient · clinically evident caries · proximal decay · insufficiently erupted / operculum · primary tooth with short life expectancy · radiographic decay · self-cleaning pits · methacrylate allergy · previous restoration",s:"Sealants slide 10"},
+ {d:"Sealants",f:"Most common reason a sealant fails",b:"<b>Salivary contamination</b> during placement. The surface must be clean and completely dry.",s:"Sealants slide 11–12 ★"},
+ {d:"Sealants",f:"Sealant placement steps",b:"<ol><li>Clean and isolate</li><li>Etch (37% phosphoric acid)</li><li>Rinse</li><li>Dry</li><li>Bonding (optional)</li><li>Place sealant</li><li>Cure</li><li>Wipe (oxygen-inhibited layer)</li></ol>Then bite check, retention check, fluoride.",s:"Sealants slide 20"},
+ {d:"Sealants",f:"Sealant times",b:"<ul><li>Etch <b>15–60 s</b></li><li>Rinse <b>at least 30 s</b></li><li>Dry <b>15–20 s</b></li><li>Spread, wait <b>10 s</b></li><li>Cure <b>20–30 s</b></li><li>Re-etch after a failure: about <b>15 s</b></li><li>Recheck every <b>6 months</b></li></ul>",s:"Sealants slide 22–29"},
+ {d:"Sealants",f:"What does etch do, and how does the tooth look?",b:"Creates <b>micropores</b> so resin can penetrate and bond. Also removes contamination, antibacterial, more surface area. Tooth looks <b>chalky white</b>. Keep it off oral tissues.",s:"Sealants slide 13, 22 ★"},
+ {d:"Sealants",f:"Monomer → polymer",b:"Liquid sealant = resin = <b>monomer</b>. <b>Polymerization</b> hardens it. Hard sealant = <b>polymer</b>.<br>Self-cure starts when mixing begins. Light-cure needs the blue light.",s:"Sealants slide 17–18 ★"},
+ {d:"Sealants",f:"Filled vs unfilled sealants",b:"<b>Unfilled</b> wear down to the correct height. <b>Filled</b> require adjustment. Check with articulating paper; remove excess with a scaler or curette; floss the contacts.",s:"Sealants slide 26"},
+ {d:"Sealants",f:"Diagnodent values",b:"<ul><li><b>0–14</b> no active care</li><li><b>15–20</b> no active care, prevention recommended</li><li><b>21–30</b> preventive or active care, by caries risk</li><li><b>Over 30</b> active treatment</li></ul>Detection: explorer 57% · radiographs 67% · Diagnodent 90%.",s:"Sealants slide 31, 33"},
+ {d:"NSPT",f:"Flora before and after treatment",b:"<b>Before:</b> anaerobic · gram-negative · motile · spirochetes · high counts · many leukocytes.<br><b>After:</b> aerobic · gram-positive · nonmotile · coccoid · lower counts.",s:"SRP slide 7"},
+ {d:"NSPT",f:"Calculus and cementum: the two rules",b:"<b>Calculus is not a direct cause</b> of inflammation; it retains biofilm.<br><b>Preserve cementum</b>: it is a source of growth factors for new attachment.",s:"SRP slide 17–18 ★"},
+ {d:"NSPT",f:"Appointment planning numbers",b:"Quadrant appointments at <b>1-week</b> intervals. Stage I–II: <b>2 quads</b> per visit. Re-evaluate <b>4–8 weeks</b> after finishing. Finish a quad before starting the next.",s:"SRP slide 26"},
+ {d:"NSPT",f:"Informed consent: what it covers",b:"Expected outcomes · risks · unexpected results · alternatives · consequences of refusal · costs · capacity to consent · <b>written</b> consent (most legally sound). Refusal gets a refusal form.",s:"SRP slide 22–24"},
+ {d:"Roots",f:"Maxillary first molar roots",b:"<b>Trifurcated:</b> MB, DB, palatal. Furcations on the <b>facial, mesial, distal</b>. Buccal furcation is the easy one to reach.",s:"SRP slide 34 class note"},
+ {d:"Roots",f:"Mandibular first molar roots",b:"<b>Two roots:</b> mesial (larger) and distal. <b>Facial and lingual</b> furcations. Concavity on the mesial root. Furcation begins just apical to the CEJ.",s:"SRP slide 41 class note"},
+ {d:"Roots",f:"Maxillary first premolar roots",b:"<b>Bifurcated:</b> buccal and lingual. <b>Prominent mesial concavity.</b> Furcations mesial and distal, in the apical third.",s:"SRP slide 32 class note"},
+ {d:"Roots",f:"Second molars vs first molars",b:"<b>Longer root trunk</b>; roots closer together. Mandibular second molar roots curve distally and may have cervical enamel projections.",s:"SRP slide 35, 42 class note"},
+ {d:"Roots",f:"Variations in root form",b:"Fused roots, fusion, concrescence · accessory roots · palatogingival grooves · hypercementosis · cervical enamel projections · enamel pearls · dilaceration",s:"SRP slide 45"},
+ {d:"Hand",f:"Curette vs powered tip: direction of work",b:"<b>Curette:</b> apical to the deposit, base of the pocket → toward the CEJ.<br><b>Powered tip:</b> coronal part of the deposit near the CEJ → apically.",s:"SRP slide 78"},
+ {d:"Hand",f:"Horizontal strokes: which working-end?",b:"<b>Proximal:</b> switch ends. G11 vertical → G12 horizontal. G13 vertical → G14 horizontal.<br><b>Facial / lingual:</b> same end for both.<br>Horizontal strokes are for concavities.",s:"SRP slide 63–69"},
+ {d:"Hand",f:"Multi-rooted teeth: sequence and curette choice",b:"Root trunk first, then each root like a single-rooted tooth.<br><b>Distal portion</b> of either root = distal curette. <b>Mesial portion</b> of either root = mesial curette.",s:"SRP slide 56–62 ★"},
+ {d:"Hand",f:"Gracey curettes: area of use",b:"<ul><li><b>1/2, 3/4, 5/6</b> anterior, all surfaces</li><li><b>7/8, 9/10</b> posterior buccal and lingual</li><li><b>11/12, 15/16</b> posterior facial, lingual, mesial</li><li><b>13/14, 17/18</b> posterior distal</li></ul>",s:"SRP slide 113"},
+ {d:"Hand",f:"Langer curettes",b:"Face at <b>90°</b> to the lower shank · two cutting edges.<br><b>1/2</b> mandibular posterior · <b>3/4</b> maxillary posterior · <b>5/6</b> anterior · <b>17/18</b> posterior.",s:"SRP slide 108, 110 ★"},
+ {d:"Hand",f:"Standard, extended, mini, micro-mini",b:"<ul><li><b>Standard:</b> pockets 4 mm or less</li><li><b>Extended:</b> over 4 mm · lower shank 3 mm longer · thinner</li><li><b>Mini:</b> extended + shorter working-end</li><li><b>Micro-mini:</b> 20% thinner than mini · 50% shorter than standard</li></ul>",s:"SRP slide 112–117"},
+ {d:"Hand",f:"Quétin, O’Hehir, Vision Curvette, diamond-coated",b:"<ul><li><b>Quétin:</b> mini hoe, one straight edge, furcations</li><li><b>O’Hehir / DeMarco:</b> tiny circular disk, edge all around</li><li><b>Vision Curvette:</b> bands at 5 and 10 mm, + marks lower cutting edge</li><li><b>Diamond-coated:</b> no cutting edge, like an emery board</li></ul>",s:"SRP slide 119–122 ★"},
+ {d:"Hand",f:"Periodontal file",b:"<b>Crushes</b> large deposits, <b>roughens</b> burnished calculus, smooths overhangs. Enamel or outer surface of calculus only. Face flat, <b>two-point contact</b>, vertical pull stroke. Needs a set.",s:"SRP slide 102–105"},
+ {d:"Ultrasonic",f:"Frequency vs amplitude",b:"<b>Frequency:</b> vibrations per second. <b>Amplitude:</b> how far the tip moves (stroke length). The power setting changes <b>amplitude</b>. Rarely go above medium.",s:"SRP slide 74–76"},
+ {d:"Ultrasonic",f:"The 3 A’s",b:"<b>Adaptation:</b> 2–3 mm of the tip.<br><b>Angulation:</b> 0–15°.<br><b>Activation:</b> 1–2 mm short overlapping strokes, horizontal, oblique, vertical.",s:"SRP slide 82"},
+ {d:"Ultrasonic",f:"Staged instrumentation",b:"<b>Initial:</b> gross removal, standard tip, higher power.<br><b>Definitive:</b> light deposits, biofilm, endotoxin, slim tip, lower power.<br>Low/low = biofilm. High/high = tenacious calculus.",s:"SRP slide 77, 90"},
+ {d:"Ultrasonic",f:"Powered device classification and how it works",b:"Powered → <b>ultrasonic</b> (piezo, magneto) and <b>sonic</b>.<br>Vibration makes <b>microfractures</b>. Water = <b>fluid lavage</b>: cools and flushes.",s:"SRP slide 71, 73"},
+ {d:"Fulcrums",f:"Six advanced fulcrum techniques",b:"<ol><li>Modified intraoral</li><li>Cross arch</li><li>Opposite arch</li><li>Finger-on-finger</li><li>Basic extraoral (knuckle rest, chin cup)</li><li>Finger assist</li></ol>",s:"SRP slide 135"},
+ {d:"Fulcrums",f:"Cross arch vs opposite arch",b:"<b>Cross arch:</b> rest on the other side of the <b>same</b> arch.<br><b>Opposite arch:</b> rest on the <b>other jaw</b>.",s:"SRP slide 140, 142"},
+ {d:"Fulcrums",f:"Finger-on-finger vs finger assist",b:"<b>Finger-on-finger:</b> non-dominant finger is the <b>rest</b>.<br><b>Finger assist:</b> non-dominant finger pushes the <b>shank</b> for lateral pressure.",s:"SRP slide 144, 155 ★"},
+ {d:"Fulcrums",f:"Advanced fulcrums: advantages and disadvantages",b:"<b>Advantages:</b> access to maxillary 2nd and 3rd molars · deep pockets · parallel lower shank · neutral wrist.<br><b>Disadvantages:</b> more skill needed · instrument stick · less tactile information · muscle strain · extraoral is hard on TMJ patients.",s:"SRP slide 136, 138, 148"}
+];
+
 /* ============ WHO (profiles) ============ */
 function lsGet(k){try{return localStorage.getItem(k);}catch(e){return null;}}
 function lsSet(k,v){try{localStorage.setItem(k,v);}catch(e){}}
@@ -783,14 +1571,81 @@ function addXP(n,el){S.xp+=n;save();renderHUD();if(el)floatXP(el,n);}
 function renderHUD(){const lvl=Math.floor(S.xp/100)+1;$("#lvl").textContent="LV "+lvl;$("#xpnum").textContent=S.xp+" XP";$("#xpbar").style.width=(S.xp%100)+"%";}
 function srcTag(s){const std=/^Standard/.test(s);return `<span class="src${std?" std":""}">${esc(s)}</span>`;}
 
+/* ============ TESTS (title dropdown) ============ */
+const TESTS=[
+ {id:"t1",title:"Hygiene Case Lab",menu:"Case Lab",blurb:"Test 1 · four patient cases + anesthetic lab",
+  sub:"Case test prep · answers checked against the Litwak Dental Clinic Manual 26–27",
+  tabs:[["cases","Cases"],["la","Anesthetic lab"],["cards","Flashcards"],["quiz","Quiz"],["cram","Cram sheet"]],
+  note:`<span class="src">Manual p.__</span> means the rule is taken straight from the clinic manual (printed page number). <span class="src std">Standard teaching</span> means the manual doesn’t cover it and the answer comes from standard dental hygiene textbooks. Check those against your class notes, because your instructors grade on what they taught. This is a study aid, not an answer key.`},
+ {id:"t2",title:"Hygiene Test 2 Lab",menu:"Test 2 Lab",blurb:"Test 2 · indices, sealants, scaling & root planing",
+  sub:"Test 2 prep · built from the Dental Indices, Sealants, and Nonsurgical Periodontal Therapy slides",
+  tabs:[["topics","Practice"],["cards","Flashcards"],["quiz","Quiz"],["cram","Cram sheet"]],
+  note:`<span class="src">Indices slide __</span> names the slide deck and slide number the answer came from, so you can look it up. <span class="star">★</span> and “class note” mean it was starred or handwritten on the slides. <span class="src std">Standard teaching</span> means the slides don’t say it and the answer comes from standard dental hygiene textbooks. Where a slide and a handwritten note disagree, the answer shows both. This is a study aid, not an answer key.`}
+];
+let TEST="t1";
+function curTest(){return TESTS.find(t=>t.id===TEST);}
+function tabKey(){return KEY+"-tab"+(TEST==="t1"?"":"-"+TEST);}
+function renderTest(){
+  const t=curTest();
+  $("#titleText").textContent=t.title; document.title=t.title;
+  $("#brandSub").textContent=t.sub; $("#note").innerHTML=t.note;
+  $("#tabs").innerHTML=t.tabs.map(([id,l])=>`<button role="tab" data-tab="${id}" aria-selected="false">${l}</button>`).join("");
+  $("#titleMenu").innerHTML=TESTS.map(x=>`<button role="menuitemradio" aria-checked="${x.id===TEST}" data-test="${x.id}">${esc(x.menu)}<small>${esc(x.blurb)}</small></button>`).join("");
+}
+function setTest(id,startTab){
+  TEST=id; lsSet(KEY+"-test",id);
+  Q=null; deckFilter="All"; deckOrder=null; cardIdx=0; flipped=false;
+  renderTest();
+  const ids=curTest().tabs.map(x=>x[0]);
+  let t=startTab||lsGet(tabKey())||ids[0]; if(!ids.includes(t))t=ids[0];
+  setTab(t);
+}
+/* ============ THEMES (palette button) ============ */
+const SKINS=[
+ {id:"sakura",name:"Sakura",blurb:"Pink blossoms, the original",sw:["#FFF5F8","#D9467A","#F8B8CD"]},
+ {id:"anime",name:"Anime",blurb:"Bright colors, sparkles, manga dots",sw:["#F2F7FF","#6A3DF0","#FFC93C"]},
+ {id:"wednesday",name:"Wednesday",blurb:"Black, bone white, a little purple",sw:["#0E0D10","#B79AE8","#ECE8F1"]}
+];
+let SKIN="sakura";
+function applySkin(id){
+  SKIN=SKINS.some(s=>s.id===id)?id:"sakura";
+  const root=document.documentElement;
+  if(SKIN==="sakura")root.removeAttribute("data-skin"); else root.setAttribute("data-skin",SKIN);
+  const m=document.querySelector('meta[name="theme-color"]'); if(m)m.content=getComputedStyle(root).getPropertyValue("--bg").trim();
+  $("#skinMenu").innerHTML=SKINS.map(s=>`<button role="menuitemradio" aria-checked="${s.id===SKIN}" data-skin-pick="${s.id}"><span class="sw3" aria-hidden="true">${s.sw.map(c=>`<i style="background:${c}"></i>`).join("")}</span>${esc(s.name)}<small>${esc(s.blurb)}</small></button>`).join("");
+}
+function closeSkins(){$("#skinMenu").hidden=true;$("#skinBtn").setAttribute("aria-expanded","false");}
+$("#skinBtn").addEventListener("click",()=>{const m=$("#skinMenu");m.hidden=!m.hidden;$("#skinBtn").setAttribute("aria-expanded",String(!m.hidden));if(!m.hidden){const c=m.querySelector('[aria-checked="true"]');if(c)c.focus();}});
+$("#skinMenu").addEventListener("click",e=>{const b=e.target.closest("[data-skin-pick]");if(!b)return;applySkin(b.dataset.skinPick);lsSet(KEY+"-skin",SKIN);closeSkins();$("#skinBtn").focus();toast(SKINS.find(s=>s.id===SKIN).name+" theme");});
+$("#skinMenu").addEventListener("keydown",e=>{if(e.key!=="ArrowDown"&&e.key!=="ArrowUp")return;e.preventDefault();const bs=[...$("#skinMenu").querySelectorAll("button")];const i=bs.indexOf(document.activeElement);bs[(i+(e.key==="ArrowDown"?1:-1)+bs.length)%bs.length].focus();});
+document.addEventListener("click",e=>{if(!e.target.closest("#skinBtn,#skinMenu"))closeSkins();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#skinMenu").hidden){closeSkins();$("#skinBtn").focus();}});
+applySkin(lsGet(KEY+"-skin"));
+
+function closeMenu(){$("#titleMenu").hidden=true;$("#titleBtn").setAttribute("aria-expanded","false");}
+$("#titleBtn").addEventListener("click",()=>{const m=$("#titleMenu");m.hidden=!m.hidden;$("#titleBtn").setAttribute("aria-expanded",String(!m.hidden));if(!m.hidden){const c=m.querySelector('[aria-checked="true"]');if(c)c.focus();}});
+$("#titleMenu").addEventListener("click",e=>{const b=e.target.closest("[data-test]");if(!b)return;closeMenu();$("#titleBtn").focus();if(b.dataset.test!==TEST){setTest(b.dataset.test);toast(curTest().menu);}});
+$("#titleMenu").addEventListener("keydown",e=>{if(e.key!=="ArrowDown"&&e.key!=="ArrowUp")return;e.preventDefault();const bs=[...$("#titleMenu").querySelectorAll("button")];const i=bs.indexOf(document.activeElement);bs[(i+(e.key==="ArrowDown"?1:-1)+bs.length)%bs.length].focus();});
+document.addEventListener("click",e=>{if(!e.target.closest(".titlewrap"))closeMenu();});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#titleMenu").hidden){closeMenu();$("#titleBtn").focus();}});
+
 /* ============ TABS ============ */
 let tab="cases";
 function setTab(t){tab=t;document.querySelectorAll("#tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
-  ["cases","la","cards","quiz","cram"].forEach(v=>$("#view-"+v).hidden=v!==t);
-  if(t==="cases")renderCases(); if(t==="la")renderLA(); if(t==="cards")renderCards(); if(t==="quiz")renderQuiz(); if(t==="cram")renderCram();
-  try{localStorage.setItem(KEY+"-tab",t);}catch(e){}
+  ["cases","topics","la","cards","quiz","cram"].forEach(v=>$("#view-"+v).hidden=v!==t);
+  if(t==="cases")renderCases(); if(t==="topics")renderTopics(); if(t==="la")renderLA(); if(t==="cards")renderCards(); if(t==="quiz")renderQuiz(); if(t==="cram")renderCram();
+  lsSet(tabKey(),t);
 }
 $("#tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setTab(b.dataset.tab);});
+
+/* answering a question: shared by the Cases and Practice views */
+function qAct(t,rer){
+  const o=t.closest(".opt[data-q]"); if(o){const q=allQ().find(x=>x.id===o.dataset.q);const i=+o.dataset.i;const ok=i===q.ans;S.ans[q.id]={pick:i,ok};save();if(ok){addXP(10,o);toast("Nice. +10 XP");}else toast("Not quite. Read why below.");rer(q);return true;}
+  const rv=t.closest("[data-reveal]"); if(rv){const id=rv.dataset.reveal;const ta=$("#ta-"+id);if(ta&&ta.value.trim().length<3){toast("Type your answer first");ta.focus();return true;}S.ans["rev-"+id]=1;save();rer(allQ().find(x=>x.id===id));return true;}
+  const sf=t.closest("[data-self]"); if(sf){const id=sf.dataset.self;const ok=sf.dataset.ok==="1";S.ans[id]={ok};save();if(ok)addXP(15,sf);else toast("Flagged for review");rer(allQ().find(x=>x.id===id));return true;}
+  const rd=t.closest("[data-redo]"); if(rd){const id=rd.dataset.redo;delete S.ans[id];delete S.ans["rev-"+id];save();rer(allQ().find(x=>x.id===id));return true;}
+  return false;
+}
 
 /* ============ CASES ============ */
 let curCase=CASES[0].id, qFilter="All";
@@ -861,14 +1716,51 @@ $("#view-cases").addEventListener("click",e=>{
   if(t.id==="sheetHide"){$("#sheetwrap").classList.remove("open");return;}
   const chip=t.closest("[data-case]"); if(chip){curCase=chip.dataset.case;qFilter="All";const sw=$("#sheetwrap");if(sw)sw.classList.remove("open");renderCases();return;}
   const f=t.closest("[data-filter]"); if(f){qFilter=f.dataset.filter;renderCases();return;}
-  const o=t.closest(".opt[data-q]"); if(o){const q=allQ().find(x=>x.id===o.dataset.q);const i=+o.dataset.i;const ok=i===q.ans;S.ans[q.id]={pick:i,ok};save();if(ok){addXP(10,o);toast("Nice. +10 XP");}else toast("Not quite. Read why below.");rerenderQ(q);return;}
-  const rv=t.closest("[data-reveal]"); if(rv){const id=rv.dataset.reveal;const ta=$("#ta-"+id);if(ta&&ta.value.trim().length<3){toast("Type your answer first");ta.focus();return;}S.ans["rev-"+id]=1;save();rerenderQ(allQ().find(x=>x.id===id));return;}
-  const sf=t.closest("[data-self]"); if(sf){const id=sf.dataset.self;const ok=sf.dataset.ok==="1";S.ans[id]={ok};save();if(ok)addXP(15,sf);else toast("Flagged for review");rerenderQ(allQ().find(x=>x.id===id));return;}
-  const rd=t.closest("[data-redo]"); if(rd){const id=rd.dataset.redo;delete S.ans[id];delete S.ans["rev-"+id];save();rerenderQ(allQ().find(x=>x.id===id));return;}
+  qAct(t,rerenderQ);
 });
 $("#view-cases").addEventListener("input",e=>{const id=e.target.dataset.draft;if(id){S.ans["draft-"+id]=e.target.value;save();}});
 function rerenderQ(q){const el=$("#q-"+q.id);if(el){el.outerHTML=qHTML(q);}const c=CASES.find(x=>x.id===curCase);const done=c.qs.filter(q=>S.ans[q.id]).length,right=c.qs.filter(q=>S.ans[q.id]&&S.ans[q.id].ok).length;const p=$("#view-cases .prog");if(p)p.textContent=`${done}/${c.qs.length} done · ${right} right`;const ch=$(`[data-case="${c.id}"] small`);if(ch)ch.textContent=`${done}/${c.qs.length}`;}
-function allQ(){return CASES.flatMap(c=>c.qs);}
+function allQ(){return [...CASES.flatMap(c=>c.qs),...T2.flatMap(s=>s.qs)];}
+
+/* ============ PRACTICE (Test 2: questions by slide deck) ============ */
+let curSec=T2[0].id, tFilter="All";
+function secProg(s){return {n:s.qs.length,done:s.qs.filter(q=>S.ans[q.id]).length,right:s.qs.filter(q=>S.ans[q.id]&&S.ans[q.id].ok).length};}
+function notesPanel(s){
+  return `<div class="panel">
+    <div class="pt-head"><h2>${esc(s.name)}</h2><span class="mono muted">${esc(s.deck)}</span></div>
+    <p class="quote">${esc(s.blurb)}</p>
+    <div class="lbl"><span class="star">★</span> Starred or flagged in the notes</div>
+    <ul class="clean">${s.stars.map(x=>`<li>${x}</li>`).join("")}</ul>
+    <div class="lbl">Easy to mix up</div>
+    <ul class="clean">${s.mix.map(x=>`<li>${x}</li>`).join("")}</ul>
+  </div>`;
+}
+function renderTopics(){
+  const s=T2.find(x=>x.id===curSec);
+  const topics=["All",...new Set(s.qs.map(q=>q.topic))];
+  const shown=s.qs.filter(q=>tFilter==="All"||q.topic===tFilter);
+  const p=secProg(s);
+  const open=$("#noteswrap")&&$("#noteswrap").classList.contains("open");
+  $("#view-topics").innerHTML=`<div class="chips">${T2.map(x=>{const g=secProg(x);return `<button class="chip" data-sec="${x.id}" aria-pressed="${x.id===curSec}">${esc(x.name)} <small>${g.done}/${g.n}</small></button>`;}).join("")}</div>
+  <div class="sheet">
+    <div class="sheetwrap${open?" open":""}" id="noteswrap"><div class="sheetclose"><span>Starred notes</span><button id="notesHide">Back to questions</button></div>${notesPanel(s)}</div>
+    <div>
+      <div class="qhead"><h3>Practice questions</h3><span class="prog">${p.done}/${p.n} done · ${p.right} right</span></div>
+      <div class="filters">${topics.map(t=>`<button data-tfilter="${esc(t)}" aria-pressed="${t===tFilter}">${esc(t)}</button>`).join("")}</div>
+      ${shown.map(qHTML).join("")}
+    </div></div>
+    <div class="chartbar"><div class="who">${esc(s.name)}<small>${esc(s.deck)}</small></div><button id="notesShow">Starred notes</button></div>`;
+}
+function rerenderTopicQ(q){const el=$("#q-"+q.id);if(el){el.outerHTML=qHTML(q);}const s=T2.find(x=>x.id===curSec);const g=secProg(s);const p=$("#view-topics .prog");if(p)p.textContent=`${g.done}/${g.n} done · ${g.right} right`;const ch=$(`[data-sec="${s.id}"] small`);if(ch)ch.textContent=`${g.done}/${g.n}`;}
+$("#view-topics").addEventListener("click",e=>{
+  const t=e.target;
+  if(t.id==="notesShow"){$("#noteswrap").classList.add("open");$("#noteswrap").scrollTop=0;return;}
+  if(t.id==="notesHide"){$("#noteswrap").classList.remove("open");return;}
+  const chip=t.closest("[data-sec]"); if(chip){curSec=chip.dataset.sec;tFilter="All";const sw=$("#noteswrap");if(sw)sw.classList.remove("open");renderTopics();return;}
+  const f=t.closest("[data-tfilter]"); if(f){tFilter=f.dataset.tfilter;renderTopics();return;}
+  qAct(t,rerenderTopicQ);
+});
+$("#view-topics").addEventListener("input",e=>{const id=e.target.dataset.draft;if(id){S.ans["draft-"+id]=e.target.value;save();}});
 
 /* ============ ANESTHETIC LAB ============ */
 let laCart=null, laWeight=null, laCardiac=false, laCase=null;
@@ -911,14 +1803,17 @@ $("#view-la").addEventListener("input",e=>{if(e.target.id==="wt"){const v=parseF
 
 /* ============ FLASHCARDS ============ */
 let deckFilter="All", deckOrder=null, cardIdx=0, flipped=false;
-function deck(){return CARDS.map((c,i)=>({...c,i})).filter(c=>deckFilter==="All"||c.d===deckFilter||(deckFilter==="Again"&&S.cards[c.i]==="again"));}
+function curCards(){return TEST==="t2"?CARDS2:CARDS;}
+function ck(i){return TEST==="t1"?i:TEST+"-"+i;} // each test keeps its own card progress
+function deck(){return curCards().map((c,i)=>({...c,i})).filter(c=>deckFilter==="All"||c.d===deckFilter||(deckFilter==="Again"&&S.cards[ck(c.i)]==="again"));}
 function renderCards(){
   let d=deck(); if(deckOrder) d=deckOrder.map(i=>d.find(c=>c.i===i)).filter(Boolean);
   if(cardIdx>=d.length) cardIdx=0;
-  const decks=["All",...new Set(CARDS.map(c=>c.d)),"Again"];
-  const known=Object.values(S.cards).filter(v=>v==="know").length;
+  const all=curCards();
+  const decks=["All",...new Set(all.map(c=>c.d)),"Again"];
+  const known=all.filter((c,i)=>S.cards[ck(i)]==="know").length;
   const c=d[cardIdx];
-  $("#view-cards").innerHTML=`<div class="deckbar"><div class="filters" style="margin:0">${decks.map(x=>`<button data-deck="${x}" aria-pressed="${x===deckFilter}">${x==="Again"?"Review pile":x}</button>`).join("")}</div><span class="prog">${known}/${CARDS.length} known · <button class="ghost" id="shuf">Shuffle</button></span></div>
+  $("#view-cards").innerHTML=`<div class="deckbar"><div class="filters" style="margin:0">${decks.map(x=>`<button data-deck="${x}" aria-pressed="${x===deckFilter}">${x==="Again"?"Review pile":x}</button>`).join("")}</div><span class="prog">${known}/${all.length} known · <button class="ghost" id="shuf">Shuffle</button></span></div>
   ${c?`<div class="card-stage"><div class="fcard${flipped?" flip":""}" id="fcard" tabindex="0" role="button" aria-label="Flip card">
     <div class="face front"><span class="deck-t">${esc(c.d)} · ${cardIdx+1}/${d.length}</span><div class="big">${c.f}</div><span class="hint">tap or press space to flip</span></div>
     <div class="face back"><span class="deck-t">${esc(c.d)}</span><div>${c.b}</div><div>${srcTag(c.s)}</div></div>
@@ -933,18 +1828,20 @@ $("#view-cards").addEventListener("click",e=>{
   if(t.closest("#fcard")){flipped=!flipped;$("#fcard").classList.toggle("flip",flipped);return;}
   if(t.id==="prev")moveCard(-1); if(t.id==="next")moveCard(1);
   if(t.id==="shuf"){const d=deck().map(c=>c.i);for(let i=d.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]];}deckOrder=d;cardIdx=0;flipped=false;renderCards();toast("Shuffled");}
-  if(t.id==="know"||t.id==="again"){let d=deck();if(deckOrder)d=deckOrder.map(i=>d.find(c=>c.i===i)).filter(Boolean);const c=d[cardIdx];if(!c)return;const was=S.cards[c.i];S.cards[c.i]=t.id;save();if(t.id==="know"&&was!=="know")addXP(3,t);if(deckFilter==="Again"&&t.id==="know"){deckOrder=null;flipped=false;renderCards();}else moveCard(1);}
+  if(t.id==="know"||t.id==="again"){let d=deck();if(deckOrder)d=deckOrder.map(i=>d.find(c=>c.i===i)).filter(Boolean);const c=d[cardIdx];if(!c)return;const was=S.cards[ck(c.i)];S.cards[ck(c.i)]=t.id;save();if(t.id==="know"&&was!=="know")addXP(3,t);if(deckFilter==="Again"&&t.id==="know"){deckOrder=null;flipped=false;renderCards();}else moveCard(1);}
 });
 document.addEventListener("keydown",e=>{if(tab!=="cards"||/INPUT|TEXTAREA/.test(document.activeElement.tagName))return;if(e.key===" "){e.preventDefault();const f=$("#fcard");if(f){flipped=!flipped;f.classList.toggle("flip",flipped);}}if(e.key==="ArrowRight")moveCard(1);if(e.key==="ArrowLeft")moveCard(-1);});
 
 /* ============ QUIZ ============ */
 let Q=null;
-function pool(){return [...allQ().filter(q=>q.type==="mc"),...GENQ];}
+function pool(){return TEST==="t2"?T2.flatMap(s=>s.qs).filter(q=>q.type==="mc"):[...CASES.flatMap(c=>c.qs).filter(q=>q.type==="mc"),...GENQ];}
+function bestKey(){return TEST==="t1"?"best":"best_"+TEST;}
+function qFrom(q){const cs=CASES.find(x=>x.qs.some(y=>y.id===q.id));if(cs)return cs.name;const s=T2.find(x=>x.qs.some(y=>y.id===q.id));return s?s.name:"Manual";}
 function newQuiz(onlyMiss){let p=pool();if(onlyMiss&&Q)p=p.filter(q=>Q.missed.includes(q.id));for(let i=p.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[p[i],p[j]]=[p[j],p[i]];}Q={items:p.slice(0,Math.min(10,p.length)).map(q=>q.id),i:0,score:0,picked:null,missed:[]};renderQuiz();}
 function renderQuiz(){
   const v=$("#view-quiz");
-  if(!Q){v.innerHTML=`<div class="panel" style="max-width:680px;margin:0 auto"><h2 style="font-size:28px">Lightning round</h2><p>10 random questions from every case plus the manual’s rules. Best score: <b class="mono">${S.best}/10</b></p><div class="row"><button class="btn acc" id="startQ">Start the quiz</button></div></div>`;return;}
-  if(Q.i>=Q.items.length){const pct=Math.round(Q.score/Q.items.length*100);if(Q.score>S.best&&Q.items.length===10){S.best=Q.score;save();}
+  if(!Q){v.innerHTML=`<div class="panel" style="max-width:680px;margin:0 auto"><h2 style="font-size:28px">Lightning round</h2><p>${TEST==="t2"?"10 random questions from the indices, sealants, and scaling & root planing slides.":"10 random questions from every case plus the manual’s rules."} Best score: <b class="mono">${S[bestKey()]||0}/10</b></p><div class="row"><button class="btn acc" id="startQ">Start the quiz</button></div></div>`;return;}
+  if(Q.i>=Q.items.length){const pct=Math.round(Q.score/Q.items.length*100);if(Q.score>(S[bestKey()]||0)&&Q.items.length===10){S[bestKey()]=Q.score;save();}
     v.innerHTML=`<div class="panel" style="max-width:680px;margin:0 auto"><div class="score"><span class="big">${Q.score}/${Q.items.length}</span><span class="muted">${pct>=90?"Ready. Go get it.":pct>=75?"Passing. Tighten up the misses.":"Keep going. Redo the misses."}</span></div>
     ${Q.missed.length?`<div class="lbl">Missed</div><ul class="clean">${Q.missed.map(id=>`<li>${esc(pool().find(q=>q.id===id).q)}</li>`).join("")}</ul>`:""}
     <div class="row">${Q.missed.length?`<button class="btn bad" id="retryMiss">Redo just the misses</button>`:""}<button class="btn acc" id="startQ">New quiz</button></div></div>`;return;}
@@ -952,7 +1849,7 @@ function renderQuiz(){
   v.innerHTML=`<div class="panel" style="max-width:680px;margin:0 auto">
     <div class="qhead"><span class="prog">Question ${Q.i+1} of ${Q.items.length}</span><span class="prog">Score ${Q.score}</span></div>
     <div class="qbar"><i style="width:${Q.i/Q.items.length*100}%"></i></div>
-    <div class="q" style="border:0;padding:0"><div class="topic">${esc(q.topic)}${(()=>{const cs=CASES.find(x=>x.qs.some(y=>y.id===q.id));return cs?" · "+esc(cs.name):" · Manual";})()}</div><div class="prompt">${esc(q.q)}</div>
+    <div class="q" style="border:0;padding:0"><div class="topic">${esc(q.topic)} · ${esc(qFrom(q))}</div><div class="prompt">${esc(q.q)}</div>
     <div class="opts">${q.opts.map((o,i)=>{let c="opt";if(Q.picked!==null){if(i===q.ans)c+=" right";else if(i===Q.picked)c+=" wrong";}return `<button class="${c}" data-qi="${i}" ${Q.picked!==null?"disabled":""}>${esc(o)}</button>`;}).join("")}</div>
     ${Q.picked!==null?`<div class="why">${q.why}<div>${srcTag(q.src)}</div></div><div class="row"><button class="btn" id="nextQ">${Q.i+1<Q.items.length?"Next →":"See score"}</button></div>`:""}</div></div>`;
 }
@@ -964,7 +1861,7 @@ $("#view-quiz").addEventListener("click",e=>{const t=e.target;
 
 /* ============ CRAM ============ */
 function renderCram(){
-  const c=CASES[0];
+  if(TEST==="t2"){renderCram2();return;}
   $("#view-cram").innerHTML=`<div class="cram-grid">
     <div class="panel cram"><h3>Alison, 68 F: the answers</h3><dl class="kv">
       <dt>ASA</dt><dd><b>III</b>: Type 1 DM (A1c 8.5%) + chronic hep C. Defend it vs IV.</dd>
@@ -1056,9 +1953,135 @@ function renderCram(){
   </div>`;
 }
 
+function renderCram2(){
+  $("#view-cram").innerHTML=`<div class="cram-grid">
+    <div class="panel cram"><h3>PSR codes <span class="star">★</span></h3><table class="bp">
+      <tr><th>Code</th><th>Band</th><th>Finding</th></tr>
+      <tr><td><b>0</b></td><td>Visible</td><td>No bleeding, no calculus</td></tr>
+      <tr><td><b>1</b></td><td>Visible</td><td>Bleeding</td></tr>
+      <tr><td><b>2</b></td><td>Visible</td><td>Calculus or defective margin</td></tr>
+      <tr><td><b>3</b></td><td>Partly visible</td><td class="mono">4–5 mm</td></tr>
+      <tr><td><b>4</b></td><td>Not visible</td><td class="mono">&gt;5.5 mm</td></tr>
+      <tr><td><b>*</b></td><td>Added</td><td>Furcation, mobility, mucogingival, recession &gt;3.5</td></tr></table>
+      <p style="font-size:14px;margin:10px 0 0">WHO probe · 0.5 mm ball · band 3.5–5.5 mm · by sextant, highest code. 3 → detailed exam of that sextant (or full mouth). 4 → full-mouth exam. Not for children or past perio treatment.</p>
+      <div>${srcTag("Indices slide 8–17")}</div></div>
+    <div class="panel cram"><h3>Which tool, how long</h3><dl class="kv">
+      <dt>Sulcular Bleeding</dt><dd><b>Probe</b> · 4 areas · wait 30 s · 0–5</dd>
+      <dt>Gingival Bleeding</dt><dd><b>Floss</b> · wait 30 s · count bleeding points</dd>
+      <dt>Eastman</dt><dd><b>Wooden wedge</b> 1–2 mm · wait 15 s</dd>
+      <dt>Plaque Index</dt><dd><b>Probe</b> · plaque thickness at margin · 0–3</dd>
+      <dt>Gingival Index</dt><dd>Color, consistency, bleeding · 0–3 · 2 = BOP · 3 = spontaneous</dd>
+      <dt>PHP</dt><dd><b>Disclosing</b> · 5 sections per tooth</dd>
+      <dt>CPITN / PSR</dt><dd><b>WHO probe</b> · by sextant</dd>
+      <dt>PerioWise</dt><dd>Plastic color probe · green go, red stop</dd></dl>
+      <div>${srcTag("Indices slide 20, 33–49")}</div></div>
+    <div class="panel cram"><h3>Index math</h3><dl class="kv">
+      <dt>Plaque-free</dt><dd>(teeth × 4 − plaque surfaces) ÷ (teeth × 4) × 100. Or 100 − PCR</dd>
+      <dt>Root caries</dt><dd>Teeth with root caries ÷ teeth with exposed roots × 100</dd>
+      <dt>OHI-S</dt><dd>Debris ÷ 6 + calculus ÷ 6</dd>
+      <dt>PHP</dt><dd>Points ÷ teeth · 0 excellent · 0.1–1.7 good · 1.8–3.4 fair · 3.5–5 poor</dd>
+      <dt>Ramfjord</dt><dd>#3, 9, 12, 19, 25, 28</dd>
+      <dt>-S / -M</dt><dd>Simplified / modified = smaller sample</dd></dl>
+      <div>${srcTag("Indices slide 31–46")}</div></div>
+    <div class="panel cram"><h3>Caries and perio indices</h3><dl class="kv">
+      <dt>DMFT</dt><dd>Gold standard · permanent · no 3rd molars, supernumerary, or retained primary</dd>
+      <dt>dmft</dt><dd>Lowercase = primary teeth only</dd>
+      <dt>DMFS</dt><dd>Surfaces · more detail · needs radiographs</dd>
+      <dt>CAMBRA</dt><dd>Caries Management by Risk Assessment · survey · adult and 6-and-under forms</dd>
+      <dt>BSS</dt><dd>Untreated decay · treated decay · sealants · urgency → NOHSS</dd>
+      <dt>PI</dt><dd>Populations · 0, 1, 2, 4, 6, 8</dd>
+      <dt>PDI</dt><dd>0–6 · 4 = CAL &lt;3 · 5 = 3–6 · 6 = &gt;6 mm</dd>
+      <dt>GPI</dt><dd>Gingival index + periodontal index</dd>
+      <dt>CPITN</dt><dd>Treatment needs · 0 none · 1 OHI · 2 + SRP · 3 + surgery</dd>
+      <dt>TPI</dt><dd>Malocclusion · 7–9 severe · &gt;10 mandatory</dd></dl>
+      <div>${srcTag("Indices slide 39–55")}</div></div>
+    <div class="panel cram"><h3>Fluorosis indices</h3><dl class="kv">
+      <dt>DDE</dt><dd>Any white spot, any origin · two worst teeth, score the less damaged · dry 2 min · 0, 1–2, 3–9</dd>
+      <dt>Dean’s</dt><dd>Populations · 2nd-worst tooth per quadrant · very mild &lt;25% · mild &lt;50% · severe = pitting</dd>
+      <dt>Risk Index</dt><dd>Class I = first year of life · Class II = years 3–6</dd>
+      <dt>TSIF</dt><dd>0–7 · 1–3 by % white · 4 staining · 5 pitting · 6 pitting + stain · 7 enamel missing</dd></dl>
+      <div>${srcTag("Indices slide 56–59")}</div></div>
+    <div class="panel cram"><h3>Sealants: steps and times <span class="star">★</span></h3><table class="bp">
+      <tr><th>Step</th><th>Time / detail</th></tr>
+      <tr><td>1 Clean, isolate</td><td>Pumice + bristle brush, etc.</td></tr>
+      <tr><td>2 Etch</td><td class="mono">37% phosphoric · 15–60 s</td></tr>
+      <tr><td>3 Rinse</td><td class="mono">≥30 s</td></tr>
+      <tr><td>4 Dry</td><td class="mono">15–20 s · chalky white</td></tr>
+      <tr><td>5 Bond</td><td>Optional</td></tr>
+      <tr><td>6 Place</td><td>Don’t overfill · explorer · wait 10 s</td></tr>
+      <tr><td>7 Cure</td><td class="mono">20–30 s</td></tr>
+      <tr><td>8 Wipe</td><td>Oxygen-inhibited layer</td></tr></table>
+      <p style="font-size:14px;margin:10px 0 0">Then: articulating paper, floss, explorer for retention, <b>fluoride last</b>. Failed? Re-etch ~15 s. Two failures → postpone. Recheck every 6 months.</p>
+      <div>${srcTag("Sealants slide 20–29")}</div></div>
+    <div class="panel cram"><h3>Sealants: the rest</h3><dl class="kv">
+      <dt>What</dt><dd>Thin plastic resinous coating · physical barrier</dd>
+      <dt>Numbers</dt><dd>90% of caries in pits/fissures · 76% risk reduction</dd>
+      <dt>Types</dt><dd>Preventive (sound tooth) · therapeutic (incipient lesion)</dd>
+      <dt>Select</dt><dd>Steep cuspal inclines · deep, sticky fissures · fully erupted</dd>
+      <dt>Don’t</dt><dd>Caries (clinical, proximal, radiographic) · partly erupted · self-cleaning · restored · methacrylate allergy · uncooperative</dd>
+      <dt>Fails</dt><dd><b>Saliva contamination</b></dd>
+      <dt>Material</dt><dd>bis-GMA / UDMA · monomer → polymer · self-cure or light-cure · filled (adjust) or unfilled (wears in)</dd>
+      <dt>Detect</dt><dd>Explorer 57% · x-ray 67% · Diagnodent 90% · CariVu = transillumination</dd>
+      <dt>Diagnodent</dt><dd>0–14 none · 15–20 prevention · 21–30 by risk · &gt;30 treat</dd></dl>
+      <div>${srcTag("Sealants slide 4–35")}</div></div>
+    <div class="panel cram"><h3>NSPT: goals and planning</h3><dl class="kv">
+      <dt>Gold standard</dt><dd>Periodontal debridement</dd>
+      <dt>Goals</dt><dd>Less inflammation and BOP · reduced pockets · CAL stable or better · less biofilm</dd>
+      <dt>Flora</dt><dd>Before: anaerobic, gram −, motile. After: aerobic, gram +, nonmotile</dd>
+      <dt>Calculus</dt><dd>Not a direct cause · retains biofilm</dd>
+      <dt>Cementum</dt><dd>Preserve · growth factors for new attachment</dd>
+      <dt>Endotoxin</dt><dd>LPS from gram-negative cell walls · removed by scaling</dd>
+      <dt>Visits</dt><dd>1 week apart · Stage I–II: 2 quads per visit</dd>
+      <dt>Re-eval</dt><dd>4–8 weeks after completion</dd>
+      <dt>Consent</dt><dd>Written is most legally sound · refusal form</dd></dl>
+      <div>${srcTag("SRP slide 2–26")}</div></div>
+    <div class="panel cram"><h3>Hand instruments</h3><dl class="kv">
+      <dt>Adapt</dt><dd><b>Toe third</b></dd>
+      <dt>Angulation</dt><dd>Insert ~0° · work 45–90° (70°)</dd>
+      <dt>Direction</dt><dd>Curette: base of pocket → CEJ</dd>
+      <dt>Root planing</dt><dd>Stay sub · multidirectional · lighter finishing strokes</dd>
+      <dt>Multi-root</dt><dd>Trunk first · each root as a single root · distal portion = distal curette</dd>
+      <dt>Horizontal</dt><dd>Concavities. Proximal: G11 → G12, G13 → G14. Facial/lingual: same end</dd>
+      <dt>Gracey</dt><dd>1–6 anterior · 7–10 post. B/L · 11/12, 15/16 post. F/L/M · 13/14, 17/18 post. D</dd>
+      <dt>Langer</dt><dd>1/2 mand post · 3/4 max post · 5/6 ant · 17/18 post · face 90°</dd>
+      <dt>Shanks</dt><dd>Standard ≤4 mm · extended &gt;4 mm, 3 mm longer</dd>
+      <dt>File</dt><dd>Crush / roughen · two-point contact · vertical pull</dd></dl>
+      <div>${srcTag("SRP slide 49–122")}</div></div>
+    <div class="panel cram"><h3>Ultrasonics</h3><dl class="kv">
+      <dt>Types</dt><dd>Ultrasonic (piezo, magneto) · sonic</dd>
+      <dt>Frequency</dt><dd>Vibrations per second</dd>
+      <dt>Amplitude</dt><dd>Stroke length · what the power knob changes</dd>
+      <dt>Power</dt><dd>Rarely above medium</dd>
+      <dt>3 A’s</dt><dd>Adapt 2–3 mm · angle 0–15° · activate 1–2 mm overlapping strokes</dd>
+      <dt>Direction</dt><dd>CEJ → apically</dd>
+      <dt>Water</dt><dd>Fluid lavage: cools, flushes</dd>
+      <dt>Staged</dt><dd>Standard tip, higher power → slim tip, lower power</dd>
+      <dt>Curved tips</dt><dd>Right/left = direction of the curve · need both</dd></dl>
+      <div>${srcTag("SRP slide 71–98")}</div></div>
+    <div class="panel cram"><h3>Root anatomy</h3><dl class="kv">
+      <dt>Max 1st molar</dt><dd>3 roots (MB, DB, P) · furcations F, M, D</dd>
+      <dt>Mand 1st molar</dt><dd>2 roots (M, D) · furcations F, L · begins just apical to CEJ</dd>
+      <dt>2nd molars</dt><dd>Longer root trunk · roots closer together</dd>
+      <dt>Max 1st premolar</dt><dd>Bifurcated (B, L) · mesial concavity</dd>
+      <dt>Max canine</dt><dd>Longest root · oval · proximal concavities</dd>
+      <dt>Max lateral</dt><dd>Palatogingival groove</dd>
+      <dt>3rd molars</dt><dd>Vary greatly · may be fused</dd></dl>
+      <div>${srcTag("SRP slide 29–45 class notes")}</div></div>
+    <div class="panel cram"><h3>Fulcrums</h3><dl class="kv">
+      <dt>Modified intraoral</dt><dd>Lower contact point between middle and ring fingers</dd>
+      <dt>Cross arch</dt><dd>Other side of the same arch</dd>
+      <dt>Opposite arch</dt><dd>The other jaw</dd>
+      <dt>Finger-on-finger</dt><dd>Rest on the non-dominant finger</dd>
+      <dt>Extraoral</dt><dd>Knuckle rest · chin cup · grasp farther back · palm out</dd>
+      <dt>Finger assist</dt><dd>Non-dominant finger pushes the shank</dd>
+      <dt>Downsides</dt><dd>More skill · instrument stick · less tactile · strain · TMJ (extraoral)</dd></dl>
+      <div>${srcTag("SRP slide 135–156")}</div></div>
+  </div>`;
+}
+
 /* ============ RESET ============ */
 $("#resetArea").addEventListener("click",e=>{
-  if(e.target.id==="resetBtn"){$("#resetArea").innerHTML=`<span class="confirm">Erase all progress? <button class="btn bad" id="resetYes" style="padding:5px 10px">Erase</button><button class="ghost" id="resetNo">Keep</button></span>`;}
+  if(e.target.id==="resetBtn"){$("#resetArea").innerHTML=`<span class="confirm">Erase all progress, both tests? <button class="btn bad" id="resetYes" style="padding:5px 10px">Erase</button><button class="ghost" id="resetNo">Keep</button></span>`;}
   if(e.target.id==="resetNo"){$("#resetArea").innerHTML=`<button class="ghost" id="resetBtn">Start over</button>`;}
   if(e.target.id==="resetYes"){S={xp:0,ans:{},cards:{},best:0};save();Q=null;laCart=null;$("#resetArea").innerHTML=`<button class="ghost" id="resetBtn">Start over</button>`;renderHUD();setTab(tab);toast("Progress erased");}
 });
@@ -1094,9 +2117,15 @@ renderWho(); if(!NAME) openWho();
 
 /* boot */
 renderHUD();
-let startTab="cases";try{startTab=localStorage.getItem(KEY+"-tab")||"cases";}catch(e){}
-const h=(location.hash||"").slice(1); if(["cases","la","cards","quiz","cram"].includes(h)) startTab=h;
-setTab(startTab);
+// open on the test used last; first visit opens the newest test
+let startTest=lsGet(KEY+"-test"); if(!TESTS.some(t=>t.id===startTest)) startTest=TESTS[TESTS.length-1].id;
+let startTab=null;
+const h=(location.hash||"").slice(1);
+if(h){
+  if(TESTS.find(t=>t.id===startTest).tabs.some(x=>x[0]===h)) startTab=h;
+  else{const o=TESTS.find(t=>t.tabs.some(x=>x[0]===h)); if(o){startTest=o.id;startTab=h;}}
+}
+setTest(startTest,startTab);
 </script>
 
 </body>
