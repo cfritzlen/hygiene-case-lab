@@ -412,6 +412,7 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
   <nav class="tabs" role="tablist" id="tabs"></nav>
 
   <section id="view-cases" hidden></section>
+  <section id="view-ask" hidden></section>
   <section id="view-topics" hidden></section>
   <section id="view-la" hidden></section>
   <section id="view-cards" hidden></section>
@@ -1068,6 +1069,9 @@ const T2 = [
      opts:["Caries risk; high risk","Malocclusion; severe handicap, treatment highly desired","Fluorosis; advanced changes","Perio treatment need; surgery"],ans:1,
      why:"It ranks <b>malocclusion</b> by severity (class note: used in ortho offices). 0 = virtually classic normal occlusion · 1–3 minor · 4–6 definite malocclusion, treatment elective · <b>7–9 severe handicap, treatment highly desired</b> · over 10 very severe, treatment mandatory.",
      src:"Indices slide 55"},
+    {id:"t2i-exam",topic:"Other",type:"open",q:"What does an ideal comprehensive exam include, and why is the gingival and periodontal assessment called critical?",
+     model:"<b>An ideal comprehensive exam:</b><ul><li>Extraoral and neck examination</li><li>Intraoral examination</li><li>Gingival description</li><li>Efficient periodontal evaluation</li><li>Appropriate documentation</li><li>Prescribed radiographic survey</li><li>Communication to the patient</li></ul><b>Why critical:</b> it can be the <b>first sign of serious systemic disease</b>, it gives the <b>parameters to measure the success of therapy</b>, and gingival disease <b>may not correlate with probing depths</b>. Full-mouth probing, every patient, every time.",
+     src:"Indices slide 3–5 ★"},
     {id:"t2i-dde",topic:"Fluorosis",type:"mc",q:"DDE index (Developmental Defects of Dental Enamel): which tooth do you score?",
      opts:["The worst tooth in the mouth","Pick the two worst teeth, then score the less damaged of the two","The second-worst tooth in each quadrant","Every anterior tooth"],ans:1,
      why:"Look for enamel mottling, select the <b>two worst teeth</b>, and score the <b>least damaged of the two</b>. <b>Dry for two minutes.</b> It rates enamel opacities <b>regardless of origin</b> (class note: “any white spot counts”). 0 = none · 1–2 mild · 3–9 advanced changes.",
@@ -1346,6 +1350,16 @@ const T2 = [
     {id:"t2p-prep",topic:"Hand technique",type:"open",q:"What do you review and examine before you start instrumenting?",
      model:"<ol><li>The patient’s <b>assessment record</b></li><li><b>Radiographic findings</b> (class note: we need radiographs)</li><li>The <b>care plan and treatment records</b></li><li><b>Patient preparation</b></li><li><b>Supragingival examination</b> (class note: blow air)</li><li><b>Subgingival examination</b></li><li><b>Formulate a strategy</b> for instrumentation</li></ol>",
      src:"SRP slide 46"},
+    {id:"t2p-steps",topic:"Hand technique",type:"open",q:"List the manual subgingival scaling steps in order.",
+     model:"<ol><li>Selection and sequence of instruments</li><li>Instrument grasp</li><li>Stabilization: establish the fulcrum</li><li>Select the correct cutting edge</li><li>Adaptation of the cutting edge</li><li>Angulation</li><li>Lateral pressure</li><li>Activation: stroke</li><li>Channels of strokes: coverage</li><li>Plane the root surface</li><li>Evaluation</li></ol>Before any of it, the prerequisites (class note): use the explorer, use radiographs, have good lighting. Work in a methodical way.",
+     src:"SRP slide 47–48, 53"},
+    {id:"t2p-compo",topic:"Hand technique",type:"open",q:"Name the nine components of effective instrumentation.",
+     model:"<ol><li>Grasp</li><li>Fulcrum</li><li>Insertion</li><li>Adaptation</li><li>Angulation</li><li>Lateral pressure</li><li>Stroke direction</li><li>Stroke length</li><li>Reinforcement</li></ol>",
+     src:"SRP slide 124"},
+    {id:"t2p-parallel",topic:"Hand technique",type:"mc",q:"A Gracey curette is placed correctly when its lower shank is in what position relative to the tooth surface?",
+     opts:["Perpendicular to it","Parallel to it","Tilted 45° away from it","Resting on the occlusal surface"],ans:1,
+     why:"The slide shows two placements of the Gracey 1/2; the correct one is checked, and the handwritten note says it <b>should be parallel</b>. With a Gracey, a lower shank parallel to the surface puts the cutting edge at the right angulation. Advanced fulcrums are used on molars for the same reason: improved parallelism of the lower shank.",
+     src:"SRP slide 133 class note, 138"},
     {id:"t2p-toe",topic:"Hand technique",type:"mc",q:"A curette working-end is divided into thirds. Which third is adapted to the tooth?",
      opts:["Shank third","Middle third","Toe third","All three at once"],ans:2,
      why:"The working-end is shank third, middle third and <b>toe third</b>. Class note: <b>always adapt the toe third</b>.",
@@ -1417,6 +1431,14 @@ const T2 = [
      opts:["Langer 1/2","Langer 3/4","Langer 5/6","Langer 17/18"],ans:0,
      why:"<b>1/2 = mandibular posterior</b> · 3/4 = maxillary posterior · 5/6 = anterior · 17/18 = posterior. Langers have the face at <b>90° to the lower shank</b>, <b>two cutting edges</b> per working-end, a long complex shank, and each is limited to certain areas.",
      src:"SRP slide 108, 110 ★"},
+    {id:"t2p-langer2",topic:"Instruments",type:"mc",q:"Which Langer curette is recommended for root surface debridement in deep, narrow pockets?",
+     opts:["Standard Langer","Miniature Langer","Rigid Langer","Any universal curette"],ans:1,
+     why:"<b>Miniature</b> = deep, narrow pockets. <b>Standard</b> = pockets 4 mm or less. <b>Rigid</b> = increased strength for tenacious calculus. <b>Extended shank</b> = pockets greater than 4 mm (starred).",
+     src:"SRP slide 109 ★"},
+    {id:"t2p-univ",topic:"Instruments",type:"mc",q:"Which of these is listed on the slides as a universal curette?",
+     opts:["Gracey 13/14","Columbia 13/14","Quétin furcation curette","Columbia 2R/2L"],ans:1,
+     why:"<b>Universal curettes:</b> Barnhart 5/6, <b>Columbia 13/14</b>, Younger-Good 7/8, McCall 13/14. <b>Posterior curettes:</b> Columbia 4R/4L (class note: longer terminal shank), Barnhart 1/2. <b>Anterior curettes:</b> Columbia 2R/2L. Gracey 13/14 is area-specific.",
+     src:"SRP slide 111"},
     {id:"t2p-ext",topic:"Instruments",type:"mc",q:"Standard area-specific curettes are designed for pockets of what depth? And extended-shank (modified) curettes?",
      opts:["Standard over 6 mm; extended under 3 mm","Standard 4 mm or less; extended greater than 4 mm","Both any depth","Standard supragingival only"],ans:1,
      why:"<b>Standard: 4 mm or less.</b> <b>Modified / extended shank: greater than 4 mm.</b> The lower shank of the extended curette is <b>3 mm longer</b>, and the working-end is thinner.",
@@ -1584,6 +1606,8 @@ const CARDS2 = [
  {d:"Hand",f:"Langer curettes",b:"Face at <b>90°</b> to the lower shank · two cutting edges.<br><b>1/2</b> mandibular posterior · <b>3/4</b> maxillary posterior · <b>5/6</b> anterior · <b>17/18</b> posterior.",s:"SRP slide 108, 110 ★"},
  {d:"Hand",f:"Standard, extended, mini, micro-mini",b:"<ul><li><b>Standard:</b> pockets 4 mm or less</li><li><b>Extended:</b> over 4 mm · lower shank 3 mm longer · thinner</li><li><b>Mini:</b> extended + shorter working-end</li><li><b>Micro-mini:</b> 20% thinner than mini · 50% shorter than standard</li></ul>",s:"SRP slide 112–117"},
  {d:"Hand",f:"Quétin, O’Hehir, Vision Curvette, diamond-coated",b:"<ul><li><b>Quétin:</b> mini hoe, one straight edge, furcations</li><li><b>O’Hehir / DeMarco:</b> tiny circular disk, edge all around</li><li><b>Vision Curvette:</b> bands at 5 and 10 mm, + marks lower cutting edge</li><li><b>Diamond-coated:</b> no cutting edge, like an emery board</li></ul>",s:"SRP slide 119–122 ★"},
+ {d:"Hand",f:"Additional instruments: universal, posterior, anterior",b:"<b>Universal:</b> Barnhart 5/6 · Columbia 13/14 · Younger-Good 7/8 · McCall 13/14.<br><b>Posterior:</b> Columbia 4R/4L · Barnhart 1/2.<br><b>Anterior:</b> Columbia 2R/2L.",s:"SRP slide 111"},
+ {d:"Hand",f:"Nine components of effective instrumentation",b:"Grasp · fulcrum · insertion · adaptation · angulation · lateral pressure · stroke direction · stroke length · reinforcement",s:"SRP slide 124"},
  {d:"Hand",f:"Periodontal file",b:"<b>Crushes</b> large deposits, <b>roughens</b> burnished calculus, smooths overhangs. Enamel or outer surface of calculus only. Face flat, <b>two-point contact</b>, vertical pull stroke. Needs a set.",s:"SRP slide 102–105"},
  {d:"Ultrasonic",f:"Frequency vs amplitude",b:"<b>Frequency:</b> vibrations per second. <b>Amplitude:</b> how far the tip moves (stroke length). The power setting changes <b>amplitude</b>. Rarely go above medium.",s:"SRP slide 74–76"},
  {d:"Ultrasonic",f:"The 3 A’s",b:"<b>Adaptation:</b> 2–3 mm of the tip.<br><b>Angulation:</b> 0–15°.<br><b>Activation:</b> 1–2 mm short overlapping strokes, horizontal, oblique, vertical.",s:"SRP slide 82"},
@@ -1593,6 +1617,112 @@ const CARDS2 = [
  {d:"Fulcrums",f:"Cross arch vs opposite arch",b:"<b>Cross arch:</b> rest on the other side of the <b>same</b> arch.<br><b>Opposite arch:</b> rest on the <b>other jaw</b>.",s:"SRP slide 140, 142"},
  {d:"Fulcrums",f:"Finger-on-finger vs finger assist",b:"<b>Finger-on-finger:</b> non-dominant finger is the <b>rest</b>.<br><b>Finger assist:</b> non-dominant finger pushes the <b>shank</b> for lateral pressure.",s:"SRP slide 144, 155 ★"},
  {d:"Fulcrums",f:"Advanced fulcrums: advantages and disadvantages",b:"<b>Advantages:</b> access to maxillary 2nd and 3rd molars · deep pockets · parallel lower shank · neutral wrist.<br><b>Disadvantages:</b> more skill needed · instrument stick · less tactile information · muscle strain · extraoral is hard on TMJ patients.",s:"SRP slide 136, 138, 148"}
+];
+
+/* Notes to review with the instructor. g = group, hi = ask first. */
+const ASK = [
+ {id:"psr3",g:"Indices",hi:1,q:"PSR Code 3: if one sextant scores a 3, do I chart just that sextant, or the whole mouth?",
+  why:"The same slide says two things. The small text says a Code 3 may mean full-mouth charting <i>or</i> charting of the affected sextant, depending on how many sextants are Code 3. The large text says “If one sextant scores a Code 3, a complete examination is required.” The handwritten note says “you must do a full perio assessment on that sextant.”",
+  app:"The Practice answer is “chart that sextant, or the full mouth if several sextants are Code 3,” with the conflict shown underneath.",src:"Indices slide 15"},
+ {id:"psrmm",g:"Indices",hi:1,q:"PSR Codes 3 and 4: which depths do you want us to write?",
+  why:"Code 3 is “4–5 mm” on its slide, but the band on the probe runs 3.5–5.5 mm. Code 4 is “greater than 5.5 mm” on its slide and “6 mm or deeper” in the comparison table.",
+  app:"Code 3 = 4–5 mm (band partly visible). Code 4 = over 5.5 mm (band not visible). The band position is the part that never changes.",src:"Indices slide 10, 15, 16, 54"},
+ {id:"pirad",g:"Indices",hi:1,q:"Periodontal Index: is it done with radiographs, or can it be a clinical exam alone?",
+  why:"The slide says “based on clinical exam alone or with radiographs.” The handwritten note says “must be done w/ radiographs.”",
+  app:"The answer shows both and tells you to go with what was said in class.",src:"Indices slide 50"},
+ {id:"piscore",g:"Indices",q:"Periodontal Index scores: the slide says “score of 0–8,” but the table only has 0, 1, 2, 4, 6, 8. What does “4: not used in FOS” mean, and do we need it?",
+  why:"“FOS” is not explained anywhere in the deck. The 4 row has no clinical criteria, only a radiographic one (alveolar crest resorption).",
+  app:"The possible scores are 0, 1, 2, 4, 6, 8, and 4 is described as radiographic only.",src:"Indices slide 50"},
+ {id:"ohi",g:"Indices",hi:1,q:"OHI / OHI-S rating table: what are the correct ranges, and which column is on the test?",
+  why:"The table has two columns of numbers and two typing errors: “1.9-.3” and “3.16.” One column is headed OHI scores (0 / .1–.6 / .7–1.8 / 1.9–3) and the other OHI-S scores (0 / .1–1.2 / 1.3–3 / 3.1–6).",
+  app:"The OHI-S column: excellent 0, good 0.1–1.2, fair 1.3–3.0, poor 3.1–6.0.",src:"Indices slide 36"},
+ {id:"sbi",g:"Indices",q:"Sulcular Bleeding Index: what separates a score of 2 from a 3, and what does “divide sum of all scores by 4” mean?",
+  why:"Scores 2 and 3 share one box on the slide, so the criteria do not line up with the numbers. There is also a handwritten “or probing” after “must wait 30 seconds before evaluating” that could mean wait 30 seconds <i>after</i> probing.",
+  app:"Practice asks only the tool (probe), 4 areas, 30 seconds, and the 0–5 range. It does not ask 2 versus 3.",src:"Indices slide 37"},
+ {id:"pdi",g:"Indices",q:"Periodontal Disease Index: do we need the 0–6 scores memorized, or only what the index measures?",
+  why:"A handwritten note beside the table reads like “she’s lenient about this slide.” The note above it says “know what each index does, or intent / findings.”",
+  app:"Practice includes one score question (attachment loss 3–6 mm = 5) and one “what does each index measure” question.",src:"Indices slide 52"},
+ {id:"cpitn",g:"Indices",q:"CPITN has two scales in the slides. Which one is tested?",
+  why:"Slide 53 gives treatment need 0–3 (none, OHI, OHI + SRP, surgery). Slide 54 gives CPITN status codes 0–4 side by side with PSR. They are easy to mix up.",
+  app:"Practice asks the 0–3 treatment-need scale.",src:"Indices slide 53–54"},
+ {id:"names",g:"Indices",q:"Do we need to know the names attached to each index?",
+  why:"The slides name Greene and Vermillion (OHI-S), Silness and Löe (Plaque Index and Gingival Index), Carter and Barnes (Gingival Bleeding Index), Dean, and Ramfjord. One slide spells it “Silness and Low.”",
+  app:"Names appear in the answers but are not asked as their own questions.",src:"Indices slide 32, 35, 47, 48"},
+ {id:"math",g:"Indices",q:"Will we have to calculate a score on the test (plaque-free score, Root Caries Index, OHI-S, PHP)?",
+  why:"The formulas are on the slides, and two of them have handwritten worked steps, but no slide shows a full example.",
+  app:"Practice has one worked problem for each of plaque-free score, Root Caries Index and OHI-S.",src:"Indices slide 33, 35, 45, 46"},
+ {id:"fri",g:"Indices",q:"Fluorosis Risk Index: Class I is the first year of life and Class II is years 3–6. Where do ages 1–3 go?",
+  why:"The slide leaves that gap. There is also a small handwritten note at the top that I could not read.",
+  app:"Class I = first year of life. Class II = years 3–6. Exactly as the slide has it.",src:"Indices slide 58"},
+ {id:"steps",g:"Sealants",hi:1,q:"Sealant steps are numbered two different ways. Which numbering do you want?",
+  why:"The overview slide lists 8 steps: clean and isolate, etch, rinse, dry, bond, place, cure, wipe. The slides after it number them differently: Step 3 is rinse, dry and isolate together; Step 5 is apply sealant; Step 6 is check the bite; Step 7 is evaluate retention; Step 8 is fluoride varnish. “What is step 5?” has two answers.",
+  app:"Practice uses the 8-step overview list, then says bite check, retention check and fluoride come after.",src:"Sealants slide 20–28"},
+ {id:"primary",g:"Sealants",hi:1,q:"Do we place sealants on primary teeth or not?",
+  why:"The slide lists only “primary teeth with short life expectancy” as a contraindication. The handwritten note beside it reads like “you don’t really place sealants on primary teeth.”",
+  app:"The contraindication as the slide words it: primary teeth with a short life expectancy.",src:"Sealants slide 10"},
+ {id:"etch",g:"Sealants",q:"Etch time: the slide says 15–60 seconds depending on the manufacturer. What time do we use in clinic, and which is on the test?",
+  why:"A range is hard to answer on a multiple-choice question if one option is a single number.",
+  app:"“A minimum of 15–60 seconds, depending on the manufacturer.”",src:"Sealants slide 22"},
+ {id:"drill",g:"Sealants",q:"Therapeutic sealants: “minor, superficial drilling may occur.” Who does that, and does the hygienist still place the sealant?",
+  why:"The slide does not say. It matters for a scope-of-practice question.",
+  app:"Repeats the slide and does not say who does the drilling.",src:"Sealants slide 6"},
+ {id:"diag",g:"Sealants",q:"Diagnodent: “90% effective” and “30–50% more caries detected.” Which number do you want?",
+  why:"Both numbers are on the slides, on back-to-back slides, and they measure different things.",
+  app:"Explorer 57%, radiographs 67%, Diagnodent 90%. The 30–50% figure is not asked.",src:"Sealants slide 31–32"},
+ {id:"simon",g:"Sealants",q:"Are the retention chart (Simonsen’s criteria) and the adhesion / cohesion picture on the test?",
+  why:"Both are images with no explanation on the slide.",
+  app:"Neither is in Practice.",src:"Sealants slide 11–12"},
+ {id:"bond",g:"Sealants",q:"Bonding agent is marked optional and its slide is blank. Do we use it, and when?",
+  why:"The slide for Step 4 has a title and nothing else.",
+  app:"Listed as an optional step.",src:"Sealants slide 24"},
+ {id:"ang",g:"Scaling & root planing",hi:1,q:"Working angulation for a curette: which numbers do you want, 45–90°, 60–80°, or 70°?",
+  why:"The diagram shows 0°, 45°, 70° and 90° teeth, shades the 60–80° range, and the review slide says 70°. No slide states the rule in words.",
+  app:"Insert near 0°, work between 45° and 90°, with 70° named as the review slide’s number.",src:"SRP slide 50, 162"},
+ {id:"grasp",g:"Scaling & root planing",hi:1,q:"“Is the grasp for ultrasonic the same as for hand instrumentation?” What is the answer?",
+  why:"The slide asks the question and does not answer it, and there is no handwritten answer.",
+  app:"Not in Practice. Textbooks say no: the ultrasonic grasp is lighter and relaxed, with almost no lateral pressure. Confirm before relying on that.",src:"SRP slide 83"},
+ {id:"pics",g:"Scaling & root planing",hi:1,q:"Will the test show pictures to identify (fulcrums, grasps, instruments, inserts)?",
+  why:"Several slides are picture questions: “Evaluate the following” grasps A–E, “Which picture shows correct placement of the Gracey 1/2,” “Where would you establish a fulcrum,” and four “Name this advanced fulcrum” slides. The handwritten answers are knuckle rest, standard, chin cup and opposite arch. The grasp slide has no answers written.",
+  app:"This page has no photos, so it cannot quiz pictures. Study slides 127, 133, 134 and 158–161 directly.",src:"SRP slide 127, 133–134, 158–161"},
+ {id:"rev163",g:"Scaling & root planing",hi:1,q:"Review slide, #29 distolingual, 7 mm pocket: the question asks for an opposite arch approach, but my note says “cross arch fulcrum.” Which is right, and what clock position?",
+  why:"The slide asks for an opposite arch approach. The handwriting under it says “11” and “cross arch fulcrum.”",
+  app:"The handwritten answer is shown as written, with a note that it needs checking.",src:"SRP slide 163"},
+ {id:"rev162",g:"Scaling & root planing",q:"Review slide, #15 distolingual, 5 mm pocket, Gracey 13/14: is the answer opposite arch fulcrum at 8 o’clock?",
+  why:"That is the handwritten answer. The slide itself gives none.",
+  app:"The handwritten answer, marked as coming from the notes.",src:"SRP slide 162"},
+ {id:"quads",g:"Scaling & root planing",q:"Stage I–II can have 2 quadrants in one visit. What is the rule for Stage III–IV?",
+  why:"The slide only gives the Stage I–II rule. The note says to finish a quadrant before moving to the next one.",
+  app:"Only the Stage I–II rule and the 1-week interval.",src:"SRP slide 26"},
+ {id:"spca",g:"Scaling & root planing",q:"What does “SPCA’s” stand for?",
+  why:"It is listed under management of modifiable risk factors and never spelled out.",
+  app:"Not in Practice.",src:"SRP slide 26"},
+ {id:"reeval",g:"Scaling & root planing",q:"Re-evaluation: 4–8 weeks or 4–6 weeks?",
+  why:"This deck says 4–8 weeks after NSPT is finished. The Case Lab (Test 1) care plans used 4–6 weeks.",
+  app:"4–8 weeks in Test 2 Lab. 4–6 weeks in Case Lab.",src:"SRP slide 26"},
+ {id:"roots",g:"Scaling & root planing",q:"Root anatomy: how much detail is tested? Root lengths in millimeters? Definitions of the root variations?",
+  why:"The root slides are photos with handwritten notes only. The variations slide lists terms (concrescence, dilaceration, hypercementosis, enamel pearls, cervical enamel projections) with no definitions.",
+  app:"Number of roots, furcation locations, concavities and root trunk length, all from the handwritten notes. Root lengths are left out.",src:"SRP slide 29–45"},
+ {id:"instr",g:"Scaling & root planing",q:"Do we need to know the additional instruments by name (Barnhart, Columbia, Younger-Good, McCall)?",
+  why:"One slide lists them as universal, posterior and anterior curettes with no other detail.",
+  app:"One Practice question and one flashcard cover the list.",src:"SRP slide 111"},
+ {id:"video",g:"Scaling & root planing",q:"Is anything from the videos in the slides on the test?",
+  why:"About a dozen slides are video stills (ultrasonic technique, files, fulcrums, the dental endoscope). The endoscope slides have no text at all.",
+  app:"Nothing from the videos is in this page, because a slide export cannot play them.",src:"SRP slide 101, 107, 118, 141–157, 165–167"},
+ {id:"format",g:"About the test",hi:1,q:"What kinds of questions are on the test: multiple choice, matching, pictures, short answer, calculations?",
+  why:"It changes how to study. Short answer means practicing the lists from memory; pictures mean studying the slides themselves.",
+  app:"Multiple choice plus type-your-answer questions.",src:"Not on the slides"},
+ {id:"book",g:"About the test",hi:1,q:"Is the test only from the slides, or also from the textbook? Which chapters?",
+  why:"This page was built only from the three slide decks and the handwritten notes on them.",
+  app:"Nothing from the textbook unless it is marked “Standard teaching.”",src:"Not on the slides"},
+ {id:"weight",g:"About the test",q:"About how many questions come from each topic: indices, sealants, scaling and root planing?",
+  why:"The scaling and root planing deck is 168 slides and the other two are 59 and 36.",
+  app:"Practice has 46, 35 and 67 questions for the three topics.",src:"Not on the slides"},
+ {id:"cumul",g:"About the test",q:"Is any Test 1 material on this test?",
+  why:"Staging, risk and referral from Test 1 overlap with periodontal therapy planning.",
+  app:"Test 1 material stays in Case Lab and is not mixed into Test 2 Lab.",src:"Not on the slides"},
+ {id:"mynotes",g:"Check your own notes",q:"Handwritten notes I could not read. Check your originals.",
+  why:"<ul><li>Indices slide 59 (TSIF): red note across the bottom.</li><li>Indices slide 58 (Fluorosis Risk Index): small red note at the top.</li><li>Indices slide 39 (DMFT): red note beside “DMFS is more detailed.”</li><li>Indices slide 19 (PSR form): note about where to type the PSR scores.</li><li>SRP slide 3 into slide 4: starred note starting “important to know root anatomy and…”</li><li>SRP slides 29–42: root lengths in millimeters.</li><li>SRP slide 74: note beside frequency.</li></ul>",
+  app:"None of these are used in Practice.",src:"Handwriting"}
 ];
 
 /* ============ WHO (profiles) ============ */
@@ -1624,7 +1754,7 @@ const TESTS=[
   note:`<span class="src">Manual p.__</span> means the rule is taken straight from the clinic manual (printed page number). <span class="src std">Standard teaching</span> means the manual doesn’t cover it and the answer comes from standard dental hygiene textbooks. Check those against your class notes, because your instructors grade on what they taught. This is a study aid, not an answer key.`},
  {id:"t2",title:"Hygiene Test 2 Lab",menu:"Test 2 Lab",blurb:"Test 2 · indices, sealants, scaling & root planing",
   sub:"Test 2 prep · built from the Dental Indices, Sealants, and Nonsurgical Periodontal Therapy slides",
-  tabs:[["topics","Practice"],["cards","Flashcards"],["quiz","Quiz"],["cram","Cram sheet"]],
+  tabs:[["ask","Ask instructor"],["topics","Practice"],["cards","Flashcards"],["quiz","Quiz"],["cram","Cram sheet"]], home:"topics",
   note:`<span class="src">Indices slide __</span> names the slide deck and slide number the answer came from, so you can look it up. <span class="star">★</span> and “class note” mean it was starred or handwritten on the slides. <span class="src std">Standard teaching</span> means the slides don’t say it and the answer comes from standard dental hygiene textbooks. Where a slide and a handwritten note disagree, the answer shows both. This is a study aid, not an answer key.`}
 ];
 let TEST="t1";
@@ -1642,7 +1772,8 @@ function setTest(id,startTab){
   Q=null; deckFilter="All"; deckOrder=null; cardIdx=0; flipped=false;
   renderTest();
   const ids=curTest().tabs.map(x=>x[0]);
-  let t=startTab||lsGet(tabKey())||ids[0]; if(!ids.includes(t))t=ids[0];
+  const home=curTest().home||ids[0];
+  let t=startTab||lsGet(tabKey())||home; if(!ids.includes(t))t=home;
   setTab(t);
 }
 /* ============ THEMES (palette button) ============ */
@@ -1677,8 +1808,8 @@ document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("#titleMenu").hi
 /* ============ TABS ============ */
 let tab="cases";
 function setTab(t){tab=t;document.querySelectorAll("#tabs button").forEach(b=>b.setAttribute("aria-selected",b.dataset.tab===t));
-  ["cases","topics","la","cards","quiz","cram"].forEach(v=>$("#view-"+v).hidden=v!==t);
-  if(t==="cases")renderCases(); if(t==="topics")renderTopics(); if(t==="la")renderLA(); if(t==="cards")renderCards(); if(t==="quiz")renderQuiz(); if(t==="cram")renderCram();
+  ["cases","ask","topics","la","cards","quiz","cram"].forEach(v=>$("#view-"+v).hidden=v!==t);
+  if(t==="cases")renderCases(); if(t==="ask")renderAsk(); if(t==="topics")renderTopics(); if(t==="la")renderLA(); if(t==="cards")renderCards(); if(t==="quiz")renderQuiz(); if(t==="cram")renderCram();
   lsSet(tabKey(),t);
 }
 $("#tabs").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setTab(b.dataset.tab);});
@@ -1766,6 +1897,44 @@ $("#view-cases").addEventListener("click",e=>{
 $("#view-cases").addEventListener("input",e=>{const id=e.target.dataset.draft;if(id){S.ans["draft-"+id]=e.target.value;save();}});
 function rerenderQ(q){const el=$("#q-"+q.id);if(el){el.outerHTML=qHTML(q);}const c=CASES.find(x=>x.id===curCase);const done=c.qs.filter(q=>S.ans[q.id]).length,right=c.qs.filter(q=>S.ans[q.id]&&S.ans[q.id].ok).length;const p=$("#view-cases .prog");if(p)p.textContent=`${done}/${c.qs.length} done · ${right} right`;const ch=$(`[data-case="${c.id}"] small`);if(ch)ch.textContent=`${done}/${c.qs.length}`;}
 function allQ(){return [...CASES.flatMap(c=>c.qs),...T2.flatMap(s=>s.qs)];}
+
+/* ============ ASK THE INSTRUCTOR (Test 2) ============ */
+let askFilter="All";
+function askState(id){return (S.ask&&S.ask[id])||{};}
+function askSet(id,patch){S.ask=S.ask||{};S.ask[id]=Object.assign({},S.ask[id],patch);save();}
+function askHTML(a){
+  const st=askState(a.id);
+  return `<div class="q${st.done?" done-good":""}" id="ask-${a.id}"><div class="topic">${esc(a.g)}${a.hi?` · <span class="star">★ ask first</span>`:""}</div><div class="prompt">${esc(a.q)}</div>
+    <div class="why"><div class="model">Why it’s unclear</div>${a.why}<div class="model" style="margin-top:8px">What this page uses for now</div>${a.app}<div>${srcTag(a.src)}</div></div>
+    <textarea style="margin-top:10px" data-asknote="${a.id}" placeholder="Write what the instructor said…" aria-label="What the instructor said">${esc(st.note||"")}</textarea>
+    <div class="row"><button class="btn ${st.done?"soft":"good"}" data-askdone="${a.id}">${st.done?"Mark as still open":"Got an answer"}</button></div></div>`;
+}
+function askProg(){return `${ASK.filter(a=>askState(a.id).done).length}/${ASK.length} answered`;}
+function renderAsk(){
+  const groups=["All",...new Set(ASK.map(a=>a.g)),"Ask first","Still open"];
+  const shown=ASK.filter(a=>askFilter==="All"||(askFilter==="Still open"?!askState(a.id).done:askFilter==="Ask first"?a.hi:a.g===askFilter));
+  $("#view-ask").innerHTML=`<div class="panel" style="margin-bottom:14px">
+    <div class="qhead"><h3>Notes to review with your instructor</h3><span class="prog">${askProg()}</span></div>
+    <p style="margin:0 0 10px">These are places where a slide disagrees with itself or with a handwritten note, where a slide asks a question and never answers it, or where something could be on the test and isn’t in the slides. Ask, write the answer in the box, and study from that.</p>
+    <div class="row"><button class="btn soft" id="askCopy">Copy the open questions</button></div></div>
+  <div class="filters">${groups.map(g=>`<button data-askfilter="${esc(g)}" aria-pressed="${g===askFilter}">${esc(g)}</button>`).join("")}</div>
+  ${shown.map(askHTML).join("")||`<div class="panel" style="text-align:center"><h3>Nothing left here</h3><p class="muted">Every question in this group has an answer.</p></div>`}`;
+}
+function askText(){
+  const open=ASK.filter(a=>!askState(a.id).done); let out="Questions for my instructor (Test 2)\n";
+  for(const g of new Set(open.map(a=>a.g))){out+="\n"+g+"\n";open.filter(a=>a.g===g).forEach((a,i)=>{out+=`${i+1}. ${a.q} (${a.src})\n`;});}
+  return out;
+}
+$("#view-ask").addEventListener("click",e=>{
+  const t=e.target;
+  const f=t.closest("[data-askfilter]"); if(f){askFilter=f.dataset.askfilter;renderAsk();return;}
+  const d=t.closest("[data-askdone]"); if(d){const id=d.dataset.askdone;const was=!!askState(id).done;askSet(id,{done:!was});if(!was)toast("Marked as answered");
+    if(askFilter==="Still open")renderAsk(); else{$("#ask-"+id).outerHTML=askHTML(ASK.find(a=>a.id===id));$("#view-ask .prog").textContent=askProg();}return;}
+  if(t.id==="askCopy"){const txt=askText();const done=()=>toast("Copied. Paste it into a note or email.");
+    const old=()=>{const ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(err){toast("Couldn’t copy on this device");}ta.remove();};
+    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(done,old); else old();}
+});
+$("#view-ask").addEventListener("input",e=>{const id=e.target.dataset.asknote;if(id)askSet(id,{note:e.target.value});});
 
 /* ============ PRACTICE (Test 2: questions by slide deck) ============ */
 let curSec=T2[0].id, tFilter="All";
@@ -2128,7 +2297,7 @@ function renderCram2(){
 $("#resetArea").addEventListener("click",e=>{
   if(e.target.id==="resetBtn"){$("#resetArea").innerHTML=`<span class="confirm">Erase all progress, both tests? <button class="btn bad" id="resetYes" style="padding:5px 10px">Erase</button><button class="ghost" id="resetNo">Keep</button></span>`;}
   if(e.target.id==="resetNo"){$("#resetArea").innerHTML=`<button class="ghost" id="resetBtn">Start over</button>`;}
-  if(e.target.id==="resetYes"){S={xp:0,ans:{},cards:{},best:0};save();Q=null;laCart=null;$("#resetArea").innerHTML=`<button class="ghost" id="resetBtn">Start over</button>`;renderHUD();setTab(tab);toast("Progress erased");}
+  if(e.target.id==="resetYes"){const keep=S.ask;S={xp:0,ans:{},cards:{},best:0};if(keep)S.ask=keep;/* instructor answers are notes, not progress */save();Q=null;laCart=null;$("#resetArea").innerHTML=`<button class="ghost" id="resetBtn">Start over</button>`;renderHUD();setTab(tab);toast("Progress erased");}
 });
 
 /* petals */

@@ -12,7 +12,11 @@ Study page for a dental hygiene student (user's stepdaughter) at Northampton Com
 The page title is a dropdown that switches tests. Each test has its own tabs, flashcard progress, quiz best score and remembered tab. XP and level are shared. First visit opens the newest test; after that it opens whichever was used last.
 
 - **Case Lab** (Test 1): Cases, Anesthetic lab, Flashcards, Quiz, Cram sheet. Unchanged.
-- **Test 2 Lab**: Practice (142 questions in three sections), Flashcards (57), Quiz, Cram sheet.
+- **Test 2 Lab**: Ask instructor (34 items), Practice (148 questions in three sections), Flashcards (59), Quiz, Cram sheet. Opens on Practice.
+
+**Ask instructor tab** (`ASK`, `renderAsk()`): every place a slide conflicts with itself or with a handwritten note, asks a question it never answers, or leaves something out. Each item shows why it is unclear and what the page assumes for now, with a box for the instructor's answer. Answers are saved under `S.ask` and are kept when "Start over" erases progress. When the instructor answers one, update the matching Practice question and mark the item here.
+
+**Known limits of Test 2 Lab:** no photos (picture-identification slides 127, 133, 134, 158–161 of the SRP deck must be studied from the slides), nothing from the embedded videos, nothing from the textbook, and a handful of handwritten notes that could not be read (listed in the "Check your own notes" item).
 
 Test 2 sources are three slide decks in `Docs/Study Materials/Test 2/`, exported with her handwritten notes on them:
 - `Perio index.pdf`: Dental Indices, 59 slides (PSR, PerioWise, and the indices).
