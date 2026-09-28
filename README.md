@@ -16,6 +16,8 @@ The page title is a dropdown that switches tests. Each test has its own tabs, fl
 
 **Ask instructor tab** (`ASK`, `renderAsk()`): every place a slide conflicts with itself or with a handwritten note, asks a question it never answers, or leaves something out. Each item shows why it is unclear and what the page assumes for now, with a box for the instructor's answer. Answers are saved under `S.ask` and are kept when "Start over" erases progress. When the instructor answers one, update the matching Practice question and mark the item here.
 
+**Getting her answers back** (`answersText()`): the site has no server, so answers live only in her browser. The "Your answers" box in the Ask instructor tab has "Send my answers" (phone share sheet, shown only where the browser supports it) and "Copy my answers." The message holds her instructor answers, practice progress, missed questions and written answers. Each item carries its id in brackets, such as `[psr3]` or `[t2i-record]`, so a pasted message can be matched to the code.
+
 **Known limits of Test 2 Lab:** no photos (picture-identification slides 127, 133, 134, 158–161 of the SRP deck must be studied from the slides), nothing from the embedded videos, nothing from the textbook, and a handful of handwritten notes that could not be read (listed in the "Check your own notes" item).
 
 Test 2 sources are three slide decks in `Docs/Study Materials/Test 2/`, exported with her handwritten notes on them:

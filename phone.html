@@ -2056,14 +2056,35 @@ function askHTML(a){
 }
 function askProg(){return `${ASK.filter(a=>askState(a.id).done).length}/${ASK.length} answered`;}
 function renderAsk(){
-  const groups=["All",...new Set(ASK.map(a=>a.g)),"Ask first","Still open"];
-  const shown=ASK.filter(a=>askFilter==="All"||(askFilter==="Still open"?!askState(a.id).done:askFilter==="Ask first"?a.hi:a.g===askFilter));
+  const groups=["All",...new Set(ASK.map(a=>a.g)),"Ask first","Still open","Answered"];
+  const shown=ASK.filter(a=>askFilter==="All"||(askFilter==="Still open"?!askState(a.id).done:askFilter==="Answered"?hasAns(a):askFilter==="Ask first"?a.hi:a.g===askFilter));
   $("#view-ask").innerHTML=`<div class="panel" style="margin-bottom:14px">
     <div class="qhead"><h3>Notes to review with your instructor</h3><span class="prog">${askProg()}</span></div>
     <p style="margin:0 0 10px">These are places where a slide disagrees with itself or with a handwritten note, where a slide asks a question and never answers it, or where something could be on the test and isn’t in the slides. Ask, write the answer in the box, and study from that.</p>
-    <div class="row"><button class="btn soft" id="askCopy">Copy the open questions</button></div></div>
+    <div class="row"><button class="btn soft" id="askCopy">Copy the open questions</button></div>
+    <div class="lbl">Your answers</div>
+    <p style="margin:0 0 4px">Everything you’ve written here, plus your practice progress, in one message you can text or email.</p>
+    <div class="row">${navigator.share?`<button class="btn acc" id="ansShare">Send my answers</button>`:""}<button class="btn ${navigator.share?"soft":"acc"}" id="ansCopy">Copy my answers</button></div></div>
   <div class="filters">${groups.map(g=>`<button data-askfilter="${esc(g)}" aria-pressed="${g===askFilter}">${esc(g)}</button>`).join("")}</div>
-  ${shown.map(askHTML).join("")||`<div class="panel" style="text-align:center"><h3>Nothing left here</h3><p class="muted">Every question in this group has an answer.</p></div>`}`;
+  ${shown.map(askHTML).join("")||`<div class="panel" style="text-align:center"><h3>Nothing left here</h3><p class="muted">${askFilter==="Answered"?"No answers written yet.":"Every question in this group has an answer."}</p></div>`}`;
+}
+function hasAns(a){const st=askState(a.id);return !!(st.done||(st.note&&st.note.trim()));}
+function answersText(){
+  const got=ASK.filter(hasAns), t2q=T2.flatMap(x=>x.qs);
+  let out=`Test 2 answers${NAME?" from "+NAME:""}, ${new Date().toLocaleDateString()}\n\nINSTRUCTOR ANSWERS: ${got.length} of ${ASK.length}\n`;
+  got.forEach(a=>{const n=(askState(a.id).note||"").trim();out+=`\n[${a.id}] ${a.q} (${a.src})\nAnswer: ${n||"(marked answered, nothing written)"}\n`;});
+  out+="\nPRACTICE PROGRESS\n";
+  T2.forEach(x=>{const g=secProg(x);out+=`${x.name}: ${g.done}/${g.n} done, ${g.right} right\n`;});
+  out+=`Best quiz score: ${S.best_t2||0}/10\n`;
+  const miss=t2q.filter(q=>S.ans[q.id]&&!S.ans[q.id].ok);
+  if(miss.length){out+="\nMISSED OR MARKED FOR REVIEW\n";miss.forEach(q=>{out+=`- [${q.id}] ${q.q}\n`;});}
+  const wrote=t2q.filter(q=>q.type==="open"&&(S.ans["draft-"+q.id]||"").trim());
+  if(wrote.length){out+="\nWRITTEN ANSWERS\n";wrote.forEach(q=>{out+=`\n[${q.id}] ${q.q}\nWrote: ${S.ans["draft-"+q.id].trim()}\n`;});}
+  return out;
+}
+function copyText(txt,msg){const done=()=>toast(msg);
+  const old=()=>{const ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(err){toast("Couldn’t copy on this device");}ta.remove();};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(done,old); else old();
 }
 function askText(){
   const open=ASK.filter(a=>!askState(a.id).done); let out="Questions for my instructor (Test 2)\n";
@@ -2075,9 +2096,9 @@ $("#view-ask").addEventListener("click",e=>{
   const f=t.closest("[data-askfilter]"); if(f){askFilter=f.dataset.askfilter;renderAsk();return;}
   const d=t.closest("[data-askdone]"); if(d){const id=d.dataset.askdone;const was=!!askState(id).done;askSet(id,{done:!was});if(!was)toast("Marked as answered");
     if(askFilter==="Still open")renderAsk(); else{$("#ask-"+id).outerHTML=askHTML(ASK.find(a=>a.id===id));$("#view-ask .prog").textContent=askProg();}return;}
-  if(t.id==="askCopy"){const txt=askText();const done=()=>toast("Copied. Paste it into a note or email.");
-    const old=()=>{const ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(err){toast("Couldn’t copy on this device");}ta.remove();};
-    if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(done,old); else old();}
+  if(t.id==="askCopy"){copyText(askText(),"Copied. Paste it into a note or email.");return;}
+  if(t.id==="ansCopy"){copyText(answersText(),"Copied. Paste it into a text or email.");return;}
+  if(t.id==="ansShare"){const txt=answersText();navigator.share({title:"Test 2 answers",text:txt}).catch(err=>{if(!err||err.name!=="AbortError")copyText(txt,"Copied instead. Paste it into a text or email.");});return;}
 });
 $("#view-ask").addEventListener("input",e=>{const id=e.target.dataset.asknote;if(id)askSet(id,{note:e.target.value});});
 
