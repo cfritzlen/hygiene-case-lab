@@ -10,7 +10,7 @@
 <title>Hygiene Case Lab</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&family=M+PLUS+Rounded+1c:wght@700;800&family=Cinzel:wght@700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@500;700&family=M+PLUS+Rounded+1c:wght@700;800&family=Cinzel:wght@700;800&family=Oswald:wght@600;700&family=Fredoka:wght@600;700&display=swap">
 <script>
 (function(){try{
   var q=location.search;
@@ -56,13 +56,33 @@
 /* ---- themes (picked from the palette button; Sakura is the default above) ---- */
 :root[data-skin="anime"]{
   color-scheme:light;
-  --bg:#F2F7FF; --surface:#FFFFFF; --surface2:#EAF1FF; --ink:#1B2250; --muted:#565F8C; --line:#C6D5F5;
-  --accent:#6A3DF0; --accent-ink:#FFFFFF; --accent-soft:#E7DFFF;
-  --bleed:#E0285A; --chart:#FF5FA2; --chart-soft:#FFE3EF; --cyan:#D9F3FF;
+  --bg:#F1FAFF; --surface:#FFFFFF; --surface2:#FFF6D6; --ink:#17142E; --muted:#55507A; --line:#BFE3F2;
+  --accent:#D81B68; --accent-ink:#FFFFFF; --accent-soft:#FFDDEB;
+  --bleed:#D81B68; --chart:#19B5DB; --chart-soft:#DDF6FD; --cyan:#D9F3FF;
   --good:#16864C; --good-soft:#DDF5E7; --warn:#A85F00; --warn-soft:#FFF1CC; --bad:#CC2346; --bad-soft:#FFE1E7;
-  --petal:#FFC93C; --petal2:#FF8AC0; --branch:#6A3DF0;
-  --shadow:0 2px 0 #C6D5F5,5px 6px 0 rgba(106,61,240,.14);
+  --petal:#FFD23F; --petal2:#FF7DB3; --branch:#17142E;
+  --shadow:4px 4px 0 #17142E;
   --display:"M PLUS Rounded 1c","Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+}
+:root[data-skin="steelers"]{
+  color-scheme:dark;
+  --bg:#0D0D0D; --surface:#191919; --surface2:#242424; --ink:#F5F5F5; --muted:#B8B8B8; --line:#3A3A3A;
+  --accent:#FFB612; --accent-ink:#0D0D0D; --accent-soft:#3A2D08;
+  --bleed:#F0695E; --chart:#FFB612; --chart-soft:#2B2B2B; --cyan:#2B2B2B;
+  --good:#6FCF97; --good-soft:#16301F; --warn:#F0C465; --warn-soft:#3A2D14; --bad:#F0737D; --bad-soft:#401C20;
+  --petal:#FFB612; --petal2:#F5F5F5; --branch:#F5F5F5;
+  --shadow:0 1px 2px rgba(0,0,0,.6),0 8px 22px rgba(0,0,0,.5);
+  --display:"Oswald","Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+}
+:root[data-skin="hazelnut"]{
+  color-scheme:light;
+  --bg:#FBF5EC; --surface:#FFFFFF; --surface2:#F7ECDD; --ink:#4A3324; --muted:#846753; --line:#EAD8C2;
+  --accent:#9F5F33; --accent-ink:#FFFFFF; --accent-soft:#F3E1CF;
+  --bleed:#C8553D; --chart:#E2B181; --chart-soft:#FAEEDD; --cyan:#FAEEDD;
+  --good:#3E8A55; --good-soft:#E3F2E6; --warn:#A8690F; --warn-soft:#FCEFD9; --bad:#BF4040; --bad-soft:#FBE3E1;
+  --petal:#C99563; --petal2:#EBCFAE; --branch:#7A9A5B;
+  --shadow:0 1px 2px rgba(90,55,25,.06),0 8px 22px rgba(140,90,45,.12);
+  --display:"Fredoka","Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
 }
 :root[data-skin="wednesday"]{
   color-scheme:dark;
@@ -74,16 +94,25 @@
   --shadow:0 1px 2px rgba(0,0,0,.5),0 8px 22px rgba(0,0,0,.45);
   --display:"Cinzel","Bricolage Grotesque",ui-serif,Georgia,serif;
 }
-:root[data-skin="anime"] body{background-image:radial-gradient(var(--line) 1.2px,transparent 1.4px);background-size:18px 18px}
+:root[data-skin="anime"] body{background-image:radial-gradient(var(--line) 1.7px,transparent 1.9px);background-size:14px 14px}
 :root[data-skin="wednesday"] body{background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.022) 0 1px,transparent 1px 30px)}
+:root[data-skin="steelers"] body{background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 2px,transparent 2px 72px)}
+:root[data-skin="hazelnut"] body{background-image:radial-gradient(#F0E0CB 2.2px,transparent 2.6px);background-size:28px 28px}
 .deco{position:absolute;top:0;right:0;width:min(520px,70vw);height:auto;pointer-events:none;z-index:0;display:none}
-:root[data-skin="anime"] .sakura,:root[data-skin="wednesday"] .sakura{display:none}
-:root[data-skin="anime"] .deco-anime,:root[data-skin="wednesday"] .deco-wed{display:block}
-:root[data-skin="anime"] .brand h1 .probe::before{content:"✦";color:var(--chart)}
+:root[data-skin] .sakura{display:none}
+:root[data-skin="anime"] .deco-anime,:root[data-skin="wednesday"] .deco-wed,:root[data-skin="steelers"] .deco-steel,:root[data-skin="hazelnut"] .deco-hazel{display:block}
+:root[data-skin="anime"] .brand h1 .probe::before{content:"★";color:var(--petal);-webkit-text-stroke:1.5px var(--ink)}
 :root[data-skin="wednesday"] .brand h1 .probe::before{content:"☾"}
-/* falling sparkles instead of petals */
-:root[data-skin="anime"] .petals span{width:13px;height:13px;border-radius:0;opacity:.85;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
+:root[data-skin="steelers"] .brand h1 .probe::before{content:"🏈"}
+:root[data-skin="hazelnut"] .brand h1 .probe::before{content:"🐰"}
+/* what falls instead of petals: sparkles, confetti, hazelnuts */
+:root[data-skin="anime"] .petals span{width:14px;height:14px;border-radius:0;opacity:.9;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%)}
 :root[data-skin="anime"] .petals span:nth-child(even){background:var(--petal2)}
+:root[data-skin="anime"] .petals span:nth-child(3n){background:var(--chart)}
+:root[data-skin="steelers"] .petals span{width:7px;height:13px;border-radius:1px;opacity:.85}
+:root[data-skin="steelers"] .petals span:nth-child(3n){background:var(--petal2)}
+:root[data-skin="hazelnut"] .petals span{width:11px;height:13px;border-radius:50% 50% 50% 50%/38% 38% 62% 62%;opacity:.75}
+:root[data-skin="hazelnut"] .petals span:nth-child(even){background:var(--petal2)}
 :root[data-skin="wednesday"] .petals span{opacity:.8}
 :root[data-skin="wednesday"] .brand h1{letter-spacing:.01em}
 :root[data-skin="wednesday"] nav.tabs button{font-size:15px;letter-spacing:.03em}
@@ -298,6 +327,32 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
 .wholist button{border:1.5px solid var(--line);background:var(--surface2);border-radius:999px;padding:9px 14px;font-weight:700;min-height:42px}
 .wholist button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
 .wholist .del{border:0;background:transparent;color:var(--muted);font-weight:400;padding:4px 6px;min-height:0;font-size:12px}
+/* ---- theme shapes. Kept last so they beat the base rules; :where() keeps them weaker than state colors (right/wrong, pressed) ---- */
+/* Anime: ink outlines and hard comic shadows */
+:where(:root[data-skin="anime"]) :is(.panel,.q,.face,.modal-card,.titlemenu,.verdict){border:2.5px solid var(--ink)}
+:where(:root[data-skin="anime"]) .q{box-shadow:4px 4px 0 var(--ink);margin-bottom:14px}
+:where(:root[data-skin="anime"]) :is(.opt,.chip,.ghost,.verlink,.cart,textarea,.xp,.filters button,.wholist button,.field input,.field select){border:2px solid var(--ink)}
+:where(:root[data-skin="anime"]) .btn{border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink)}
+:root[data-skin="anime"] .btn.soft{border:2px solid var(--ink)}
+:root[data-skin="anime"] .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+:root[data-skin="anime"] nav.tabs{padding-top:5px;padding-bottom:10px}
+:root[data-skin="anime"] nav.tabs button[aria-selected="true"]{box-shadow:0 0 0 2px var(--ink),4px 4px 0 2px var(--ink);transform:rotate(-1.5deg)}
+:root[data-skin="anime"] .brand h1{text-shadow:3px 3px 0 var(--petal)}
+:root[data-skin="anime"] header.top{border-bottom:3px solid var(--ink)}
+:root[data-skin="anime"] .q .topic{display:inline-block;background:var(--ink);color:#fff;padding:2px 9px;border-radius:4px;transform:skewX(-8deg)}
+:root[data-skin="anime"] .q .topic .star{color:var(--petal)}
+:root[data-skin="anime"] .face.back .src{background:#fff;color:var(--accent)}
+/* Steelers: gold rule lines and block capitals */
+:root[data-skin="steelers"] header.top{border-bottom:4px solid var(--accent)}
+:where(:root[data-skin="steelers"]) .panel{border-top:3px solid var(--accent)}
+:root[data-skin="steelers"] :is(.brand h1,nav.tabs button,.qhead h3,.cram h3){text-transform:uppercase;letter-spacing:.04em}
+:root[data-skin="steelers"] .brand h1{font-weight:700}
+:root[data-skin="steelers"] .modal{background:rgba(0,0,0,.65)}
+:root[data-skin="steelers"] :is(.btn.good,.btn.bad,.pill),:root[data-skin="wednesday"] :is(.btn.good,.btn.bad,.pill){color:#101010}
+/* Hazelnut: soft and round */
+:where(:root[data-skin="hazelnut"]) :is(.panel,.q,.face,.modal-card){border-radius:22px}
+:where(:root[data-skin="hazelnut"]) :is(.opt,.btn,textarea,.why){border-radius:16px}
+:root[data-skin="hazelnut"] header.top{border-bottom:3px dotted var(--chart)}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
@@ -318,12 +373,70 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
   <use href="#flower" x="405" y="160"/><use href="#flower" x="395" y="128" transform="scale(1)"/><use href="#flower" x="290" y="150"/><use href="#flower" x="315" y="140"/><use href="#flower" x="280" y="215"/><use href="#flower" x="305" y="192"/><use href="#flower" x="242" y="238"/><use href="#flower" x="490" y="95"/><use href="#flower" x="465" y="52"/><use href="#flower" x="350" y="125"/><use href="#flower" x="335" y="168"/><use href="#flower" x="420" y="105"/><use href="#flower" x="265" y="225"/>
   <g fill="var(--petal2)"><use href="#flower" x="440" y="80" transform="translate(440 80) scale(.7) translate(-440 -80)"/><use href="#flower" x="255" y="190" transform="translate(255 190) scale(.7) translate(-255 -190)"/><use href="#flower" x="380" y="145" transform="translate(380 145) scale(.6) translate(-380 -145)"/></g>
 </svg>
-<svg class="deco deco-anime" viewBox="0 0 520 260" aria-hidden="true">
-  <path fill="var(--petal2)" opacity=".45" d="M513 70L505 189L495 188Z M496 104L472 238L459 235Z M491 79L427 281L411 275Z M465 108L417 216L406 210Z M465 81L364 247L350 237Z M471 57L371 182L361 173Z M437 75L311 199L301 187Z M447 51L335 138L327 127Z M409 59L273 140L266 126Z M424 37L310 87L306 75Z M442 19L250 75L247 60Z M404 14L300 33L298 21Z"/>
-  <defs><path id="spark" d="M0 -16Q1.5 -1.5 16 0Q1.5 1.5 0 16Q-1.5 1.5 -16 0Q-1.5 -1.5 0 -16Z"/></defs>
-  <g fill="var(--petal)"><use href="#spark" transform="translate(440 70) scale(1.7)"/><use href="#spark" transform="translate(350 38) scale(.9)"/><use href="#spark" transform="translate(300 150) scale(1.1)"/><use href="#spark" transform="translate(480 170) scale(.8)"/></g>
-  <g fill="var(--chart)"><use href="#spark" transform="translate(390 120) scale(1.2)"/><use href="#spark" transform="translate(262 84) scale(.7)"/><use href="#spark" transform="translate(492 22) scale(.75)"/></g>
-  <g fill="var(--accent)"><use href="#spark" transform="translate(330 96) scale(.55)"/><use href="#spark" transform="translate(430 205) scale(.6)"/></g>
+<svg class="deco deco-anime" viewBox="0 0 520 300" aria-hidden="true">
+  <path fill="var(--chart)" opacity=".4" d="M513 70L505 189L495 188Z M496 104L472 238L459 235Z M491 79L427 281L411 275Z M465 108L417 216L406 210Z M465 81L364 247L350 237Z M471 57L371 182L361 173Z M437 75L311 199L301 187Z M447 51L335 138L327 127Z M409 59L273 140L266 126Z M424 37L310 87L306 75Z M442 19L250 75L247 60Z M404 14L300 33L298 21Z"/>
+  <defs>
+    <polygon id="star5" points="0,-16 4,-6 15,-5 6,2 9,13 0,7 -9,13 -6,2 -15,-5 -4,-6" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>
+    <path id="glint" d="M0 -12Q1.5 -1.5 12 0Q1.5 1.5 0 12Q-1.5 1.5 -12 0Q-1.5 -1.5 0 -12Z" fill="#fff" stroke="var(--ink)" stroke-width="2" stroke-linejoin="round"/>
+  </defs>
+  <!-- chibi tooth mascot on an action burst -->
+  <g transform="translate(438 214) scale(.78)">
+    <polygon fill="var(--petal)" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round" points="0,-92 14,-62 40,-83 40,-50 72,-57 58,-28 90,-20 64,0 90,20 58,28 72,57 40,50 40,83 14,62 0,92 -14,62 -40,83 -40,50 -72,57 -58,28 -90,20 -64,0 -90,-20 -58,-28 -72,-57 -40,-50 -40,-83 -14,-62"/>
+    <g transform="translate(0 2) rotate(7)">
+      <path fill="#fff" stroke="var(--ink)" stroke-width="4" stroke-linejoin="round" d="M-40 -20C-40 -50 -15 -52 0 -42C15 -52 40 -50 40 -20C40 5 32 20 28 40C26 52 14 54 12 40C10 28 6 20 0 20C-6 20 -10 28 -12 40C-14 54 -26 52 -28 40C-32 20 -40 5 -40 -20Z"/>
+      <path fill="none" stroke="var(--line)" stroke-width="4" stroke-linecap="round" d="M-30 -24C-30 -36 -24 -41 -16 -42"/>
+      <ellipse cx="-15" cy="-13" rx="8" ry="11" fill="var(--ink)"/><ellipse cx="15" cy="-13" rx="8" ry="11" fill="var(--ink)"/>
+      <ellipse cx="-15" cy="-8" rx="5" ry="5" fill="var(--accent)"/><ellipse cx="15" cy="-8" rx="5" ry="5" fill="var(--accent)"/>
+      <circle cx="-18" cy="-18" r="3.2" fill="#fff"/><circle cx="12" cy="-18" r="3.2" fill="#fff"/>
+      <circle cx="-12" cy="-8" r="1.6" fill="#fff"/><circle cx="18" cy="-8" r="1.6" fill="#fff"/>
+      <ellipse cx="-28" cy="2" rx="5.5" ry="3.2" fill="var(--petal2)" opacity=".8"/><ellipse cx="28" cy="2" rx="5.5" ry="3.2" fill="var(--petal2)" opacity=".8"/>
+      <path d="M-7 4Q0 15 7 4Z" fill="var(--petal2)" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>
+    </g>
+    <use href="#glint" transform="translate(56 -52)"/><use href="#glint" transform="translate(-62 34) scale(.6)"/>
+  </g>
+  <use href="#star5" fill="var(--accent)" transform="translate(300 40) rotate(-12)"/>
+  <use href="#star5" fill="var(--petal2)" transform="translate(478 58) scale(.85) rotate(8)"/>
+  <use href="#star5" fill="var(--chart)" transform="translate(340 250) scale(.7) rotate(14)"/>
+</svg>
+<svg class="deco deco-steel" viewBox="0 0 520 260" aria-hidden="true">
+  <polygon points="300,0 345,0 520,175 520,220" fill="#FFB612"/>
+  <polygon points="357,0 369,0 520,151 520,163" fill="#F5F5F5"/>
+  <polygon points="381,0 426,0 520,94 520,139" fill="#FFB612"/>
+  <g transform="translate(442 212) rotate(-28) scale(.85)">
+    <path d="M-64 0Q0 -48 64 0Q0 48 -64 0Z" fill="#8A4B2A" stroke="#F5F5F5" stroke-width="3" stroke-linejoin="round"/>
+    <g fill="none" stroke="#F5F5F5" stroke-linecap="round">
+      <path stroke-width="5" d="M-41 -13Q-37 0 -41 13 M41 -13Q37 0 41 13"/>
+      <path stroke-width="3" d="M-20 -6L20 -6"/>
+      <path stroke-width="3" d="M-15 -12L-15 0 M-7.5 -12L-7.5 0 M0 -12L0 0 M7.5 -12L7.5 0 M15 -12L15 0"/>
+    </g>
+  </g>
+</svg>
+<svg class="deco deco-hazel" viewBox="0 0 520 300" aria-hidden="true">
+  <defs>
+    <g id="nut"><path d="M0 13C-10 13 -14 3 -12 -3C-10 -9 10 -9 12 -3C14 3 10 13 0 13Z" fill="#B7814F"/><path d="M-12 -2C-11 -11 11 -11 12 -2C6 -6 -6 -6 -12 -2Z" fill="#8A5A33"/><path d="M-1 -9Q0 -14 3 -13" stroke="#8A5A33" stroke-width="2.2" fill="none" stroke-linecap="round"/><path d="M-6 3Q-6 8 -2 10" stroke="#D9A877" stroke-width="2" fill="none" stroke-linecap="round"/></g>
+    <g id="clover" fill="#8FB06E"><circle cx="0" cy="-7" r="6.5"/><circle cx="-6.5" cy="3" r="6.5"/><circle cx="6.5" cy="3" r="6.5"/><path d="M0 4Q1 14 5 19" stroke="#7A9A5B" stroke-width="2.2" fill="none" stroke-linecap="round"/></g>
+  </defs>
+  <!-- Hazelnut the bunny -->
+  <g transform="translate(446 200) scale(.74)">
+    <g transform="rotate(-12 -18 -40)"><ellipse cx="-18" cy="-78" rx="13" ry="40" fill="#D2A679"/><ellipse cx="-18" cy="-75" rx="6.5" ry="29" fill="#F4CBBB"/></g>
+    <g transform="rotate(14 18 -40)"><ellipse cx="18" cy="-78" rx="13" ry="40" fill="#D2A679"/><ellipse cx="18" cy="-75" rx="6.5" ry="29" fill="#F4CBBB"/></g>
+    <ellipse cx="0" cy="52" rx="56" ry="44" fill="#D2A679"/>
+    <ellipse cx="0" cy="64" rx="32" ry="28" fill="#F6E6D2"/>
+    <ellipse cx="-26" cy="92" rx="17" ry="9" fill="#F6E6D2"/><ellipse cx="26" cy="92" rx="17" ry="9" fill="#F6E6D2"/>
+    <ellipse cx="0" cy="-6" rx="40" ry="35" fill="#DAB28B"/>
+    <ellipse cx="0" cy="9" rx="19" ry="14" fill="#F6E6D2"/>
+    <circle cx="-16" cy="-10" r="5.5" fill="#3A2618"/><circle cx="16" cy="-10" r="5.5" fill="#3A2618"/>
+    <circle cx="-17.6" cy="-12" r="1.9" fill="#fff"/><circle cx="14.4" cy="-12" r="1.9" fill="#fff"/>
+    <ellipse cx="-27" cy="4" rx="6" ry="4" fill="#F2B7A8" opacity=".75"/><ellipse cx="27" cy="4" rx="6" ry="4" fill="#F2B7A8" opacity=".75"/>
+    <path d="M-4.5 2Q0 -1 4.5 2Q0 8 -4.5 2Z" fill="#D98C86"/>
+    <path d="M0 7Q-1 13 -7 12M0 7Q1 13 7 12" stroke="#7A5238" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <g stroke="#B99372" stroke-width="1.2" stroke-linecap="round"><path d="M-22 9L-42 6M-22 12L-41 15M22 9L42 6M22 12L41 15"/></g>
+  </g>
+  <use href="#nut" transform="translate(330 30) rotate(-18) scale(1.2)"/>
+  <use href="#nut" transform="translate(380 214) rotate(22)"/>
+  <use href="#nut" transform="translate(506 276) rotate(-8) scale(.9)"/>
+  <use href="#clover" transform="translate(496 40) rotate(18) scale(.85)"/>
+  <use href="#clover" transform="translate(392 268) rotate(-14) scale(.8)"/>
 </svg>
 <svg class="deco deco-wed" viewBox="0 0 520 260" aria-hidden="true">
   <g fill="none" stroke="var(--branch)" stroke-linecap="round" opacity=".75">
@@ -1734,8 +1847,10 @@ function setTest(id,startTab){
 /* ============ THEMES (palette button) ============ */
 const SKINS=[
  {id:"sakura",name:"Sakura",blurb:"Pink blossoms, the original",sw:["#FFF5F8","#D9467A","#F8B8CD"]},
- {id:"anime",name:"Anime",blurb:"Bright colors, sparkles, manga dots",sw:["#F2F7FF","#6A3DF0","#FFC93C"]},
- {id:"wednesday",name:"Wednesday",blurb:"Black, bone white, a little purple",sw:["#0E0D10","#B79AE8","#ECE8F1"]}
+ {id:"anime",name:"Anime",blurb:"Comic outlines, stars, a chibi tooth",sw:["#F1FAFF","#D81B68","#FFD23F"]},
+ {id:"wednesday",name:"Wednesday",blurb:"Black, bone white, a little purple",sw:["#0E0D10","#B79AE8","#ECE8F1"]},
+ {id:"steelers",name:"Steelers",blurb:"Black and gold, game day",sw:["#0D0D0D","#FFB612","#F5F5F5"]},
+ {id:"hazelnut",name:"Hazelnut",blurb:"Her light brown bunny",sw:["#FBF5EC","#9F5F33","#D2A679"]}
 ];
 let SKIN="sakura";
 function applySkin(id){
