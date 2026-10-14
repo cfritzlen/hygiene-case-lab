@@ -573,8 +573,10 @@ table.mrd td.lim{color:var(--accent);font-weight:700}
 // url: the project URL, like https://abcdefgh.supabase.co. Left empty, slide links and backup stay off.
 const SB={url:"",key:"sb_publishable_r66fLJcqlUPc7m1wmrIksQ_rIwoTNyb",bucket:"slides"};
 const LOCAL=/^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-const SLIDE_BASE=SB.url?SB.url+"/storage/v1/object/public/"+SB.bucket+"/test2/":(LOCAL?"slides/test2/":"");
-const DECKS={Indices:{dir:"indices",n:59},Sealants:{dir:"sealants",n:36},SRP:{dir:"srp",n:168}};
+const SLIDE_BASE=SB.url?SB.url+"/storage/v1/object/public/"+SB.bucket+"/":(LOCAL?"slides/":"");
+const DECKS={Indices:{dir:"test2/indices",n:59},Sealants:{dir:"test2/sealants",n:36},SRP:{dir:"test2/srp",n:168},
+  Ch1:{dir:"test3/ch1",n:68},Assessment:{dir:"test3/assess",n:143},"Test-taking":{dir:"test3/tts",n:20}};
+const DECK_RE=new RegExp("^("+Object.keys(DECKS).join("|")+") slide ");
 function slideURL(deck,n){return SLIDE_BASE+DECKS[deck].dir+"/"+String(n).padStart(3,"0")+".jpg";}
 
 /* ============ DATA ============ */
@@ -1700,14 +1702,721 @@ const T2 = [
 }
 ];
 
+/* ============ TEST 3 DATA: people's health, community program planning, testlets ============ */
+const T3 = [
+{
+  id:"ph", name:"People’s Health", deck:"Chapter 1 · 68 slides",
+  blurb:"Definitions, the three levels of prevention, the government’s role, the core functions, and where dental public health is headed.",
+  stars:[
+    "<b>Dental public health</b>: “the science and art of preventing and controlling dental disease and promoting dental health through organized community efforts.” Note: “work mainly of education-based programs.”",
+    "<b>Public health and community health</b> are interchangeable terms (class note).",
+    "<b>Assurance</b> (highlighted): “does what it says it is going to do and helps who it is meant to help.”",
+    "<b>Community water fluoridation</b> is “the perfect example of a dental public health solution” (underlined).",
+    "Dental caries is <b>widespread</b>; the greatest unmet need is dental decay, primarily in children (class notes).",
+    "Dental professionals must stress the oral–general health link to <b>policymakers</b>: “advocate to the people who have the ability to make change.”",
+    "Review slides: “Dental public health emphasizes prevention and population-level interventions” and “Diagnose and treat patients” are circled."
+  ],
+  mix:[
+    "<b>Primary vs secondary vs tertiary:</b> keep it from starting (fluoridation) · stop it early (varnish on white spots) · replace what’s lost (dentures, implants).",
+    "<b>Assessment vs policy development vs assurance:</b> collect the data · plan from science · deliver what was promised (and enforce laws).",
+    "<b>Who defined what:</b> WHO = health · CDC = public health · AAPHD = dental public health.",
+    "<b>NIH vs CDC vs HRSA:</b> research (NIDCR) · surveillance, prevention, fluoridation · National Health Service Corps, Ryan White, workforce.",
+    "<b>Fones vs Newman:</b> Fones coined “dental hygienist” in 1913 · Irene Newman was the first one."
+  ],
+  qs:[
+    {id:"t3h-dph",topic:"Definitions",type:"mc",q:"Which is the definition of dental public health?",
+     opts:["The science and art of preventing and controlling dental disease and promoting dental health through organized community efforts","The science of protecting and improving the health of families and communities through healthy lifestyles, research, and infectious disease control","Complete physical and social well-being, not merely the absence of disease","The health outcomes of a group of individuals, including how those outcomes are distributed in the group"],ans:0,
+     why:"That is the <b>American Association of Public Health Dentistry</b> definition. It is the form of dental practice that serves the <b>community as the patient</b>. The others are the CDC’s public health, the WHO’s health, and population health. Class note: “work mainly of education-based programs.”",
+     src:"Ch1 slide 7 class note"},
+    {id:"t3h-who",topic:"Definitions",type:"mc",mix:1,q:"Who defined health as complete physical and social well-being, not merely the absence of disease?",
+     opts:["The World Health Organization (WHO)","The CDC","The American Association of Public Health Dentistry","The ADHA"],ans:0,
+     why:"The <b>WHO</b>. Health is a <b>continuum</b>: no disease → asymptomatic → clinical course of action.",
+     src:"Ch1 slide 4"},
+    {id:"t3h-cdc",topic:"Definitions",type:"mc",mix:1,q:"Whose definition of public health is “the science of protecting and improving the health of families and communities”?",
+     opts:["The WHO","The CDC","The ADA","The Surgeon General"],ans:1,
+     why:"The <b>CDC</b>: protecting and improving health through promotion of healthy lifestyles, research for disease and injury prevention, and detection and control of infectious diseases.",
+     src:"Ch1 slide 5"},
+    {id:"t3h-comm",topic:"Definitions",type:"mc",q:"In this course, how do “public health” and “community health” relate?",
+     opts:["They are interchangeable terms","Community health is local only; public health is federal only","Community health means private practice in a community","Public health covers disease; community health covers wellness"],ans:0,
+     why:"They are used <b>synonymously</b>. Both mean the effort organized by society to protect, promote, and restore health and quality of life. Class note: “interchangeable terms.”",
+     src:"Ch1 slide 8 class note"},
+    {id:"t3h-pop",topic:"Definitions",type:"mc",q:"Population health is defined as:",
+     opts:["The health outcomes of a group of individuals, including the distribution of those outcomes within the group","The health of one patient over a lifetime","The number of providers in an area","Health services paid for by the government"],ans:0,
+     why:"Population health = <b>outcomes of a group</b> and how they are <b>distributed</b>. A major step toward the goal is reducing <b>health disparities</b> among population groups.",
+     src:"Ch1 slide 9"},
+    {id:"t3h-patient",topic:"Definitions",type:"mc",mix:1,q:"In dental public health, who is the patient?",
+     opts:["The individual in the chair","The community","The dentist","The state dental board"],ans:1,
+     why:"Dental public health serves <b>the community as the patient</b> rather than the individual. The community oral health steps parallel the steps in private practice.",
+     src:"Ch1 slide 7, 20"},
+    {id:"t3h-diff",topic:"Definitions",type:"mc",q:"How does dental public health differ from private dental practice?",
+     opts:["It focuses on treating cavities only","It treats individuals instead of populations","It emphasizes prevention and population-level interventions","It requires no dental training"],ans:2,
+     why:"<b>Prevention and population-level interventions.</b> This is the circled answer on the review slide.",
+     src:"Ch1 slide 63 class note"},
+    {id:"t3h-prim",topic:"Prevention",type:"mc",q:"Community water fluoridation is which level of prevention?",
+     opts:["Primary","Secondary","Tertiary"],ans:0,
+     why:"<b>Primary</b>: prevents disease from occurring in a healthy population. Includes health promotion and education about disease and risk factors.",
+     src:"Ch1 slide 12"},
+    {id:"t3h-sec",topic:"Prevention",type:"mc",q:"Fluoride varnish on white spots (demineralized surfaces) is which level of prevention?",
+     opts:["Primary","Secondary","Tertiary"],ans:1,
+     why:"<b>Secondary</b>: terminating the disease process. The population shows risk factors or early signs of disease.",
+     src:"Ch1 slide 12"},
+    {id:"t3h-ter",topic:"Prevention",type:"mc",q:"Dentures or implants to replace lost teeth are which level of prevention?",
+     opts:["Primary","Secondary","Tertiary"],ans:2,
+     why:"<b>Tertiary</b>: replacing lost tissues.",
+     src:"Ch1 slide 12"},
+    {id:"t3h-7",topic:"Problems & solutions",type:"mc",q:"Which is NOT one of the seven characteristics (guiding principles) of a public health solution?",
+     opts:["Depends on each person visiting a dentist regularly","Attainable regardless of socioeconomic status","Effective immediately upon application","Inexpensive and within the means of the community"],ans:0,
+     why:"The seven: <b>not hazardous</b> · <b>effective</b> against the disease · <b>easily and efficiently implemented</b> · <b>potency maintained</b> a long time · <b>attainable regardless of SES</b> · <b>effective immediately</b> · <b>inexpensive</b>. Relying on dental visits is the opposite of a public health solution.",
+     src:"Ch1 slide 18"},
+    {id:"t3h-crit",topic:"Problems & solutions",type:"mc",q:"Which three criteria identify a public health problem?",
+     opts:["Its public health importance, the ability to prevent, control, or treat it, and the health system’s capacity to act on it","How many dentists treat it, what insurance pays, and patient demand","Whether it is contagious, fatal, and new","Media coverage, cost of treatment, and political support"],ans:0,
+     why:"<ol><li><b>Public health importance</b>: incidence and prevalence, severity, mortality, socioeconomic impact, communicability, outbreak potential, public concern</li><li><b>Ability to prevent, control, or treat</b></li><li><b>Capacity of the health system</b>: speed of response, economics, resources, surveillance</li></ol>",
+     src:"Ch1 slide 16"},
+    {id:"t3h-domains",topic:"Problems & solutions",type:"mc",q:"The goal of public health is to protect and promote health across which three domains?",
+     opts:["Health protection, disease prevention, health promotion","Diagnosis, treatment, referral","Assessment, policy, assurance","Funding, staffing, research"],ans:0,
+     why:"<b>Health protection · disease prevention · health promotion.</b> (Assessment, policy development, and assurance are the core <i>functions</i>, a different list.)",
+     src:"Ch1 slide 19"},
+    {id:"t3h-ex",topic:"Problems & solutions",type:"mc",q:"Which is a common public health measure to prevent dental disease?",
+     opts:["School sealant program","Fluoridation of community water","Federally Qualified Health Centers (FQHC)","Braces"],ans:1,
+     why:"<b>Community water fluoridation</b>. Chapter 1 calls it “the perfect example of a dental public health solution to the problem of dental decay.” It reaches more than 204 million people.",
+     defend:"No answer is marked on this review slide. School sealant programs are also a public health measure, so ask if both count.",
+     src:"Ch1 slide 47, 66"},
+    {id:"t3h-fones",topic:"History",type:"mc",q:"Who coined the term “dental hygienist,” and when?",
+     opts:["Dr. Alfred Civilion Fones, 1913","Irene Newman, 1913","Dr. Trendley Dean, 1930s","Dr. Sara Baker, early 1900s"],ans:0,
+     why:"<b>Dr. Alfred C. Fones, 1913</b>. Changing “dental nurse” to “dental hygienist” put the focus on prevention. Fones saw hygienists working outside the office, with mass pediatric prevention.",
+     src:"Ch1 slide 21"},
+    {id:"t3h-newman",topic:"History",type:"mc",mix:1,q:"Who was the first dental hygienist?",
+     opts:["Irene Newman","Sara Baker","Alfred Fones","Frederick McKay"],ans:0,
+     why:"<b>Irene Newman</b>. Fones trained her for 1 year before she treated patients in his practice.",
+     src:"Ch1 slide 21"},
+    {id:"t3h-baker",topic:"History",type:"mc",mix:1,q:"Who started a true public health promotion and education program in Hell’s Kitchen, New York, teaching mothers to dress, feed, and bathe their babies?",
+     opts:["Dr. Edward Jenner","Dr. Sara Baker","Dr. Alfred Fones","Dr. Trendley Dean"],ans:1,
+     why:"<b>Dr. Sara Baker.</b> Jenner’s discovery led to immunizations.",
+     src:"Ch1 slide 10"},
+    {id:"t3h-1671",topic:"History",type:"mc",q:"What was the first significant recorded public health measure in the United States?",
+     opts:["A water protection measure in South Carolina, 1671","Smallpox vaccination in Boston, 1721","Water fluoridation in Grand Rapids, 1945","Quarantine of ships in New York, 1800"],ans:0,
+     why:"<b>South Carolina, 1671, water protection.</b> Earlier public health activities included quarantines, mass burials, and ship inspections.",
+     src:"Ch1 slide 10"},
+    {id:"t3h-dhhs",topic:"Government",type:"mc",q:"Which department has jurisdiction over the federal government’s role in dental health and is the largest grant-making agency in the federal government?",
+     opts:["Department of Health and Human Services (DHHS)","Department of Education","Centers for Medicare & Medicaid Services","American Dental Association"],ans:0,
+     why:"<b>DHHS.</b> It works closely with state and local governments. NIH, CDC, HRSA, FDA, and IHS are all under it.",
+     src:"Ch1 slide 26–28"},
+    {id:"t3h-cdcag",topic:"Government",type:"mc",mix:1,q:"Health surveillance, monitoring outbreaks, an Oral Health Division, and community water fluoridation belong to which agency?",
+     opts:["NIH","CDC","HRSA","FDA"],ans:1,
+     why:"<b>CDC</b>: surveillance, prevention, Oral Health Division, water fluoridation.",
+     src:"Ch1 slide 28"},
+    {id:"t3h-nidcr",topic:"Government",type:"mc",mix:1,q:"The National Institute of Dental and Craniofacial Research (NIDCR) is part of which agency?",
+     opts:["CDC","HRSA","NIH","CMS"],ans:2,
+     why:"<b>NIH</b>, the federal government’s medical research institution (Bethesda, Maryland).",
+     src:"Ch1 slide 27–28"},
+    {id:"t3h-hrsa",topic:"Government",type:"mc",mix:1,q:"National Health Service Corps, the Ryan White Act, organ transplants, and infant and children’s health: which agency?",
+     opts:["HRSA","CDC","NIH","IHS"],ans:0,
+     why:"<b>HRSA</b> (Health Resources and Services Administration). Class note on the other deck: “workforce.”",
+     src:"Ch1 slide 28"},
+    {id:"t3h-gov",topic:"Government",type:"mc",q:"What role does the government typically play in public health?",
+     opts:["Selling private insurance","Providing clinical treatment only","Setting policies, funding programs, and regulating health efforts","Only advising health professionals"],ans:2,
+     why:"Formal public health programs fall under the <b>aegis of the government</b>. Both prevention and delivery of services are concerns.",
+     src:"Ch1 slide 25, 65"},
+    {id:"t3h-core",topic:"Core functions",type:"mc",q:"What are the three core functions of public health?",
+     opts:["Assessment, policy development, assurance","Prevention, treatment, rehabilitation","Health protection, disease prevention, health promotion","Planning, implementation, evaluation"],ans:0,
+     why:"<b>Assessment, policy development, assurance.</b> Identified in the Institute of Medicine report (1988), reinforced in 2003.",
+     src:"Ch1 slide 39"},
+    {id:"t3h-iom",topic:"Core functions",type:"mc",q:"Which report identified the core public health functions, and when?",
+     opts:["Institute of Medicine (IOM) report, 1988; reinforced in 2003","Surgeon General’s Report, 2000","Healthy People 2010","A National Call to Action, 2003"],ans:0,
+     why:"The <b>IOM</b> report <i>The Future of Public Health</i> (1988), reinforced in 2003.",
+     src:"Ch1 slide 39"},
+    {id:"t3h-assure",topic:"Core functions",type:"mc",q:"An example of a public health intervention that reflects the core function of assurance is:",
+     opts:["Conducting research on oral cancer","Enforcing laws that regulate dental practice standards","Analyzing dental health data","Developing new toothbrushes"],ans:1,
+     why:"<b>Assurance</b> = making sure the services promised are delivered: “does what it says it is going to do and helps who it is meant to help.” Enforcing laws sits in the assurance part of the essential services wheel. Analyzing data is <b>assessment</b>.",
+     src:"Ch1 slide 40, 42, 67"},
+    {id:"t3h-assess",topic:"Core functions",type:"mc",q:"Information is collected to support the public health action, by or under the direction of the agency that will run the program. Which core function?",
+     opts:["Assessment","Policy development","Assurance"],ans:0,
+     why:"<b>Assessment.</b> Policy development = a strategic, scientifically based approach to developing the program. Assurance = delivering what was promised.",
+     src:"Ch1 slide 40"},
+    {id:"t3h-notess",topic:"Core functions",type:"mc",q:"Which is NOT one of the essential public health services?",
+     opts:["Mobilize community partnerships","Diagnose and treat patients","Monitor health status","Evaluate the effectiveness of services"],ans:1,
+     why:"<b>Diagnose and treat patients</b> (circled on her slide). The essential service is “diagnose and <i>investigate</i>” health problems in the community. Treating individual patients is private practice.",
+     src:"Ch1 slide 42, 64 class note"},
+    {id:"t3h-wheel",topic:"Core functions",type:"mc",q:"On the essential services wheel, “Monitor health” and “Diagnose and investigate” fall under which core function?",
+     opts:["Assessment","Policy development","Assurance"],ans:0,
+     why:"<ul><li><b>Assessment:</b> monitor health · diagnose and investigate</li><li><b>Policy development:</b> inform, educate, empower · mobilize community partnerships · develop policies</li><li><b>Assurance:</b> enforce laws · link to/provide care · assure a competent workforce · evaluate</li></ul><b>Research</b> sits in the center.",
+     src:"Ch1 slide 42"},
+    {id:"t3h-sg",topic:"Initiatives",type:"mc",q:"What is the major message of the 2000 Surgeon General’s Report, Oral Health in America?",
+     opts:["Oral health is essential to general health and can be achieved by all Americans, but there are profound disparities","Dental caries has been eliminated in children","Fluoridation should be stopped","Dental care should be added to Medicare"],ans:0,
+     why:"A 300-page report on oral health only. <b>Oral health is essential to general health and well-being</b>, achievable by all, with <b>profound disparities</b>. Initiatives that followed: Healthy People 2010, A National Call to Action (2003), Healthy People 2020, Healthy People 2030.",
+     src:"Ch1 slide 32–33"},
+    {id:"t3h-hp",topic:"Initiatives",type:"mc",q:"How often are the Healthy People objectives updated, and by whom?",
+     opts:["Every 10 years, by DHHS","Every 5 years, by the ADA","Every year, by the CDC","Every 20 years, by Congress"],ans:0,
+     why:"<b>Every 10 years, by DHHS.</b> Healthy People 2030 has an oral health focus area and oral health objectives.",
+     src:"Ch1 slide 34–35"},
+    {id:"t3h-hp12",topic:"Initiatives",type:"mc",q:"Healthy People 2020 identified oral health as:",
+     opts:["One of the 12 leading health indicators","Optional for states","A Medicare benefit","The number one cause of death"],ans:0,
+     why:"Oral health was <b>one of the 12 leading health indicators</b>. Also: the CDC named water fluoridation one of the 10 great public health achievements of the 20th century.",
+     src:"Ch1 slide 52"},
+    {id:"t3h-caries",topic:"Dental disease",type:"mc",q:"Dental caries is common and widespread, especially among which groups?",
+     opts:["Children from minority, racial, and ethnic groups, and low-SES people of all ages","Adults with dental insurance","High-income teenagers","People in fluoridated communities only"],ans:0,
+     why:"Especially <b>children from minority, racial, and ethnic groups</b> and <b>low-SES individuals of all ages</b>. Also: almost 25% of adults have some facial pain, and about 25% of adults 60 and older have no natural teeth.",
+     src:"Ch1 slide 47"},
+    {id:"t3h-pew",topic:"Dental disease",type:"mc",q:"According to Pew (2013 data), dental care is one of the greatest unmet needs among:",
+     opts:["Children in the U.S.","Older adults in nursing homes","Military veterans","College students"],ans:0,
+     why:"<b>Children.</b> Pew advocates: make Medicaid and CHIP coverage lead to real care, increase providers for low-income children, and authorize <b>dental therapists</b> for underserved populations. Class note: “dental decay, primarily on children.”",
+     src:"Ch1 slide 49 class note"},
+    {id:"t3h-advoc",topic:"Future",type:"mc",q:"Dental professionals are responsible for stressing the connection between oral and general health to whom?",
+     opts:["The policymakers of our nation","Insurance companies only","Dental students","Toothpaste manufacturers"],ans:0,
+     why:"<b>Policymakers</b> (underlined). Class note: advocate to “the people who have the ability to make change.” Alliances with other health professionals help in two ways: we see the whole patient, and they learn how oral health affects systemic conditions.",
+     src:"Ch1 slide 50 class note"},
+    {id:"t3h-future",topic:"Future",type:"mc",q:"Which reflects a future challenge in dental public health?",
+     opts:["Too much funding","Increasing demand for cosmetic procedures","Integrating oral health into overall health systems","Decreasing public interest in hygiene"],ans:2,
+     why:"<b>Integrating oral health into overall health.</b> Programs have declined because of tight budgets, so funding is a problem, not a surplus.",
+     src:"Ch1 slide 49–50, 68"},
+    {id:"t3h-aca",topic:"Future",type:"mc",q:"The Affordable Care Act (2010) was expected to give dental coverage to 11–24 million children and nonelderly adults by 2018. Where do gaps remain?",
+     opts:["Low-income adults","Children on CHIP","Children on Medicaid","Federal employees"],ans:0,
+     why:"Gaps remain for <b>low-income adults</b>.",
+     src:"Ch1 slide 51"},
+    {id:"t3h-adhp",topic:"Future",type:"mc",q:"In 2004, ADHA became the first national oral health organization to propose which new provider?",
+     opts:["Advanced Dental Hygiene Practitioner (ADHP)","Dental therapist","Expanded function dental assistant","Community health worker"],ans:0,
+     why:"The <b>ADHP</b>, to serve underserved populations. Direct access to a hygienist in at least one setting rose from <b>28 states (2008) to 37 (2014)</b>.",
+     src:"Ch1 slide 55"},
+    {id:"t3h-direct",topic:"Future",type:"mc",q:"How many states allowed direct access to a dental hygienist in at least one setting in 2008, and in 2014?",
+     opts:["28, then 37","12, then 20","37, then 50","20, then 28"],ans:0,
+     why:"<b>28 → 37.</b>",
+     src:"Ch1 slide 55"},
+    {id:"t3h-adh",topic:"Future",type:"mc",q:"The ADA’s Action for Dental Health (2013) was designed to:",
+     opts:["Give care to underserved populations, strengthen the public/private safety net, and bring prevention and education to communities","Train dentists in cosmetic dentistry","Replace dental hygienists with therapists","Fund Medicare dental benefits"],ans:0,
+     why:"Launched after the 2009 <b>Access to Care Summit</b>. Also: Long-Term Care Dental Campaign (ADA, 2014); ASTDD supports oral health surveillance; ADEA cosponsored interprofessional competencies (2011).",
+     src:"Ch1 slide 52–54"},
+    {id:"t3h-edu",topic:"Future",type:"mc",q:"In most states, what education does a dental hygienist need to work in community public health?",
+     opts:["No required formal or specialty education","A master’s in public health","Board certification in dental public health","A dental therapy license"],ans:0,
+     why:"<b>None required</b> in most states, though some earn advanced degrees. Dentists become recognized <b>specialists</b> through the American Board of Dental Public Health. Goal of dental public health: optimal oral health and universal access to care for all.",
+     src:"Ch1 slide 57–58"},
+    {id:"t3h-pp",topic:"Private vs public",type:"open",q:"For each step, say what a hygienist does in private practice and what the matching step looks like in public health: assessment, diagnosis, planning, implementation, evaluation, documentation.",
+     model:"<ul><li><b>Assessment:</b> health and dental history, oral exam → <b>needs assessment</b> of the target population, analyze community needs</li><li><b>Diagnosis:</b> patient’s DH diagnosis → <b>community</b> DH diagnosis to prioritize needs</li><li><b>Planning:</b> treatment plan → program plan from the needs data, priorities, alternatives, resources</li><li><b>Implementation:</b> carry out the plan, change it when needed (same in both)</li><li><b>Evaluation:</b> dental, gingival, perio evaluations → evaluate the program with indices and community evaluations</li><li><b>Documentation:</b> findings and treatment notes → all data gathered at every stage</li></ul>",
+     src:"Ch1 slide 24"},
+    {id:"t3h-factors",topic:"Future",type:"open",q:"List the factors affecting dental public health.",
+     model:"Access to care · infrastructure · workforce · dental hygiene · oral health disparities · the aging population · malpractice · dental insurance · cultural influences.",
+     src:"Ch1 slide 44"}
+  ]
+},
+{
+  id:"plan", name:"Assessment & Planning", deck:"Assessment deck · slides 1–71 (Ch 3)",
+  blurb:"Assessment as a core function, epidemiology and determinants of health, the planning cycle (ADPIE), objectives, and evaluation.",
+  stars:[
+    "<b>ADPIE</b>: Assessment, Diagnosis, Planning, Implementation, Evaluation. “Standard for serving professions.”",
+    "<b>Needs assessment</b> is the most important and foundational step. It gives baseline information.",
+    "<b>SMART + C</b> written down the side of the slide: Specific, Measurable, Achievable, Relevant, Timed, Challenging.",
+    "Objectives must be <b>measurable</b> (written big). Goals are broad.",
+    "<b>Outcome objectives are long term</b> (class note); process objectives are short term.",
+    "<b>Pilot testing</b>: start small. “Think of a pilot episode of a show.”",
+    "The epidemiologic triangle is starred: disease is <b>multifactorial</b>.",
+    "Endemic, epidemic, and eradication are written on slide 19.",
+    "Go <b>there</b> to understand the target population; partnerships help acceptance and success."
+  ],
+  mix:[
+    "<b>Endemic vs epidemic vs eradication:</b> the usual rate in an area · an increase · gone from the population.",
+    "<b>Goal vs objective:</b> broad statement · specific, measurable end result.",
+    "<b>Process vs outcome vs impact objectives:</b> short-term action · long-term reduction in the problem · learning, knowledge, attitude, skill.",
+    "<b>Formative vs summative:</b> during the program (formation) · at the end (summary).",
+    "<b>Inherited vs acquired determinants:</b> genetics · everything after birth (infections, trauma, culture, spiritual values).",
+    "<b>Basic vs applied research:</b> truth about facts · solving problems. Program evaluation is applied."
+  ],
+  qs:[
+    {id:"t3a-coda",topic:"Workforce",type:"mc",q:"Which statement about CODA and ADEA is true?",
+     opts:["Dental hygiene standards and competencies put more emphasis on community oral health than predoctoral dental programs do","Dental programs put more emphasis on community health than hygiene programs","Neither addresses public health","CODA writes competencies and ADEA writes accreditation standards"],ans:0,
+     why:"<b>Dental hygiene</b> standards emphasize community oral health more than dental school. CODA = <b>accreditation standards</b>; ADEA = <b>competencies</b>. CODA added a stronger community and advocacy emphasis to the dental curriculum in 2010.",
+     src:"Assessment slide 6"},
+    {id:"t3a-drive",topic:"Workforce",type:"mc",mix:1,q:"The driving force of dental public health is achieving the oral health goals set by:",
+     opts:["The ADA","Healthy People 2020","Medicaid","The WHO"],ans:1,
+     why:"<b>Healthy People 2020</b> (underlined). Class note: “driving force: healthy people.”",
+     src:"Assessment slide 5 class note"},
+    {id:"t3a-def",topic:"Assessment",type:"mc",q:"Assessment, as a core public health function, is defined as:",
+     opts:["The regular and systematic collection, assemblage, analysis, and communication on the health of the community","A one-time survey of dentists","Treating the most urgent patients first","Writing laws about fluoride"],ans:0,
+     why:"<b>Regular and systematic collection, assemblage, analysis, and communication</b> (underlined). Includes statistics on health status, community needs, and epidemiologic studies. Class notes: accessibility to dental care, number of providers in the area.",
+     src:"Assessment slide 8 class note"},
+    {id:"t3a-roles",topic:"Assessment",type:"mc",q:"Which role is typically performed by public health professionals during an assessment?",
+     opts:["Prescribing medications","Diagnosing mental health disorders","Collecting and analyzing community health data","Performing surgeries"],ans:2,
+     why:"<b>Collecting and analyzing community health data.</b> The full cycle: partner with communities → gather data → identify issues and resources → set priorities → implement solutions → use data to evaluate. Class note: “go there to understand the target population.”",
+     src:"Assessment slide 9–10, 140"},
+    {id:"t3a-collab",topic:"Assessment",type:"mc",q:"Which best describes a collaborative effort in public health?",
+     opts:["A private practice working alone","Multiple health agencies conducting their own assessments separately","Government, nonprofits, and communities working together on a health initiative","One health department conducting a survey"],ans:2,
+     why:"<b>Working together</b>, not separately. Forming partnerships “helps increase acceptance and success of the target population” (class note).",
+     src:"Assessment slide 10, 139 class note"},
+    {id:"t3a-epi",topic:"Epidemiology",type:"mc",q:"What is the primary focus of epidemiology?",
+     opts:["Treating genetic diseases","Studying the distribution and determinants of health conditions","Administering vaccines","Developing new surgical tools"],ans:1,
+     why:"Epidemiology = the study of the <b>distribution and determinants</b> of health-related states in specified populations, applied to prevention and control. Factors analyzed: distribution, population dynamics, occurrences, affected population, place, time, determinants.",
+     src:"Assessment slide 12, 141"},
+    {id:"t3a-tri",topic:"Epidemiology",type:"mc",q:"The epidemiologic triangle shows disease as the outcome of interactions among:",
+     opts:["Host, agent, and environment","Patient, dentist, and insurer","Bacteria, sugar, and time","Federal, state, and local governments"],ans:0,
+     why:"<b>Host, agent, environment.</b> Starred, with the note “multifactorial factor of disease.” Health is a balance among the three; problems happen when the balance is threatened.",
+     src:"Assessment slide 13–18 ★"},
+    {id:"t3a-host",topic:"Epidemiology",type:"mc",q:"For dental caries, tooth enamel structure, saliva flow, and immune response are which factor?",
+     opts:["Host","Agent","Environmental"],ans:0,
+     why:"<b>Host</b>: susceptibility and resistance. Also age, gender, SES, race, culture, genetics, behavior. Class note: “anything that can get a disease.”",
+     src:"Assessment slide 15–16 class note"},
+    {id:"t3a-agent",topic:"Epidemiology",type:"mc",q:"For dental caries, Streptococcus mutans and lactobacillus are which factor?",
+     opts:["Host","Agent","Environmental"],ans:1,
+     why:"<b>Agent</b>: the biologic or mechanical cause, such as bacterial biofilm and specific bacteria. Also chemicals, drugs, trauma, radiation.",
+     src:"Assessment slide 15, 17"},
+    {id:"t3a-env",topic:"Epidemiology",type:"mc",q:"For dental caries, fermentable carbohydrate in the diet, fluoride in toothpaste and water, and community norms are which factor?",
+     opts:["Host","Agent","Environmental"],ans:2,
+     why:"<b>Environmental</b>: physical, sociocultural, sociopolitical, and economic. On the caries diagram: plaque, enzymes, minerals, diet, fluoride, SES, community and cultural norms, family and social support.",
+     src:"Assessment slide 15, 18"},
+    {id:"t3a-endemic",topic:"Epidemiology",type:"mc",q:"The usual, average rate of a disease in an area at any given time is called:",
+     opts:["Endemic","Epidemic","Eradication","Pandemic"],ans:0,
+     why:"<b>Endemic</b> = current rate at any given time, the area’s average disease rate. <b>Epidemic</b> = an increase. <b>Eradication</b> = no longer exists in a population.",
+     src:"Assessment slide 19 class note"},
+    {id:"t3a-epidemic",topic:"Epidemiology",type:"mc",q:"A sudden increase in a disease in a population is called:",
+     opts:["Endemic","Epidemic","Eradication","Prevalence"],ans:1,
+     why:"<b>Epidemic</b>: “increase in disease.”",
+     src:"Assessment slide 19 class note"},
+    {id:"t3a-erad",topic:"Epidemiology",type:"mc",q:"A disease that no longer exists in a population has been:",
+     opts:["Made endemic","Eradicated","Made epidemic","Contained"],ans:1,
+     why:"<b>Eradication</b>: “non-existent in a population.”",
+     src:"Assessment slide 19 class note"},
+    {id:"t3a-inh",topic:"Determinants",type:"mc",q:"A person is born genetically predisposed to a condition. That is which kind of determinant?",
+     opts:["Inherited","Acquired","Environmental","Behavioral"],ans:0,
+     why:"<b>Inherited</b> = inborn, genetic. <b>Acquired</b> = obtained after birth and throughout life: infections, trauma, cultural characteristics, spiritual values.",
+     src:"Assessment slide 21 class note"},
+    {id:"t3a-ex",topic:"Determinants",type:"mc",q:"Which of the following is an example of a determinant of health?",
+     opts:["Size of home","Access to healthcare services","Frequency of food distributions","Brand of medical equipment"],ans:1,
+     why:"<b>Access to high-quality health services</b> is on the list of determinants.",
+     src:"Assessment slide 25, 142"},
+    {id:"t3a-5",topic:"Determinants",type:"mc",q:"Which list gives the determinants of health from the slides?",
+     opts:["Individual biology and genetics, individual behavior, physical environment, social environment, access to high-quality health services","Age, sex, height, weight, blood type","Federal, state, county, city, school","Diet, sugar, fluoride, bacteria, time"],ans:0,
+     why:"The five: <b>biology and genetics · behavior · physical environment · social environment · access to quality health services</b>.",
+     src:"Assessment slide 25"},
+    {id:"t3a-most",topic:"Determinants",type:"mc",q:"Which single determinant of health is the most important?",
+     opts:["Access to health care","Genetics","Income","None alone; they act in combination"],ans:3,
+     why:"<b>No single determinant</b> is most important. They interact continuously and act synergistically. Access to and use of health care often has <b>less</b> impact than where people live, income, education, and relationships.",
+     src:"Assessment slide 27"},
+    {id:"t3a-sdoh",topic:"Determinants",type:"mc",q:"Social determinants of health are the conditions in which people:",
+     opts:["Are born, grow, live, work, and age, including the health system","Visit the dentist","Buy insurance","Are treated in hospitals"],ans:0,
+     why:"<b>Born, grow, live, work, and age.</b> These are shaped by the distribution of money, power, and resources.",
+     src:"Assessment slide 28"},
+    {id:"t3a-ottawa",topic:"Determinants",type:"mc",q:"At the Ottawa Charter, health promotion was described as:",
+     opts:["The process of enabling people to increase control over, and to improve, their health","Advertising for dental offices","A law requiring checkups","Treating disease after it starts"],ans:0,
+     why:"Health promotion = <b>enabling people to increase control over and improve their health</b>. Health is a <b>resource for everyday life, not the objective of living</b>.",
+     src:"Assessment slide 22–23"},
+    {id:"t3a-adpie",topic:"Planning cycle",type:"mc",q:"Which is the correct order of the five steps of community program planning?",
+     opts:["Assessment, Diagnosis, Planning, Implementation, Evaluation","Planning, Assessment, Diagnosis, Evaluation, Implementation","Diagnosis, Assessment, Implementation, Planning, Evaluation","Assessment, Planning, Diagnosis, Evaluation, Implementation"],ans:0,
+     why:"<b>ADPIE</b>: Assessment, Diagnosis, Planning, Implementation, Evaluation. Class note: “ADPIE, acronym for it,” the standard for serving professions.",
+     src:"Assessment slide 34–35 class note"},
+    {id:"t3a-begin",topic:"Planning cycle",type:"mc",q:"A community oral health assessment typically begins with:",
+     opts:["Reading a journal article","Researching dental technology","Identifying the oral health needs of the population","Evaluating accessibility"],ans:2,
+     why:"<b>Identifying the needs</b> of the population: the needs assessment.",
+     src:"Assessment slide 47, 143"},
+    {id:"t3a-needs",topic:"Planning cycle",type:"mc",q:"Which is the most important and foundational step in program planning?",
+     opts:["Needs assessment","Writing goals","Pilot testing","Publishing results"],ans:0,
+     why:"The <b>needs assessment</b>. It gives baseline information and, over time, measures progress. Complete it before planning services.",
+     src:"Assessment slide 47"},
+    {id:"t3a-needsdef",topic:"Planning cycle",type:"mc",q:"A needs assessment is:",
+     opts:["An organized and systematic approach to identify a target group and define the extent and severity of oral health needs present","A list of the program’s goals","A count of local dentists","A survey of patient satisfaction"],ans:0,
+     why:"<b>Identify a target group</b> and <b>define the extent and severity of needs</b>. Class note: for a large-scale program, look at the needs of the target population from different views.",
+     src:"Assessment slide 40, 44, 47 class note"},
+    {id:"t3a-diag",topic:"Planning cycle",type:"mc",q:"Which step is the natural conclusion of the assessment phase, defining the problem and giving direction?",
+     opts:["Diagnosis","Planning","Implementation","Evaluation"],ans:0,
+     why:"<b>Diagnosis</b> defines the problem(s) and provides direction for the actions that follow.",
+     src:"Assessment slide 49"},
+    {id:"t3a-plan",topic:"Planning cycle",type:"mc",q:"Setting priorities, developing goals, identifying constraints, determining alternative strategies, and deciding on methods of implementation happen in which step?",
+     opts:["Assessment","Diagnosis","Planning","Evaluation"],ans:2,
+     why:"<b>Planning</b>: the decision about the course of action, the program blueprint. Class note: it sets the standard for how the program will be judged successful.",
+     src:"Assessment slide 48 class note"},
+    {id:"t3a-goal",topic:"Objectives",type:"mc",q:"Which best describes a program goal?",
+     opts:["A broad statement of what changes will take place, from which specific objectives are developed","A specific, measurable result with a deadline","A list of supplies","The final evaluation report"],ans:0,
+     why:"Goals are <b>broad</b>. Objectives are <b>more specific</b> and describe the desired end result of activities.",
+     src:"Assessment slide 51–52"},
+    {id:"t3a-verb",topic:"Objectives",type:"mc",q:"What is the key to a measurable objective?",
+     opts:["The performance verb","The program budget","The number of volunteers","The title"],ans:0,
+     why:"The <b>performance verb</b>. Adding a <b>condition</b> and a <b>criterion</b> makes it more specific. Written big on her slide: “measurable.”",
+     src:"Assessment slide 52 class note"},
+    {id:"t3a-smart",topic:"Objectives",type:"mc",q:"What does SMART + C stand for?",
+     opts:["Specific, Measurable, Achievable, Relevant, Timed, Challenging","Simple, Meaningful, Accurate, Reliable, Tested, Clear","Specific, Manageable, Assessed, Reviewed, Tracked, Complete","Short, Measured, Agreed, Realistic, Timely, Community"],ans:0,
+     why:"<b>S</b>pecific (how much, of what, by whom, where, when) · <b>M</b>easurable · <b>A</b>chievable · <b>R</b>elevant · <b>T</b>imed · <b>C</b>hallenging.",
+     src:"Assessment slide 53 class note"},
+    {id:"t3a-outcome",topic:"Objectives",type:"mc",q:"“Caries incidence of school children will be reduced by 25% within 4 years.” Which level of objective?",
+     opts:["Process","Impact","Outcome"],ans:2,
+     why:"<b>Outcome</b>: the level to which the health problem is reduced in a time period. <b>Long term</b>, measurable.",
+     src:"Assessment slide 54–55 class note"},
+    {id:"t3a-process",topic:"Objectives",type:"mc",q:"“The oral health coalition will approve a fluoridation campaign plan within 3 months.” Which level of objective?",
+     opts:["Process","Impact","Outcome"],ans:0,
+     why:"<b>Process</b>: an action statement aimed at one or more contributing factors. <b>Short term</b>, measurable.",
+     src:"Assessment slide 54–55"},
+    {id:"t3a-impact",topic:"Objectives",type:"mc",q:"“50% of PTA members will describe 3 mechanisms of action of fluoride in relation to water fluoridation.” Which level of objective?",
+     opts:["Process","Impact","Outcome"],ans:1,
+     why:"<b>Impact</b> (learning): learning, knowledge, attitude, skill development. The three impact categories on the slide: learning, behavioral, environmental.",
+     src:"Assessment slide 54–55"},
+    {id:"t3a-impl",topic:"Implementation",type:"mc",q:"Which is true of the implementation phase?",
+     opts:["It is ongoing, supervised, and evaluated, with individuals, agencies, and the community working together","It happens once and is never changed","Only the funding agency does it","It comes before assessment"],ans:0,
+     why:"Ongoing, <b>supervised and evaluated</b>. Class notes: it should be run by the one running the program, and there should be roles.",
+     src:"Assessment slide 57–59 class note"},
+    {id:"t3a-pilot",topic:"Implementation",type:"mc",q:"Starting a program with a smaller population, planning to expand later, is called:",
+     opts:["Pilot testing","Summative evaluation","Needs assessment","Surveillance"],ans:0,
+     why:"<b>Pilot testing.</b> It tests effectiveness and makes control and monitoring easier. Piloting is a form of evaluating the implementation. Class note: “think of a pilot episode of a show.”",
+     src:"Assessment slide 60 class note"},
+    {id:"t3a-first",topic:"Evaluation",type:"mc",q:"What is the first step of evaluation?",
+     opts:["Review the program goals, then examine the specific measurable objectives","Ask participants if they liked it","Publish the results","Cut the budget"],ans:0,
+     why:"Review <b>goals</b>, then the <b>measurable objectives</b>. The data from measuring objectives are <b>measurable outcomes</b>. Summarizing what went well, or going by intuition, is not adequate.",
+     src:"Assessment slide 61–62"},
+    {id:"t3a-form",topic:"Evaluation",type:"mc",q:"Evaluation during a program that points out problems early so they can be corrected is:",
+     opts:["Formative","Summative","Applied","Basic"],ans:0,
+     why:"<b>Formative</b> (formation, during). <b>Summative</b> (summary, at the end) may judge a program with early problems as successful if they were fixed.",
+     src:"Assessment slide 64, 68"},
+    {id:"t3a-neg",topic:"Evaluation",type:"mc",q:"A program does not meet its objectives. What do the slides say?",
+     opts:["If the negative outcome becomes a learning experience for future programs, in some sense it was a success","It must be reported as fraud","The objectives were too measurable","Evaluation should be skipped next time"],ans:0,
+     why:"A <b>negative outcome</b> can still be a success as a learning experience and an indicator for future programs and research.",
+     src:"Assessment slide 63"},
+    {id:"t3a-applied",topic:"Evaluation",type:"mc",q:"Program evaluation is an example of:",
+     opts:["Basic (clinical) research","Applied research","Epidemiologic surveillance","Policy development"],ans:1,
+     why:"<b>Applied research</b>: applying knowledge to develop solutions. Basic research = inquiry into the truth about facts, behaviors, relationships, principles.",
+     src:"Assessment slide 65"},
+    {id:"t3a-why",topic:"Evaluation",type:"mc",q:"Which is NOT a reason to evaluate given on the slides?",
+     opts:["Measure the effectiveness of each activity","Identify problems in carrying out activities","Justify the dollar costs of the program","Choose the target population"],ans:3,
+     why:"Choosing the target population happens in <b>assessment</b>. Evaluation measures effectiveness, finds problems, plans revisions, justifies costs, and provides <b>accountability</b>.",
+     src:"Assessment slide 67–68"},
+    {id:"t3a-doc",topic:"Evaluation",type:"mc",q:"Documenting and publishing a program’s data is:",
+     opts:["Optional; done when the information would be helpful if shared","Required before implementation","The first step of planning","Not allowed for public programs"],ans:0,
+     why:"<b>Optional!</b> Publish or share when the results would help others.",
+     src:"Assessment slide 69"},
+    {id:"t3a-astdd1",topic:"ASTDD model",type:"mc",q:"ASTDD Seven-Step Assessment Model: what is step 1?",
+     opts:["Identify partners and form an advisory committee","Collect data","Evaluate the needs assessment","Plan the needs assessment"],ans:0,
+     why:"<ol><li>Identify partners, form an advisory committee</li><li>Self-assessment to determine goals and resources</li><li>Plan the needs assessment</li><li>Collect data</li><li>Organize and analyze data</li><li>Use data for planning, advocacy, education; prioritize issues and report</li><li>Evaluate the needs assessment</li></ol>",
+     src:"Assessment slide 70–71"},
+    {id:"t3a-astdd",topic:"ASTDD model",type:"open",q:"List the seven steps of the ASTDD assessment model in order.",
+     model:"<ol><li>Identify partners and form an advisory committee</li><li>Conduct a self-assessment to determine goals and resources</li><li>Plan the needs assessment</li><li>Collect data</li><li>Organize and analyze data</li><li>Use the data for program planning, advocacy, and education; prioritize issues and report findings</li><li>Evaluate the needs assessment</li></ol>",
+     src:"Assessment slide 71"},
+    {id:"t3a-prio",topic:"Planning cycle",type:"open",q:"What questions do you ask when establishing health priorities?",
+     model:"<ul><li>How big is the problem (does it cause death or disability)?</li><li>How many people are affected?</li><li>What resources are available (personnel, money, facilities, technology)?</li><li>What has already been done?</li><li>What are the attitudes toward the problem?</li><li>Which groups are most interested?</li><li>What are the legal constraints?</li></ul>",
+     src:"Assessment slide 41"}
+  ]
+},
+{
+  id:"prog", name:"Community Programs", deck:"Assessment deck · slides 72–143 (Ch 6)",
+  blurb:"Health department roles, water fluoridation and other fluoride programs, sealants, education, the dental home, older adults, and who pays.",
+  stars:[
+    "<b>Optimal fluoride level: 0.7 ppm.</b> “Must know.” Since 2015, regardless of climate.",
+    "Water fluoridation: “best dental health promotion of all time.”",
+    "Fluoridation is “a <b>local decision</b>, not state.”",
+    "Fluoridation campaign: <b>involve key players</b> (community influencers such as politicians). <b>“Don’t engage in a debate with the opposite side.”</b>",
+    "<b>SOHPs exist in all states</b> (starred).",
+    "Primary mechanism of fluoride is <b>posteruptive</b>, “meaning topical application.”",
+    "Dietary supplements: the smaller the child, the less they need. Dosing table: “know for long term, not for test.”",
+    "Dental home: “a person they go to,” started by <b>12 months</b> of age.",
+    "Older adults: fastest growing segment. “Our role is to advocate for those.”"
+  ],
+  mix:[
+    "<b>Medicaid vs CHIP vs Medicare:</b> low-income, EPSDT dental for kids · kids not eligible for Medicaid, dental mandated · older adults, no routine dental.",
+    "<b>Title V vs Title XIX:</b> Maternal and Child Health block grants · Medicaid.",
+    "<b>FQHC vs Look-Alike:</b> both meet the health center rules; the look-alike gets no federal grant money.",
+    "<b>McKay vs Dean:</b> McKay noticed the brown stain, Colorado 1920s · Dean proved the fluoride–caries link, 1930s.",
+    "<b>Mouthrinse vs varnish vs supplements:</b> weekly 0.2% NaF at school · painted on for high-risk kids at HS and WIC · prescription only, nonfluoridated areas.",
+    "<b>Coalition vs SOHP:</b> diverse group uniting for a goal · the state’s program, led by the dental director."
+  ],
+  qs:[
+    {id:"t3c-mission",topic:"Health departments",type:"mc",q:"What is the mission of public health?",
+     opts:["To fulfill society’s interest in assuring conditions in which people can be healthy","To provide free dental care to everyone","To license dentists","To fund research only"],ans:0,
+     why:"“Fulfill society’s interest in <b>assuring conditions in which people can be healthy</b>.” Without it: lost productivity, school absences, higher health costs.",
+     src:"Assessment slide 73"},
+    {id:"t3c-bp",topic:"Health departments",type:"mc",q:"ASTDD defines a best practice approach as:",
+     opts:["A public health strategy supported by evidence for its impact and effectiveness","The cheapest program available","Whatever the state dental director prefers","A program that has run at least 10 years"],ans:0,
+     why:"<b>Supported by evidence</b> for impact and effectiveness.",
+     src:"Assessment slide 74"},
+    {id:"t3c-div",topic:"Health departments",type:"mc",q:"Which is NOT one of the DHHS operating divisions listed on the slides?",
+     opts:["National Institutes of Health (NIH)","Food and Drug Administration (FDA)","Indian Health Service (IHS)","American Dental Association (ADA)"],ans:3,
+     why:"The ADA is a professional organization. DHHS divisions: <b>NIH, FDA, CDC, IHS, HRSA</b>. DHHS is the principal agency for protecting health and the largest grant-making agency.",
+     src:"Assessment slide 76–78"},
+    {id:"t3c-sohp",topic:"Health departments",type:"mc",mix:1,q:"State oral health programs (SOHP) exist in:",
+     opts:["Only states with dental schools","All states","Only fluoridated states","About half the states"],ans:1,
+     why:"<b>All states</b> (starred). <b>Dental directors</b> lead planning, funding, and implementation.",
+     src:"Assessment slide 79 ★"},
+    {id:"t3c-dir",topic:"Health departments",type:"mc",mix:1,q:"At the state level, who provides leadership in planning, funding, and implementing oral health promotion programs?",
+     opts:["The governor","State dental directors","Local dentists","The CDC"],ans:1,
+     why:"<b>Dental directors.</b> State programs may include regional directors, educators, dentists, hygienists, and assistants serving underserved populations.",
+     src:"Assessment slide 79"},
+    {id:"t3c-smile",topic:"Health departments",type:"mc",q:"What did Washington State’s Smile Survey do?",
+     opts:["Statewide screenings of children to assess oral health and find gaps in access to care","Measured patient satisfaction in dental offices","Counted dentists in each county","Tested water fluoride levels"],ans:0,
+     why:"Statewide <b>screenings of children</b>; sealant and education programs followed. Class note: need of community is assessed via survey.",
+     src:"Assessment slide 82 class note"},
+    {id:"t3c-coal",topic:"Health departments",type:"mc",q:"A coalition is:",
+     opts:["A diverse group of individuals, organizations, and agencies that unite to reach a common goal","A state agency","A federal grant","A group of dentists in one practice"],ans:0,
+     why:"Many SOHPs work with a state oral health coalition. Class note: a large, diverse group has a wider reach. Local coalitions: a diverse group making change on a small scale.",
+     src:"Assessment slide 83–86 class note"},
+    {id:"t3c-local",topic:"Health departments",type:"mc",q:"Local health department dental clinics are often federally funded. How do they charge?",
+     opts:["Sliding scale fees, and they accept Medicaid","Full fee only","Free to everyone","Only private insurance"],ans:0,
+     why:"<b>Sliding scale</b> and <b>Medicaid</b>. They employ public health dentists and hygienists.",
+     src:"Assessment slide 85"},
+    {id:"t3c-mckay",topic:"Fluoridation",type:"mc",mix:1,q:"Who first noticed, in the 1920s, that people in parts of Colorado had brown-stained teeth but little decay?",
+     opts:["Dr. Trendley Dean","Dr. Frederick McKay","Dr. Alfred Fones","Dr. Edward Jenner"],ans:1,
+     why:"<b>McKay</b> (1920s): brown stain = fluorosis (mottled enamel), with little caries. <b>Dean</b> (1930s) did the epidemiologic studies.",
+     src:"Assessment slide 89"},
+    {id:"t3c-dean",topic:"Fluoridation",type:"mc",mix:1,q:"Who did the 1930s epidemiologic studies linking fluoride concentration, fluorosis, and reduced caries?",
+     opts:["Dr. Trendley Dean","Dr. Frederick McKay","Dr. Sara Baker","Dr. Alfred Fones"],ans:0,
+     why:"<b>Dr. Trendley Dean.</b>",
+     src:"Assessment slide 89"},
+    {id:"t3c-13",topic:"Fluoridation",type:"mc",q:"Fluoride is the ___ most abundant natural element.",
+     opts:["3rd","7th","13th","23rd"],ans:2,
+     why:"<b>Thirteenth</b> (underlined). Found in rocks, soil, fresh water, and ocean water; trace amounts in all natural water.",
+     src:"Assessment slide 89"},
+    {id:"t3c-passive",topic:"Fluoridation",type:"mc",q:"Why is community water fluoridation such a strong public health measure?",
+     opts:["It reaches people passively, with minimal regard to socioeconomic factors","It requires a dental visit","Patients must remember to take it","It only works for adults"],ans:0,
+     why:"A <b>passive vehicle</b> with <b>minimal regard to SES</b> (underlined). Class note: “best dental health promotion of all time.”",
+     src:"Assessment slide 90 class note"},
+    {id:"t3c-results",topic:"Fluoridation",type:"mc",q:"Which is NOT a result of water fluoridation listed on the slides?",
+     opts:["Improved oral health","Reduced spending on restorations","Decreased school absences","No more need for sealants"],ans:3,
+     why:"Results: <b>improved oral health · lower restorative costs · fewer school absences</b>. Sealants plus fluoride together prevent most decay in children.",
+     src:"Assessment slide 91, 113"},
+    {id:"t3c-mech",topic:"Fluoridation",type:"mc",q:"What is the primary mechanism of fluoride in caries inhibition?",
+     opts:["Posteruptive (topical)","Preeruptive (systemic)","Killing all bacteria","Hardening dentin"],ans:0,
+     why:"<b>Posteruptive</b>, “meaning topical application” (class note). Secondary: <b>preeruptive</b> replacement of hydroxyapatite with fluorapatite. Also inhibits glycolysis in bacteria.",
+     src:"Assessment slide 93 class note"},
+    {id:"t3c-mech2",topic:"Fluoridation",type:"mc",q:"What is the secondary (preeruptive) effect of fluoride?",
+     opts:["Replacing hydroxyapatite with fluorapatite while enamel forms","Remineralizing white spots","Inhibiting glycolysis","Reducing saliva flow"],ans:0,
+     why:"<b>Fluorapatite replaces hydroxyapatite</b> during enamel crystalline matrix formation (underlined).",
+     src:"Assessment slide 93"},
+    {id:"t3c-decide",topic:"Fluoridation",type:"mc",q:"Who usually decides whether a community fluoridates its water?",
+     opts:["The federal government","States, and often local governments and city councils","The ADA","Each family"],ans:1,
+     why:"States, and <b>frequently local governments and city councils</b>. Class note: “a local decision, not state.”",
+     src:"Assessment slide 94 class note"},
+    {id:"t3c-746",topic:"Fluoridation",type:"mc",q:"In 2012, what percentage of the U.S. population on public water systems got fluoridated water?",
+     opts:["24.6%","50%","74.6%","96%"],ans:2,
+     why:"<b>74.6%</b> (about 210 million of 283 million on public systems).",
+     src:"Assessment slide 95 class note"},
+    {id:"t3c-cost",topic:"Fluoridation",type:"mc",q:"Per-person yearly cost of fluoridation: which community size costs the least?",
+     opts:["Small systems (under 10,000)","Medium systems (10,000–50,000)","Large systems (over 50,000)","They all cost the same"],ans:2,
+     why:"<b>Large systems</b>: $1.15 per person (2015) vs $1.66 medium vs $5.09 small. Class note: cost is low.",
+     src:"Assessment slide 96"},
+    {id:"t3c-opt",topic:"Fluoridation",type:"mc",q:"What is the optimal fluoride level in community water recommended since 2015?",
+     opts:["0.5 ppm","0.7 ppm","1.0 ppm","1.2 ppm"],ans:1,
+     why:"<b>0.7 ppm</b> (0.7 mg/L), regardless of climate. From 1962 to 2015 it ranged <b>0.7–1.2 ppm</b> by average daily temperature. Class note: “must know .7 ppm.”",
+     src:"Assessment slide 97 ★"},
+    {id:"t3c-old",topic:"Fluoridation",type:"mc",q:"Before 2015, what decided the recommended fluoride level?",
+     opts:["The average daily temperature of the area","The number of dentists","The population size","The water source"],ans:0,
+     why:"<b>Temperature</b>: people drink more water in hot climates, so 0.7–1.2 ppm. In 2015 the Public Health Service set one level, 0.7.",
+     src:"Assessment slide 97"},
+    {id:"t3c-anti",topic:"Fluoridation",type:"mc",q:"Antifluoridationists’ reasons include:",
+     opts:["Individual rights, safety, government mistrust, and religious freedom","Cost only","Taste only","Proven cancer risk"],ans:0,
+     why:"Their arguments <b>have no merit based on scientific knowledge</b>; they spread inaccurate information and try to link fluoridation with health problems.",
+     src:"Assessment slide 98"},
+    {id:"t3c-camp",topic:"Fluoridation",type:"mc",q:"Which is NOT one of the five components of a successful fluoridation campaign?",
+     opts:["Understand the local context","Involve key players","Obtain necessary funding","Hold a public debate with the opposition"],ans:3,
+     why:"The five: <b>understand the local context · involve key players · establish a strategy · obtain funding · understand the opposition</b>. Starred note: “<b>Don’t engage in a debate with the opposite side.</b>”",
+     src:"Assessment slide 100 ★"},
+    {id:"t3c-rinse",topic:"Other fluoride",type:"mc",q:"School fluoride mouthrinse program: how is it given?",
+     opts:["Weekly, 10 mL of 0.2% sodium fluoride, rinse for 60 seconds","Daily, 5 mL of 1.1% sodium fluoride","Monthly varnish","Once a year in the dental office"],ans:0,
+     why:"<b>Weekly · 10 mL · 0.2% NaF · 60 seconds</b>, given by school personnel. Needs <b>parental permission</b> and <b>oversight by a licensed dentist</b>. Class note: “swish and spit.”",
+     src:"Assessment slide 101, 104"},
+    {id:"t3c-rinsewhen",topic:"Other fluoride",type:"mc",q:"When are school-based fluoride mouthrinse programs used?",
+     opts:["Where public water is not available or fluoridation is not wanted","Only in fluoridated communities","Only for adults","Only in dental offices"],ans:0,
+     why:"Where there is <b>no public water source</b> or fluoridation is <b>undesired</b>. Cost-effective for children.",
+     src:"Assessment slide 101, 104"},
+    {id:"t3c-varnish",topic:"Other fluoride",type:"mc",q:"Public health fluoride varnish programs are common for high-risk children at:",
+     opts:["Clinical sites, Head Start centers, and WIC sites","Nursing homes","Colleges","Private orthodontic offices"],ans:0,
+     why:"<b>Clinics, Head Start, WIC</b>, plus school-based varnish programs. Varnish: 43% reduction in DMFS in permanent teeth (2013 Cochrane).",
+     src:"Assessment slide 102–103"},
+    {id:"t3c-supp",topic:"Other fluoride",type:"mc",q:"Dietary fluoride supplements are:",
+     opts:["Prescription only, for children in nonfluoridated areas; drops from 6 months, chewable tablets later","Over the counter for all ages","Recommended for everyone in fluoridated areas","Given at birth"],ans:0,
+     why:"<b>Prescription only</b>, for <b>nonfluoridated areas</b>. Drops for infants 6 months and older; chewable tablets for children and teens.",
+     src:"Assessment slide 105"},
+    {id:"t3c-suppdis",topic:"Other fluoride",type:"mc",q:"What is the major disadvantage of community-based fluoride supplement programs?",
+     opts:["They need compliance over a long time and cost more per child than water fluoridation","They cause cancer","They don’t work at all","They are only for adults"],ans:0,
+     why:"<b>Compliance</b> over years, and <b>higher cost per child</b>. That makes them impractical as an alternative to water fluoridation, which also benefits the whole population.",
+     src:"Assessment slide 107"},
+    {id:"t3c-suppno",topic:"Other fluoride",type:"mc",q:"A 7-year-old drinks water with more than 0.6 ppm fluoride. What daily supplement dose?",
+     opts:["None","0.25 mg","0.50 mg","1.0 mg"],ans:0,
+     why:"Above <b>0.6 ppm, no supplement at any age</b>. Below 0.3 ppm, a 6–16-year-old gets 1.0 mg. No one under 6 months gets a supplement.",
+     defend:"Her note on this table says “know for long term, not for test.” Confirm with the instructor whether the dosing table is on the test.",
+     src:"Assessment slide 106 class note"},
+    {id:"t3c-fluorosis",topic:"Other fluoride",type:"mc",q:"Which is NOT listed as a factor in the rise of dental fluorosis?",
+     opts:["Early use of fluoride toothpaste","Use and misuse of dietary supplements","Infant formula containing fluoride","Professional fluoride varnish"],ans:3,
+     why:"The three: <b>early fluoride toothpaste · supplements · infant formula</b>. Caries has decreased but fluorosis has increased in both fluoridated and nonfluoridated communities.",
+     src:"Assessment slide 108"},
+    {id:"t3c-paste",topic:"Other fluoride",type:"mc",q:"Per the CDC box on the slide, how much fluoride toothpaste for young children?",
+     opts:["Under 2: no fluoride toothpaste; 2–6: no more than a pea-sized amount","Any amount from birth","A full strip from age 1","None until age 12"],ans:0,
+     why:"From the CDC fluorosis box: <b>under 2, none; 2–6, pea-sized</b>; supervise brushing; prescribe supplements judiciously; use other water for children 8 and under if water is over 2 ppm.",
+     defend:"This is the older CDC box shown on the slide. Current ADA guidance uses a rice-grain smear of fluoride toothpaste under age 3. Answer from the slide on the test.",
+     src:"Assessment slide 109"},
+    {id:"t3c-seal60",topic:"Sealants",type:"mc",q:"The CDC reports school-based sealant programs reduce caries by as much as:",
+     opts:["20%","40%","60%","90%"],ans:2,
+     why:"<b>60%.</b> Sealants plus appropriate fluoride could prevent most tooth decay in children.",
+     src:"Assessment slide 113"},
+    {id:"t3c-sealage",topic:"Sealants",type:"mc",q:"Sealant programs focus on which ages, and why?",
+     opts:["6–8 and 12–14, when the first and second molars erupt","3–5 only","16–18, before graduation","Any age; eruption doesn’t matter"],ans:0,
+     why:"<b>6–8 and 12–14</b>: first and second permanent molars erupt.",
+     src:"Assessment slide 113"},
+    {id:"t3c-seallow",topic:"Sealants",type:"mc",q:"Sealant use among school-age children has risen. Which group has seen little increase?",
+     opts:["Children in low-income populations","Children in private schools","Teenagers","Children with dental insurance"],ans:0,
+     why:"<b>Low-income children.</b> That’s why states run school-based sealant programs (SBSPs), with mobile vans or portable equipment. Healthy People 2020 goal: more children with sealants on molars.",
+     src:"Assessment slide 110–112"},
+    {id:"t3c-sealcdc",topic:"Sealants",type:"mc",q:"Which is one of the CDC recommendations for school-based sealant programs?",
+     opts:["Seal children’s teeth even if follow-up cannot be assured","Take radiographs before every sealant","Toothbrush prophylaxis is not acceptable","Check retention after 5 years"],ans:0,
+     why:"CDC: seal <b>even if follow-up can’t be assured</b> · seal sound and <b>noncavitated</b> pits and fissures · unaided visual assessment is fine · <b>radiographs not needed</b> · <b>toothbrush prophy is acceptable</b> · four-handed technique when possible · check retention <b>within 1 year</b>.",
+     src:"Assessment slide 114–115"},
+    {id:"t3c-cog",topic:"Education",type:"mc",q:"Why has the cognitive model (Attitude + Knowledge = Behavior change) been ineffective alone?",
+     opts:["Participants must be actively involved, and internal and external factors also affect behavior","People don’t like knowledge","It is too expensive","It only works for adults"],ans:0,
+     why:"The participant must be <b>actively involved</b>. Patient <b>attitudes and environment</b> (internal and external factors) affect change. Class notes: change knowledge and attitude; change the value system.",
+     src:"Assessment slide 118 class note"},
+    {id:"t3c-school",topic:"Education",type:"mc",q:"Where are large-scale oral health education programs usually done?",
+     opts:["Schools","Hospitals","Dental offices","Nursing homes"],ans:0,
+     why:"<b>Schools.</b> Most programs target <b>children</b> (underlined): they are the future of society.",
+     src:"Assessment slide 119"},
+    {id:"t3c-home",topic:"Dental home",type:"mc",q:"A dental home should be established no later than:",
+     opts:["6 months","12 months","3 years","Age 6"],ans:1,
+     why:"<b>12 months.</b> The dental home is an ongoing, comprehensive, continuously accessible, coordinated, family-centered relationship. Class note: a person they go to who gets them comfortable, and they can call if there is a problem.",
+     src:"Assessment slide 124 class note"},
+    {id:"t3c-homevisit",topic:"Dental home",type:"mc",q:"First dental home visits include:",
+     opts:["Preventive services for the child plus anticipatory guidance and education for parents","Only a cleaning","Only radiographs","Orthodontic evaluation"],ans:0,
+     why:"Preventive services (including <b>fluoride varnish</b>) plus <b>anticipatory guidance</b> and education for caregivers. Class note: establish a long-term dental value system.",
+     src:"Assessment slide 125 class note"},
+    {id:"t3c-older",topic:"Older adults",type:"mc",q:"Which is the fastest-growing segment of the U.S. population?",
+     opts:["Older adults (65+)","Children under 5","Teenagers","Adults 30–40"],ans:0,
+     why:"<b>Older adults</b>: 89 million people 65+ by 2050. Keeping their teeth longer, so they need care and a way to pay.",
+     src:"Assessment slide 126–127"},
+    {id:"t3c-medicare",topic:"Older adults",type:"mc",q:"Does Medicare cover routine dental services?",
+     opts:["Yes, all dental care","No; only dental care directly related to treating a medical condition","Only dentures","Only for veterans"],ans:1,
+     why:"Medicare <b>does not cover dental</b>, except when directly related to a medical condition. Many insurance plans drop dental after 70. Class note: our role is to advocate for older adults.",
+     src:"Assessment slide 127, 131 class note"},
+    {id:"t3c-apple",topic:"Older adults",type:"mc",q:"What is the Apple Tree program?",
+     opts:["A reduced-cost geriatric dental program giving primary, secondary, and tertiary care","A school fluoride program","A federal insurance plan","A sealant van"],ans:0,
+     why:"<b>Apple Tree Geriatric Dental Program</b>: prevention, restorations, and partials and dentures; expanded to special needs, children with disabilities, and indigent families.",
+     src:"Assessment slide 128"},
+    {id:"t3c-bss",topic:"Older adults",type:"mc",q:"Why did ASTDD develop a Basic Screening Survey (BSS) for older adults?",
+     opts:["To collect reliable, valid data documenting the need for policy changes and better programs","To bill Medicare","To diagnose oral cancer","To license geriatric dentists"],ans:0,
+     why:"Reliable, valid <b>data to document need</b> for policy changes and programs. Class note: “used for screening survey.”",
+     src:"Assessment slide 129 class note"},
+    {id:"t3c-secter",topic:"Older adults",type:"mc",q:"Why do some people need secondary or tertiary treatment instead of only primary prevention?",
+     opts:["Financial barriers and geographic access","They prefer fillings","Primary prevention has eliminated disease","Insurance requires it"],ans:0,
+     why:"<b>Money and geography.</b> Prevention reduces disease but hasn’t eliminated it. Public clinics can be fixed, mobile vans, or portable equipment.",
+     src:"Assessment slide 122–123"},
+    {id:"t3c-titlev",topic:"Financing",type:"mc",q:"Maternal and Child Health Services Block Grants are which title?",
+     opts:["Title V","Title IX","Title XIX","Title XXI"],ans:0,
+     why:"<b>Title V</b>: prenatal care for women, primary and preventive care for children, services for children with special health care needs. <b>Title XIX</b> is Medicaid.",
+     src:"Assessment slide 132–133"},
+    {id:"t3c-wic",topic:"Financing",type:"mc",q:"What does WIC provide?",
+     opts:["Supplemental foods, health care referrals, and nutrition education for low-income women, infants, and children at nutritional risk","Dental insurance for seniors","Free dentures","Fluoride supplements only"],ans:0,
+     why:"<b>Food, referrals, nutrition education</b> for low-income pregnant, breastfeeding, and non-breastfeeding women and at-risk infants and children. Runs in all states through local agencies.",
+     src:"Assessment slide 134 class note"},
+    {id:"t3c-chip",topic:"Financing",type:"mc",q:"Who does CHIP cover?",
+     opts:["Children who are not eligible for Medicaid","Adults over 65","Pregnant women only","Veterans"],ans:0,
+     why:"<b>Children not eligible for Medicaid.</b> Joint state and federal funding. <b>Mandated</b> to provide oral health services. Reauthorized by CHIPRA 2015.",
+     src:"Assessment slide 135 class note"},
+    {id:"t3c-medicaid",topic:"Financing",type:"mc",q:"Medicaid is Title ___, and its comprehensive dental benefit for enrolled children is ___.",
+     opts:["XIX; EPSDT","V; WIC","XXI; CHIP","XVIII; Medicare Part B"],ans:0,
+     why:"<b>Title XIX</b>, joint state–federal, run by the states for low-income people. <b>EPSDT</b> (Early and Periodic Screening, Diagnosis, and Treatment) gives children comprehensive dental services.",
+     src:"Assessment slide 136"},
+    {id:"t3c-fqhc",topic:"Financing",type:"mc",q:"How is an FQHC Look-Alike different from an FQHC?",
+     opts:["It meets the health center definition but receives no federal grant funding","It only treats children","It is privately owned and charges full fees","It is run by the ADA"],ans:0,
+     why:"Both serve <b>anyone regardless of ability to pay</b>. The Look-Alike is certified by CMS (identified by HRSA) but gets <b>no federal grant</b>.",
+     src:"Assessment slide 137"},
+    {id:"t3c-hs",topic:"Financing",type:"mc",q:"Head Start (federally funded) includes which oral health services?",
+     opts:["Mandated screening and referrals, fluoride treatments, and toothbrushing after meals","Orthodontics","Adult dentures","Nothing dental"],ans:0,
+     why:"Head Start: <b>mandated screening and referrals</b>, fluoride, care paid for some children not on Medicaid, <b>toothbrushing after meals</b>, and oral health education.",
+     src:"Assessment slide 131"},
+    {id:"t3c-fund",topic:"Financing",type:"open",q:"Name the federal initiatives that fund women’s and children’s oral health programs, and one thing each does.",
+     model:"<ul><li><b>Title V block grants</b>: prenatal care, children’s preventive care, special health care needs</li><li><b>WIC</b>: food, referrals, nutrition education</li><li><b>CHIP</b> (CHIPRA 2015): insurance with dental for kids not on Medicaid</li><li><b>Medicaid (Title XIX)</b>: low-income; EPSDT dental for children</li><li><b>ACF</b> (Administration for Children & Families): runs Head Start</li></ul>Also: FQHCs and volunteer dental programs.",
+     src:"Assessment slide 130–137"}
+  ]
+},
+{
+  id:"tl", name:"Testlets", deck:"Test-taking deck · 20 slides (Ch 12)",
+  blurb:"How the board exam builds community testlets, how to read them, and the practice testlets from class.",
+  stars:[
+    "“Don’t make assumptions” (written on the objectives slide).",
+    "“Read the questions first” (written on the testlet slide).",
+    "A testlet has <b>extra information</b> and <b>distractors</b>. The marked-up example labels the grant as a distractor and the DMFT and plaque index as “something about an index.”",
+    "Optimal fluoride: <b>0.7 ppm</b> is circled.",
+    "Helping pass the fluoride referendum as a private practice hygienist: <b>check with your local dental hygiene component</b> (circled)."
+  ],
+  mix:[
+    "<b>Scenario vs testlet:</b> the community case · the case plus its questions.",
+    "<b>Negative questions</b> use EXCEPT or NOT: pick the one that doesn’t fit.",
+    "<b>Prevention in testlets:</b> healthy kids learning to brush = primary · pre-diabetic group = secondary · cardiac ICU patients = tertiary."
+  ],
+  qs:[
+    {id:"t3t-nbdhe",topic:"The board exam",type:"mc",q:"How is the community health section of the NBDHE set up?",
+     opts:["5 community cases, 4–5 questions each, 24 questions total","10 cases, 10 questions each","1 long case with 50 questions","24 cases, 1 question each"],ans:0,
+     why:"<b>Five testlets, 24 questions.</b>",
+     src:"Test-taking slide 7"},
+    {id:"t3t-content",topic:"The board exam",type:"mc",q:"Which community content area has the most NBDHE questions?",
+     opts:["Participating in community programs (assessing, objectives, designing, implementing, evaluating)","Promoting health and preventing disease within groups","Analyzing scientific literature and statistics","Dental materials"],ans:0,
+     why:"<b>Community programs: 10</b> · research and statistics: 8 · health promotion in groups: 6 · total 24.",
+     src:"Test-taking slide 8"},
+    {id:"t3t-scen",topic:"The board exam",type:"mc",q:"The NBDHE calls a community case a ___. The case plus its questions is a ___.",
+     opts:["Scenario; testlet","Testlet; scenario","Case study; quiz","Vignette; block"],ans:0,
+     why:"<b>Scenario</b> = the simulated community situation. <b>Testlet</b> = scenario + questions.",
+     src:"Test-taking slide 9"},
+    {id:"t3t-formats",topic:"The board exam",type:"mc",q:"Which is NOT one of the NBDHE question formats on the slides?",
+     opts:["Paired true-false","Cause-and-effect","Completion","Essay"],ans:3,
+     why:"Formats: <b>multiple-choice · completion · paired true-false · cause-and-effect · negative (EXCEPT/NOT)</b>.",
+     src:"Test-taking slide 11"},
+    {id:"t3t-change",topic:"Strategy",type:"mc",q:"When should you change an answer?",
+     opts:["Only if you misread the question or find information in the test that corrects it","Whenever you feel unsure","Never","If the answer is C"],ans:0,
+     why:"Box 12-1 tip 14: change only if you <b>misread</b> or find <b>correcting information</b> later in the test.",
+     src:"Test-taking slide 4"},
+    {id:"t3t-clue",topic:"Strategy",type:"mc",q:"Which is a logical clue toward the right answer (Box 12-1)?",
+     opts:["A repeated word or concept in both the question and the answer","The shortest answer","An answer with “always” in it","The first option"],ans:0,
+     why:"Clues: <b>repeated word or concept</b> · often the <b>longest</b> answer · eliminate <b>similar</b> alternatives · eliminate options <b>contradictory or opposite</b> to the question.",
+     src:"Test-taking slide 4"},
+    {id:"t3t-guess",topic:"Strategy",type:"mc",q:"You don’t know an NBDHE answer. What should you do?",
+     opts:["Make an educated guess, flag it, and come back","Leave it blank","Pick A every time","Skip the whole testlet"],ans:0,
+     why:"Answer <b>every</b> question; it’s to your advantage to guess. Flag it and return.",
+     src:"Test-taking slide 4"},
+    {id:"t3t-mind",topic:"Strategy",type:"mc",q:"What must you change before answering community testlets?",
+     opts:["Your train of thought: think about community practice, not the single patient","Your pencil","The order of the testlets","Nothing; it’s the same as clinical questions"],ans:0,
+     why:"Switch to a <b>community frame of mind</b>. Questions require critical thinking. Class notes: read the questions first; don’t make assumptions.",
+     src:"Test-taking slide 2, 12, 14 class note"},
+    {id:"t3t-p1",topic:"Prevention testlet",type:"mc",q:"Testlet: Mary and John, public health hygienists, educate a pre-diabetes (type 2) group on healthy choices. Level of prevention?",
+     opts:["Primary","Secondary","Tertiary"],ans:1,
+     why:"<b>Secondary</b>: the group already shows risk factors or early signs.",
+     src:"Test-taking slide 14"},
+    {id:"t3t-p2",topic:"Prevention testlet",type:"mc",q:"Testlet: Mary and John teach school children healthy brushing habits. Level of prevention?",
+     opts:["Primary","Secondary","Tertiary"],ans:0,
+     why:"<b>Primary</b>: healthy population, education to prevent disease.",
+     src:"Test-taking slide 14"},
+    {id:"t3t-p3",topic:"Prevention testlet",type:"mc",q:"Testlet: Mary and John work in the cardiac ICU, teaching patients how to best decrease inflammation. Level of prevention?",
+     opts:["Primary","Secondary","Tertiary"],ans:2,
+     why:"<b>Tertiary</b>. Class note: “because they already have it.”",
+     defend:"Chapter 1 defines tertiary as replacing lost tissue (dentures, implants). This testlet uses it for patients who already have the disease. Both say the disease has already done damage.",
+     src:"Test-taking slide 14 class note"},
+    {id:"t3t-distract",topic:"Prevention testlet",type:"mc",q:"In the Mary and John scenario, what is the $25,000 block grant from the local government?",
+     opts:["A distractor","The key to every question","An index","A level of prevention"],ans:0,
+     why:"It’s labeled a <b>distractor</b>. The permission from the health department is extra information; the DMFT and plaque index are “something about an index.”",
+     src:"Test-taking slide 14"},
+    {id:"t3t-q16",topic:"Fluoride testlet",type:"mc",q:"Testlet (low-SES city of 1.5 million, unfluoridated water, mostly Hispanic families, fluoridation on the ballot in 8 months): as a private practice hygienist, what is the best way to help pass the referendum?",
+     opts:["Continue educating your patients on the benefits of fluoride","Start calling community leaders","Make a financial contribution","Check with your local dental hygiene component to see whether a unified plan exists and how you can help"],ans:3,
+     why:"<b>Check with your local component</b> (circled on her slide). A unified plan beats acting alone. Dental hygienists are an effective force as active members of ADHA and local components.",
+     src:"Test-taking slide 15–16 class note"},
+    {id:"t3t-q17",topic:"Fluoride testlet",type:"mc",q:"Same testlet: all of these political tactics EXCEPT one will help the referendum pass. Which is the exception?",
+     opts:["Public debate with the antifluoridationists","Analysis of the referendum of 10 years ago","Endorsements by community leaders","Literature in Spanish and English throughout the community"],ans:0,
+     why:"<b>Public debate</b> with the opposition. Starred note in the program deck: “Don’t engage in a debate with the opposite side.” Analyzing the old referendum = understand the local context; leaders = key players; bilingual literature = education for a mostly Hispanic city.",
+     defend:"No answer is circled on this slide. The answer comes from her starred note on the fluoridation campaign slide.",
+     src:"Test-taking slide 17"},
+    {id:"t3t-q18",topic:"Fluoride testlet",type:"mc",q:"Same testlet: after the school screening, what is the best way to tell parents about their children’s oral health needs?",
+     opts:["Send DMFT index results home with the children","Mail literature on children’s oral health","Phone each parent to report findings and refer","Send Basic Screening Survey results home with a referral and a list of local community clinics"],ans:3,
+     why:"<b>BSS results + referral + clinic list.</b> Parents can read it, it tells them where to go, and it is cheap to send. DMFT numbers mean nothing to parents; literature gives no referral; phoning every family is impractical.",
+     defend:"No answer is circled; the handwriting next to it looks like “think … and cheap.” Confirm with the instructor.",
+     src:"Test-taking slide 18 class note"},
+    {id:"t3t-q19",topic:"Fluoride testlet",type:"mc",q:"Same testlet: fluoride should be added to bring the water to what optimal level?",
+     opts:["0.5 ppm","0.7 ppm","0.8 ppm","1 ppm"],ans:1,
+     why:"<b>0.7 ppm</b> (circled).",
+     src:"Test-taking slide 19 class note"},
+    {id:"t3t-q20",topic:"Fluoride testlet",type:"mc",q:"Same testlet: if the referendum fails again, which alternative program would be best?",
+     opts:["Send letters recommending parents take their children to the dentist for treatment and fluoride","Give oral hygiene lessons in classrooms","Start a school fluoride varnish program","Implement a sealant program"],ans:2,
+     why:"A <b>school fluoride program</b> brings fluoride to every child at school, in a low-income city where many families can’t get to a dentist. Letters depend on each family finding and paying for care, which is not a public health solution. Lessons alone don’t deliver fluoride.",
+     defend:"Her slide has the letters option (a) circled. This page uses the varnish program because it follows the public health reasoning in the decks. Ask the instructor which answer is correct.",
+     src:"Test-taking slide 20 class note"},
+    {id:"t3t-plan",topic:"Strategy",type:"open",q:"Describe your plan for working through a community testlet.",
+     model:"<ol><li>Switch to a <b>community</b> frame of mind.</li><li><b>Read the questions first</b>, then the scenario (class note).</li><li>Mark what’s <b>extra information</b>, what’s a <b>distractor</b>, and what each question actually needs (index, level of prevention, step of ADPIE).</li><li>Answer the question in your head before reading the options.</li><li>Eliminate, then pick the <b>best</b> answer, not just a correct one.</li><li><b>Don’t make assumptions</b> beyond the scenario.</li></ol>",
+     src:"Test-taking slide 2–14 class note"}
+  ]
+}
+];
+
 // Photo questions need the slide images; without them they are left out.
-if(!SLIDE_BASE)T2.forEach(s=>{s.qs=s.qs.filter(q=>!q.img);});
+if(!SLIDE_BASE)[...T2,...T3].forEach(s=>{s.qs=s.qs.filter(q=>!q.img);});
 
 // Spread the right answers across the option slots. The shuffle is fixed per question id,
 // so a saved pick still points at the same option next visit. Short scales (0–3, Code 0–4,
 // Excellent–Poor) stay in their natural order.
 (function(){
-  for(const q of T2.flatMap(s=>s.qs)){
+  for(const q of [...T2,...T3].flatMap(s=>s.qs)){
     if(q.type!=="mc"||(!q.mix&&q.opts.every(o=>o.length<=20)))continue;
     let h=2166136261; for(const ch of q.id){h^=ch.charCodeAt(0);h=Math.imul(h,16777619);}
     const rnd=()=>{h=Math.imul(h^(h>>>15),2246822507);h=Math.imul(h^(h>>>13),3266489909);h^=h>>>16;return (h>>>0)/4294967296;};
@@ -1908,12 +2617,107 @@ function renderHUD(){const lvl=Math.floor(S.xp/100)+1;$("#lvl").textContent="LV 
 // "Indices slide 12–16 ★" → each slide number opens that slide
 function srcTag(s){
   const std=/^Standard/.test(s); let h=esc(s);
-  const m=SLIDE_BASE&&/^(Indices|Sealants|SRP) slide /.exec(s);
+  const m=SLIDE_BASE&&DECK_RE.exec(s);
   if(m){const rest=s.slice(m[0].length), nums=(/^[\d,\s–-]+/.exec(rest)||[""])[0];
     h=esc(m[0])+nums.replace(/\d+(?:\s*[–-]\s*\d+)?/g,t=>`<button type="button" class="sl" data-deck="${m[1]}" data-n="${parseInt(t,10)}" aria-label="Open ${m[1]} slide ${parseInt(t,10)}">${t}</button>`)+esc(rest.slice(nums.length));}
   return `<span class="src${std?" std":""}">${h}</span>`;
 }
 function qImg(q){return q.img?`<div class="qimg"><img loading="lazy" src="${slideURL(q.img.deck,q.img.n)}" alt="Photo of a clinician’s hands using a fulcrum while scaling"></div>`:"";}
+
+/* ============ TEST 3: flashcards and instructor questions ============ */
+const CARDS3 = [
+ {d:"Basics",f:"Health, public health, dental public health: who defined each?",b:"<ul><li><b>Health</b> (WHO): complete physical and social well-being, not merely the absence of disease</li><li><b>Public health</b> (CDC): protecting and improving the health of families and communities</li><li><b>Dental public health</b> (AAPHD): preventing and controlling dental disease and promoting dental health through <b>organized community efforts</b></li></ul>",s:"Ch1 slide 4–7"},
+ {d:"Basics",f:"Community health vs population health",b:"<b>Community health</b> = public health; interchangeable terms (class note).<br><b>Population health</b> = health outcomes of a group and how they are distributed within it.",s:"Ch1 slide 8–9 class note"},
+ {d:"Basics",f:"Three levels of prevention",b:"<ul><li><b>Primary:</b> prevent it · healthy population · water fluoridation</li><li><b>Secondary:</b> stop it early · risk factors or early signs · varnish on white spots</li><li><b>Tertiary:</b> replace lost tissue · dentures, implants</li></ul>",s:"Ch1 slide 12"},
+ {d:"Basics",f:"Seven characteristics of a public health solution",b:"Not hazardous · effective · easily implemented · potency lasts · attainable regardless of SES · effective immediately · inexpensive",s:"Ch1 slide 18"},
+ {d:"Basics",f:"Goal of public health: three domains",b:"<b>Health protection · disease prevention · health promotion</b>",s:"Ch1 slide 19"},
+ {d:"Basics",f:"History: Fones, Newman, Baker, 1671",b:"<b>Fones</b> coined “dental hygienist,” 1913 · <b>Irene Newman</b>, first hygienist · <b>Sara Baker</b>, Hell’s Kitchen mothers program · <b>South Carolina 1671</b>, first U.S. public health measure (water)",s:"Ch1 slide 10, 21"},
+ {d:"Government",f:"DHHS and its agencies",b:"<b>DHHS</b>: largest grant-maker<ul><li><b>NIH</b>: research, NIDCR</li><li><b>CDC</b>: surveillance, outbreaks, Oral Health Division, fluoridation</li><li><b>HRSA</b>: National Health Service Corps, Ryan White, transplants (“workforce”)</li><li>Also FDA, IHS</li></ul>",s:"Ch1 slide 27–28"},
+ {d:"Government",f:"Three core functions",b:"<ul><li><b>Assessment:</b> collect the information that supports the action</li><li><b>Policy development:</b> strategic, scientifically based plan</li><li><b>Assurance:</b> does what it says it will do and helps who it is meant to help</li></ul>IOM report, 1988; reinforced 2003.",s:"Ch1 slide 39–40 ★"},
+ {d:"Government",f:"Ten essential services, by core function",b:"<ul><li><b>Assessment:</b> monitor health · diagnose and investigate</li><li><b>Policy:</b> inform, educate, empower · mobilize partnerships · develop policies</li><li><b>Assurance:</b> enforce laws · link to/provide care · competent workforce · evaluate</li></ul>Research in the center. “Diagnose and <b>treat</b> patients” is NOT one.",s:"Ch1 slide 42, 64"},
+ {d:"Government",f:"National reports and dates",b:"<ul><li><b>2000</b> Surgeon General, <i>Oral Health in America</i>: oral health is essential; profound disparities</li><li><b>2003</b> National Call to Action</li><li><b>Healthy People</b>: every 10 years, DHHS · HP2020: oral health one of 12 leading indicators</li><li><b>2010</b> ACA · <b>2004</b> ADHP · <b>2009</b> Access to Care Summit · <b>2013</b> Action for Dental Health · <b>2014</b> Long-Term Care campaign</li></ul>",s:"Ch1 slide 32–55"},
+ {d:"Government",f:"Pew’s three fixes for children’s unmet dental need",b:"Make Medicaid and CHIP coverage lead to <b>real care</b> · more providers for <b>low-income children</b> · authorize <b>dental therapists</b>",s:"Ch1 slide 49"},
+ {d:"Planning",f:"ADPIE",b:"<b>A</b>ssessment · <b>D</b>iagnosis · <b>P</b>lanning · <b>I</b>mplementation · <b>E</b>valuation<br>(+ documentation, optional)",s:"Assessment slide 35, 69 class note"},
+ {d:"Planning",f:"Needs assessment",b:"Organized, systematic approach to <b>identify a target group</b> and <b>define the extent and severity</b> of oral health needs. The most important, foundational step. Gives baseline data.",s:"Assessment slide 40, 47"},
+ {d:"Planning",f:"SMART + C",b:"<b>S</b>pecific · <b>M</b>easurable · <b>A</b>chievable · <b>R</b>elevant · <b>T</b>imed · <b>C</b>hallenging<br>The <b>performance verb</b> is the key to a measurable objective.",s:"Assessment slide 52–53 class note"},
+ {d:"Planning",f:"Process vs outcome vs impact objectives",b:"<ul><li><b>Process:</b> action on a contributing factor · short term</li><li><b>Outcome:</b> how much the health problem drops, by when · long term</li><li><b>Impact:</b> learning, knowledge, attitude, skill (learning, behavioral, environmental)</li></ul>",s:"Assessment slide 54–55"},
+ {d:"Planning",f:"Formative vs summative evaluation",b:"<b>Formative</b> (formation): during the program, catches problems early.<br><b>Summative</b> (summary): at the end, judges overall success.",s:"Assessment slide 64, 68"},
+ {d:"Planning",f:"Pilot testing",b:"Start with a <b>smaller population</b>, expand later. Tests effectiveness, easier to control. A form of evaluating implementation. “Think of a pilot episode of a show.”",s:"Assessment slide 60 class note"},
+ {d:"Planning",f:"ASTDD Seven-Step Model",b:"<ol><li>Partners + advisory committee</li><li>Self-assessment: goals, resources</li><li>Plan the needs assessment</li><li>Collect data</li><li>Organize and analyze</li><li>Use data; prioritize; report</li><li>Evaluate the needs assessment</li></ol>",s:"Assessment slide 71"},
+ {d:"Epidemiology",f:"Epidemiology",b:"The study of the <b>distribution and determinants</b> of health-related states in specified populations, applied to prevention and control.",s:"Assessment slide 12"},
+ {d:"Epidemiology",f:"Epidemiologic triangle for caries",b:"<ul><li><b>Host:</b> enamel, saliva, immunity, behaviors</li><li><b>Agent:</b> biofilm, S. mutans, lactobacillus</li><li><b>Environment:</b> diet, fluoride, SES, community norms, family support</li></ul>Disease is multifactorial (starred).",s:"Assessment slide 15–18 ★"},
+ {d:"Epidemiology",f:"Endemic, epidemic, eradication",b:"<b>Endemic:</b> the usual rate in an area<br><b>Epidemic:</b> an increase in disease<br><b>Eradication:</b> no longer exists in a population",s:"Assessment slide 19 class note"},
+ {d:"Epidemiology",f:"Determinants of health",b:"Biology and genetics · behavior · physical environment · social environment · access to quality health services.<br>No single one is most important. <b>Social determinants</b>: where people are born, grow, live, work, age.",s:"Assessment slide 25–28"},
+ {d:"Programs",f:"Optimal fluoride level",b:"<b>0.7 ppm</b> (0.7 mg/L) since 2015, regardless of climate. 1962–2015: 0.7–1.2 ppm by temperature. “Must know.”",s:"Assessment slide 97 ★"},
+ {d:"Programs",f:"McKay and Dean",b:"<b>McKay</b>, 1920s: brown stain (mottled enamel) in Colorado, little decay.<br><b>Dean</b>, 1930s: epidemiologic studies linking fluoride, fluorosis, and less caries.",s:"Assessment slide 89"},
+ {d:"Programs",f:"How fluoride works",b:"<b>Primary:</b> posteruptive = topical.<br><b>Secondary:</b> preeruptive, fluorapatite replaces hydroxyapatite.<br>Also inhibits glycolysis in bacteria.",s:"Assessment slide 93 class note"},
+ {d:"Programs",f:"Fluoridation facts",b:"Fluoride is the <b>13th</b> most abundant element · <b>74.6%</b> on public water got it (2012) · cheapest per person in large systems ($1.15) · a <b>local</b> decision",s:"Assessment slide 89–96"},
+ {d:"Programs",f:"Five components of a fluoridation campaign",b:"Understand the local context · <b>involve key players</b> · establish a strategy · obtain funding · understand the opposition.<br>★ <b>Don’t debate the opposition.</b>",s:"Assessment slide 100 ★"},
+ {d:"Programs",f:"School fluoride mouthrinse",b:"<b>Weekly · 10 mL · 0.2% NaF · 60 s.</b> Where there’s no public water or fluoridation isn’t wanted. Needs parental permission and a supervising dentist.",s:"Assessment slide 101, 104"},
+ {d:"Programs",f:"Fluoride supplements",b:"Prescription only, nonfluoridated areas. Drops from 6 months; chewables later. None if water is over 0.6 ppm. Downsides: long-term compliance, cost per child.",s:"Assessment slide 105–107"},
+ {d:"Programs",f:"Why fluorosis has increased",b:"Early fluoride toothpaste · supplement use and misuse · infant formula with fluoride",s:"Assessment slide 108"},
+ {d:"Programs",f:"School sealant programs",b:"Ages <b>6–8 and 12–14</b> (molar eruption) · reduce caries up to <b>60%</b> · vans or portable equipment · seal even without follow-up · no x-rays needed · check retention within 1 year",s:"Assessment slide 110–115"},
+ {d:"Programs",f:"Dental home",b:"Ongoing, comprehensive, accessible, coordinated, family-centered relationship with a dentist. By <b>12 months</b>. First visits include anticipatory guidance for parents.",s:"Assessment slide 124–125"},
+ {d:"Programs",f:"Older adults",b:"Fastest-growing segment; <b>89 million</b> 65+ by 2050. <b>Medicare doesn’t cover dental.</b> Apple Tree = reduced-cost geriatric care. ASTDD BSS documents need.",s:"Assessment slide 126–129"},
+ {d:"Financing",f:"Medicaid, CHIP, Medicare",b:"<ul><li><b>Medicaid</b> (Title XIX): state + federal, low income; <b>EPSDT</b> dental for kids</li><li><b>CHIP</b>: kids not eligible for Medicaid; dental mandated</li><li><b>Medicare</b>: federal, older adults; no dental unless tied to a medical condition</li></ul>",s:"Assessment slide 131–136"},
+ {d:"Financing",f:"Title V, WIC, Head Start",b:"<b>Title V</b> block grants: prenatal care, children’s care, special needs.<br><b>WIC</b>: food, referrals, nutrition education.<br><b>Head Start</b>: screening, referrals, fluoride, brushing after meals.",s:"Assessment slide 131–134"},
+ {d:"Financing",f:"FQHC vs Look-Alike",b:"Both serve <b>anyone regardless of ability to pay</b>. The Look-Alike meets the definition but gets <b>no federal grant</b>.",s:"Assessment slide 137"},
+ {d:"Testlets",f:"NBDHE community section",b:"<b>5 testlets, 24 questions.</b> Community programs 10 · research/statistics 8 · health promotion 6. A <b>scenario</b> + its questions = a <b>testlet</b>.",s:"Test-taking slide 7–9"},
+ {d:"Testlets",f:"Question formats",b:"Multiple-choice · completion · paired true-false · cause-and-effect · negative (EXCEPT / NOT)",s:"Test-taking slide 11"},
+ {d:"Testlets",f:"How to read a testlet",b:"Community frame of mind · <b>read the questions first</b> · spot extra info and distractors · eliminate · pick the best answer · <b>don’t make assumptions</b>",s:"Test-taking slide 2–14 class note"}
+];
+
+/* Test 3 notes to review with the instructor. Ids start t3- so they never collide with Test 2. */
+const ASK3 = [
+ {id:"t3-q20",g:"Testlets",hi:1,q:"Practice testlet: if the fluoride referendum fails again, which program is best?",
+  why:"On her slide, option a (send letters to parents recommending the dentist) is circled. The decks teach school-based fluoride programs as the public health alternative when water isn’t fluoridated, which points to c (school fluoride varnish program).",
+  app:"Practice uses c, varnish program, and shows the circled answer underneath.",src:"Test-taking slide 20"},
+ {id:"t3-steps",g:"Planning",hi:1,q:"How many steps are in the program planning process, and which list do you want us to know?",
+  why:"Slide 35 lists five steps (ADPIE). Slide 36 lists four (assess, plan, implement, evaluate). Slide 39 lists five different ones (identify issues, develop objectives, select interventions, implement, evaluate). Slide 69 adds “Document,” marked optional, and the Chapter 1 table adds documentation as a sixth row.",
+  app:"ADPIE, five steps, with documentation as optional.",src:"Assessment slide 35–39, 69"},
+ {id:"t3-hp",g:"Planning",hi:1,q:"Which Healthy People edition should we know: 2020 or 2030?",
+  why:"The program deck calls Healthy People 2020 the driving force of dental public health and cites its sealant goals. Chapter 1 describes Healthy People 2030 as the current one.",
+  app:"Questions use 2020 where the slide does, and mention 2030 from Chapter 1.",src:"Assessment slide 5, 110; Ch1 slide 34"},
+ {id:"t3-supp",g:"Programs",hi:1,q:"Is the dietary fluoride supplement dosing table on the test?",
+  why:"Her note on the table reads like “dosing recommendations: know for long term, not for test.”",
+  app:"One practice question uses the table (no supplement above 0.6 ppm) and is marked to confirm.",src:"Assessment slide 106"},
+ {id:"t3-tert",g:"Chapter 1",q:"What counts as tertiary prevention on the test?",
+  why:"Chapter 1 defines tertiary as replacing lost tissue (dentures, implants). The testlet slide calls teaching cardiac ICU patients to decrease inflammation tertiary, with the note “because they already have it.”",
+  app:"Both: tertiary is care after the disease has done damage, including rehabilitation and replacement.",src:"Ch1 slide 12; Test-taking slide 14"},
+ {id:"t3-who",g:"Chapter 1",q:"WHO definition of health: physical and social, or physical, mental, and social?",
+  why:"Chapter 1 quotes it as “complete physical and social well-being.” The program deck says “complete physical, mental, and social well-being.” The WHO’s own wording includes mental.",
+  app:"Flashcards use the Chapter 1 wording. Expect “mental” on a board-style question.",src:"Ch1 slide 4; Assessment slide 23"},
+ {id:"t3-ch1rev",g:"Chapter 1",q:"Review questions on Chapter 1 slides 65–68 have no answer marked. Are these right?",
+  why:"Slide 63 (C) and 64 (B) are circled. 65–68 are not. On 66, both a school sealant program and water fluoridation are public health measures.",
+  app:"65: setting policies, funding, regulating · 66: fluoridation · 67: enforcing laws (assurance) · 68: integrating oral health into overall health.",src:"Ch1 slide 65–68"},
+ {id:"t3-asrev",g:"Planning",q:"Review questions at the end of the program deck (slides 139–143) have no answers marked. Are these right?",
+  why:"None of the five is circled.",
+  app:"139: government, nonprofits, and communities together · 140: collecting and analyzing data · 141: distribution and determinants · 142: access to health care · 143: identifying needs.",src:"Assessment slide 139–143"},
+ {id:"t3-tl1718",g:"Testlets",q:"Practice testlet questions 2 and 3 (slides 17 and 18) have no answer circled. Are these right?",
+  why:"Slide 17 (EXCEPT question) has nothing marked. Slide 18 has a note that looks like “think … and cheap” but no circle.",
+  app:"17: public debate with the antifluoridationists (from her starred note “don’t engage in a debate”). 18: Basic Screening Survey results sent home with a referral and a clinic list.",src:"Test-taking slide 17–18"},
+ {id:"t3-seal",g:"Programs",q:"Her note beside the CDC sealant table: can sealants go over early decay?",
+  why:"The note next to the CDC recommendations looks like “seal over cavity or decay.” The table says to tell cavitated from noncavitated lesions and seal sound and noncavitated surfaces. Test 2 taught therapeutic sealants on non-cavitated lesions and not on cavitated ones.",
+  app:"Seal sound and noncavitated surfaces; cavitated lesions get restored.",src:"Assessment slide 115"},
+ {id:"t3-ppm",g:"Programs",q:"Optimal fluoride level: the slide says “0.7 ml F per liter.” Is that 0.7 mg/L (0.7 ppm)?",
+  why:"The slide reads milliliters; fluoride concentration is milligrams per liter. Her note says “must know .7 ppm.”",
+  app:"0.7 ppm = 0.7 mg/L.",src:"Assessment slide 97"},
+ {id:"t3-impact",g:"Planning",q:"Impact objectives: short term or long term, and what goes in them?",
+  why:"Slide 54 gives process objectives as short term and outcome objectives as long term, but says nothing about the timing of impact objectives. It lists them as learning, knowledge, attitude, and skill; the diagram on slide 55 lists learning, behavioral, and environmental.",
+  app:"Impact sits between process and outcome. Practice uses the PTA learning example from slide 55.",src:"Assessment slide 54–55"},
+ {id:"t3-notes",g:"Notes",q:"Check your own notes: handwriting that could not be read",
+  why:"These notes were too faint or small to read: Chapter 1 slides 47 (“Cheuf 3”?), 55, 57; program deck slides 20, 69, 103, 108–112, 119, 128, 136–137. The note on slide 51 next to “Goals” may say “vague is okay.”",
+  app:"Nothing on the page depends on these.",src:"Ch1 slide 47–57; Assessment slide 20–137"}
+];
+
+/* Per-test pieces the shared tabs read from. Test 1 (Case Lab) has its own views. */
+const SETS={
+ t2:{name:"Test 2",secs:T2,cards:CARDS2,ask:ASK,cram:()=>renderCram2(),
+     quiz:"10 random questions from the indices, sealants, and scaling & root planing slides."},
+ t3:{name:"Test 3",secs:T3,cards:CARDS3,ask:ASK3,cram:()=>renderCram3(),
+     quiz:"10 random questions from Chapter 1, the community program slides, and the practice testlets."}
+};
+function SET(){return SETS[TEST]||SETS.t2;}
 
 /* ============ TESTS (title dropdown) ============ */
 const TESTS=[
@@ -1924,7 +2728,11 @@ const TESTS=[
  {id:"t2",title:"Hygiene Test 2 Lab",menu:"Test 2 Lab",blurb:"Test 2 · indices, sealants, scaling & root planing",
   sub:"Test 2 prep · built from the Dental Indices, Sealants, and Nonsurgical Periodontal Therapy slides",
   tabs:[["ask","Ask instructor"],["topics","Practice"],["cards","Flashcards"],["quiz","Quiz"],["cram","Cram sheet"]], home:"topics",
-  note:`<span class="src">Indices slide __</span> names the slide deck and slide number the answer came from, so you can look it up. <span class="star">★</span> and “class note” mean it was starred or handwritten on the slides. <span class="src std">Standard teaching</span> means the slides don’t say it and the answer comes from standard dental hygiene textbooks. Where a slide and a handwritten note disagree, the answer shows both. This is a study aid, not an answer key.`}
+  note:`<span class="src">Indices slide __</span> names the slide deck and slide number the answer came from, so you can look it up. <span class="star">★</span> and “class note” mean it was starred or handwritten on the slides. <span class="src std">Standard teaching</span> means the slides don’t say it and the answer comes from standard dental hygiene textbooks. Where a slide and a handwritten note disagree, the answer shows both. This is a study aid, not an answer key.`},
+ {id:"t3",title:"Hygiene Test 3 Lab",menu:"Test 3 Lab",blurb:"Test 3 · community oral health, program planning & testlets",
+  sub:"Test 3 prep · built from the Chapter 1, community program planning, and test-taking slides",
+  tabs:[["ask","Ask instructor"],["topics","Practice"],["cards","Flashcards"],["quiz","Quiz"],["cram","Cram sheet"]], home:"topics",
+  note:`<span class="src">Ch1 slide __</span>, <span class="src">Assessment slide __</span> and <span class="src">Test-taking slide __</span> name the slide deck and slide number the answer came from. <span class="star">★</span> and “class note” mean it was starred or handwritten on the slides. Where a slide and a handwritten note disagree, the answer shows both. This is a study aid, not an answer key.`}
 ];
 let TEST="t1";
 function curTest(){return TESTS.find(t=>t.id===TEST);}
@@ -1939,6 +2747,7 @@ function renderTest(){
 function setTest(id,startTab){
   TEST=id; lsSet(KEY+"-test",id);
   Q=null; deckFilter="All"; deckOrder=null; cardIdx=0; flipped=false;
+  askFilter="All"; tFilter="All"; if(SETS[id])curSec=SETS[id].secs[0].id;
   renderTest();
   const ids=curTest().tabs.map(x=>x[0]);
   const home=curTest().home||ids[0];
@@ -2067,9 +2876,9 @@ $("#view-cases").addEventListener("click",e=>{
 });
 $("#view-cases").addEventListener("input",e=>{const id=e.target.dataset.draft;if(id){S.ans["draft-"+id]=e.target.value;save();}});
 function rerenderQ(q){const el=$("#q-"+q.id);if(el){el.outerHTML=qHTML(q);}const c=CASES.find(x=>x.id===curCase);const done=c.qs.filter(q=>S.ans[q.id]).length,right=c.qs.filter(q=>S.ans[q.id]&&S.ans[q.id].ok).length;const p=$("#view-cases .prog");if(p)p.textContent=`${done}/${c.qs.length} done · ${right} right`;const ch=$(`[data-case="${c.id}"] small`);if(ch)ch.textContent=`${done}/${c.qs.length}`;}
-function allQ(){return [...CASES.flatMap(c=>c.qs),...T2.flatMap(s=>s.qs)];}
+function allQ(){return [...CASES.flatMap(c=>c.qs),...T2.flatMap(s=>s.qs),...T3.flatMap(s=>s.qs)];}
 
-/* ============ ASK THE INSTRUCTOR (Test 2) ============ */
+/* ============ ASK THE INSTRUCTOR (Tests 2 and 3) ============ */
 let askFilter="All";
 function askState(id){return (S.ask&&S.ask[id])||{};}
 function askSet(id,patch){S.ask=S.ask||{};S.ask[id]=Object.assign({},S.ask[id],patch);save();}
@@ -2080,10 +2889,11 @@ function askHTML(a){
     <textarea style="margin-top:10px" data-asknote="${a.id}" placeholder="Write what the instructor said…" aria-label="What the instructor said">${esc(st.note||"")}</textarea>
     <div class="row"><button class="btn ${st.done?"soft":"good"}" data-askdone="${a.id}">${st.done?"Mark as still open":"Got an answer"}</button></div></div>`;
 }
-function askProg(){return `${ASK.filter(a=>askState(a.id).done).length}/${ASK.length} answered`;}
+function askProg(){const A=SET().ask;return `${A.filter(a=>askState(a.id).done).length}/${A.length} answered`;}
 function renderAsk(){
-  const groups=["All",...new Set(ASK.map(a=>a.g)),"Ask first","Still open","Answered"];
-  const shown=ASK.filter(a=>askFilter==="All"||(askFilter==="Still open"?!askState(a.id).done:askFilter==="Answered"?hasAns(a):askFilter==="Ask first"?a.hi:a.g===askFilter));
+  const A=SET().ask;
+  const groups=["All",...new Set(A.map(a=>a.g)),"Ask first","Still open","Answered"];
+  const shown=A.filter(a=>askFilter==="All"||(askFilter==="Still open"?!askState(a.id).done:askFilter==="Answered"?hasAns(a):askFilter==="Ask first"?a.hi:a.g===askFilter));
   $("#view-ask").innerHTML=`<div class="panel" style="margin-bottom:14px">
     <div class="qhead"><h3>Notes to review with your instructor</h3><span class="prog">${askProg()}</span></div>
     <p style="margin:0 0 10px">These are places where a slide disagrees with itself or with a handwritten note, where a slide asks a question and never answers it, or where something could be on the test and isn’t in the slides. Ask, write the answer in the box, and study from that.</p>
@@ -2096,20 +2906,27 @@ function renderAsk(){
   ${shown.map(askHTML).join("")||`<div class="panel" style="text-align:center"><h3>Nothing left here</h3><p class="muted">${askFilter==="Answered"?"No answers written yet.":"Every question in this group has an answer."}</p></div>`}`;
 }
 function hasAns(a,st){const x=((st||S).ask||{})[a.id]||{};return !!(x.done||(x.note&&x.note.trim()));}
-// st and who default to this device; the saved-answers view passes in what it pulled
-function answersText(st,who,when){
-  st=st||S; if(who===undefined)who=NAME; const ans=st.ans||{}, ask=st.ask||{};
-  const got=ASK.filter(a=>hasAns(a,st)), t2q=T2.flatMap(x=>x.qs);
-  let out=`Test 2 answers${who?" from "+who:""}, ${(when||new Date()).toLocaleDateString()}\n\nINSTRUCTOR ANSWERS: ${got.length} of ${ASK.length}\n`;
+// st and who default to this device; the saved-answers view passes in what it pulled.
+// tid picks the test (defaults to the open one, or Test 2 from Case Lab).
+function answersText(st,who,when,tid){
+  st=st||S; if(who===undefined)who=NAME; tid=tid||(SETS[TEST]?TEST:"t2");
+  const set=SETS[tid], A=set.ask, secs=set.secs, ans=st.ans||{}, ask=st.ask||{};
+  const got=A.filter(a=>hasAns(a,st)), t2q=secs.flatMap(x=>x.qs);
+  let out=`${set.name} answers${who?" from "+who:""}, ${(when||new Date()).toLocaleDateString()}\n\nINSTRUCTOR ANSWERS: ${got.length} of ${A.length}\n`;
   got.forEach(a=>{const n=((ask[a.id]||{}).note||"").trim();out+=`\n[${a.id}] ${a.q} (${a.src})\nAnswer: ${n||"(marked answered, nothing written)"}\n`;});
   out+="\nPRACTICE PROGRESS\n";
-  T2.forEach(x=>{const d=x.qs.filter(q=>ans[q.id]);out+=`${x.name}: ${d.length}/${x.qs.length} done, ${d.filter(q=>ans[q.id].ok).length} right\n`;});
-  out+=`Best quiz score: ${st.best_t2||0}/10\n`;
+  secs.forEach(x=>{const d=x.qs.filter(q=>ans[q.id]);out+=`${x.name}: ${d.length}/${x.qs.length} done, ${d.filter(q=>ans[q.id].ok).length} right\n`;});
+  out+=`Best quiz score: ${st["best_"+tid]||0}/10\n`;
   const miss=t2q.filter(q=>ans[q.id]&&!ans[q.id].ok);
   if(miss.length){out+="\nMISSED OR MARKED FOR REVIEW\n";miss.forEach(q=>{out+=`- [${q.id}] ${q.q}\n`;});}
   const wrote=t2q.filter(q=>q.type==="open"&&String(ans["draft-"+q.id]||"").trim());
   if(wrote.length){out+="\nWRITTEN ANSWERS\n";wrote.forEach(q=>{out+=`\n[${q.id}] ${q.q}\nWrote: ${String(ans["draft-"+q.id]).trim()}\n`;});}
   return out;
+}
+// the saved-answers view: one report per test she has started (Test 2 if none)
+function savedText(st,who,when){
+  const ans=st.ans||{}, started=Object.keys(SETS).filter(id=>{const s=SETS[id];return s.secs.some(x=>x.qs.some(q=>ans[q.id]))||s.ask.some(a=>hasAns(a,st));});
+  return (started.length?started:["t2"]).map(id=>answersText(st,who,when,id)).join("\n\n----------\n\n");
 }
 
 /* online backup: her saved work goes to Supabase under a family code, so it can be read from another device */
@@ -2135,14 +2952,14 @@ function runPull(code){
   const out=$("#pullOut"); out.innerHTML=`<p class="muted" role="status">Getting answers…</p>`;
   sbCall("hcl_pull",{p_code:code}).then(rows=>{pulled=rows||[];
     out.innerHTML=pulled.length?pulled.map((r,i)=>{const when=new Date(r.updated_at);
-      return `<div class="q"><div class="topic">${esc(r.name)} · saved ${esc(when.toLocaleString([],{dateStyle:"medium",timeStyle:"short"}))}</div><pre class="report" tabindex="0">${esc(answersText(r.data||{},r.name,when))}</pre><div class="row"><button class="btn soft" type="button" data-copyrow="${i}">Copy</button></div></div>`;}).join("")
+      return `<div class="q"><div class="topic">${esc(r.name)} · saved ${esc(when.toLocaleString([],{dateStyle:"medium",timeStyle:"short"}))}</div><pre class="report" tabindex="0">${esc(savedText(r.data||{},r.name,when))}</pre><div class="row"><button class="btn soft" type="button" data-copyrow="${i}">Copy</button></div></div>`;}).join("")
       :`<p role="status">Nothing is saved under that code. Check the spelling, and that backup is turned on where the answers were typed.</p>`;
   },()=>{out.innerHTML=`<p role="status">Couldn’t reach the online backup. Check your connection and try again.</p>`;});
 }
 $("#pullForm").addEventListener("submit",e=>{e.preventDefault();const c=$("#pullInput").value.trim();if(c.length<6){toast("The code is 6 or more characters");return;}runPull(c);});
 $("#pullModal").addEventListener("click",e=>{
   if(e.target.id==="pullModal"||e.target.closest("#pullClose")){$("#pullModal").hidden=true;return;}
-  const b=e.target.closest("[data-copyrow]"); if(b){const r=pulled[+b.dataset.copyrow];copyText(answersText(r.data||{},r.name,new Date(r.updated_at)),"Copied.");}
+  const b=e.target.closest("[data-copyrow]"); if(b){const r=pulled[+b.dataset.copyrow];copyText(savedText(r.data||{},r.name,new Date(r.updated_at)),"Copied.");}
 });
 $("#view-ask").addEventListener("submit",e=>{
   if(e.target.id!=="syncForm")return; e.preventDefault();
@@ -2154,7 +2971,7 @@ function copyText(txt,msg){const done=()=>toast(msg);
   if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(txt).then(done,old); else old();
 }
 function askText(){
-  const open=ASK.filter(a=>!askState(a.id).done); let out="Questions for my instructor (Test 2)\n";
+  const open=SET().ask.filter(a=>!askState(a.id).done); let out=`Questions for my instructor (${SET().name})\n`;
   for(const g of new Set(open.map(a=>a.g))){out+="\n"+g+"\n";open.filter(a=>a.g===g).forEach((a,i)=>{out+=`${i+1}. ${a.q} (${a.src})\n`;});}
   return out;
 }
@@ -2162,10 +2979,10 @@ $("#view-ask").addEventListener("click",e=>{
   const t=e.target;
   const f=t.closest("[data-askfilter]"); if(f){askFilter=f.dataset.askfilter;renderAsk();return;}
   const d=t.closest("[data-askdone]"); if(d){const id=d.dataset.askdone;const was=!!askState(id).done;askSet(id,{done:!was});if(!was)toast("Marked as answered");
-    if(askFilter==="Still open")renderAsk(); else{$("#ask-"+id).outerHTML=askHTML(ASK.find(a=>a.id===id));$("#view-ask .prog").textContent=askProg();}return;}
+    if(askFilter==="Still open")renderAsk(); else{$("#ask-"+id).outerHTML=askHTML(SET().ask.find(a=>a.id===id));$("#view-ask .prog").textContent=askProg();}return;}
   if(t.id==="askCopy"){copyText(askText(),"Copied. Paste it into a note or email.");return;}
   if(t.id==="ansCopy"){copyText(answersText(),"Copied. Paste it into a text or email.");return;}
-  if(t.id==="ansShare"){const txt=answersText();navigator.share({title:"Test 2 answers",text:txt}).catch(err=>{if(!err||err.name!=="AbortError")copyText(txt,"Copied instead. Paste it into a text or email.");});return;}
+  if(t.id==="ansShare"){const txt=answersText();navigator.share({title:SET().name+" answers",text:txt}).catch(err=>{if(!err||err.name!=="AbortError")copyText(txt,"Copied instead. Paste it into a text or email.");});return;}
   if(t.id==="pullOpen"){openPull();return;}
   if(t.id==="syncOff"){SYNC="";lsDel("hcl-sync");clearTimeout(syncT);syncT=null;renderAsk();toast("Backup is off on this device");return;}
 });
@@ -2194,7 +3011,7 @@ document.addEventListener("keydown",e=>{
 },true);
 $("#view-ask").addEventListener("input",e=>{const id=e.target.dataset.asknote;if(id)askSet(id,{note:e.target.value});});
 
-/* ============ PRACTICE (Test 2: questions by slide deck) ============ */
+/* ============ PRACTICE (Tests 2 and 3: questions by slide deck) ============ */
 let curSec=T2[0].id, tFilter="All";
 function secProg(s){return {n:s.qs.length,done:s.qs.filter(q=>S.ans[q.id]).length,right:s.qs.filter(q=>S.ans[q.id]&&S.ans[q.id].ok).length};}
 function notesPanel(s){
@@ -2208,12 +3025,12 @@ function notesPanel(s){
   </div>`;
 }
 function renderTopics(){
-  const s=T2.find(x=>x.id===curSec);
+  const s=SET().secs.find(x=>x.id===curSec)||SET().secs[0]; curSec=s.id;
   const topics=["All",...new Set(s.qs.map(q=>q.topic))];
   const shown=s.qs.filter(q=>tFilter==="All"||q.topic===tFilter);
   const p=secProg(s);
   const open=$("#noteswrap")&&$("#noteswrap").classList.contains("open");
-  $("#view-topics").innerHTML=`<div class="chips">${T2.map(x=>{const g=secProg(x);return `<button class="chip" data-sec="${x.id}" aria-pressed="${x.id===curSec}">${esc(x.name)} <small>${g.done}/${g.n}</small></button>`;}).join("")}</div>
+  $("#view-topics").innerHTML=`<div class="chips">${SET().secs.map(x=>{const g=secProg(x);return `<button class="chip" data-sec="${x.id}" aria-pressed="${x.id===curSec}">${esc(x.name)} <small>${g.done}/${g.n}</small></button>`;}).join("")}</div>
   <div class="sheet">
     <div class="sheetwrap${open?" open":""}" id="noteswrap"><div class="sheetclose"><span>Starred notes</span><button id="notesHide">Back to questions</button></div>${notesPanel(s)}</div>
     <div>
@@ -2223,7 +3040,7 @@ function renderTopics(){
     </div></div>
     <div class="chartbar"><div class="who">${esc(s.name)}<small>${esc(s.deck)}</small></div><button id="notesShow">Starred notes</button></div>`;
 }
-function rerenderTopicQ(q){const el=$("#q-"+q.id);if(el){el.outerHTML=qHTML(q);}const s=T2.find(x=>x.id===curSec);const g=secProg(s);const p=$("#view-topics .prog");if(p)p.textContent=`${g.done}/${g.n} done · ${g.right} right`;const ch=$(`[data-sec="${s.id}"] small`);if(ch)ch.textContent=`${g.done}/${g.n}`;}
+function rerenderTopicQ(q){const el=$("#q-"+q.id);if(el){el.outerHTML=qHTML(q);}const s=SET().secs.find(x=>x.id===curSec);const g=secProg(s);const p=$("#view-topics .prog");if(p)p.textContent=`${g.done}/${g.n} done · ${g.right} right`;const ch=$(`[data-sec="${s.id}"] small`);if(ch)ch.textContent=`${g.done}/${g.n}`;}
 $("#view-topics").addEventListener("click",e=>{
   const t=e.target;
   if(t.id==="notesShow"){$("#noteswrap").classList.add("open");$("#noteswrap").scrollTop=0;return;}
@@ -2275,7 +3092,7 @@ $("#view-la").addEventListener("input",e=>{if(e.target.id==="wt"){const v=parseF
 
 /* ============ FLASHCARDS ============ */
 let deckFilter="All", deckOrder=null, cardIdx=0, flipped=false;
-function curCards(){return TEST==="t2"?CARDS2:CARDS;}
+function curCards(){return TEST==="t1"?CARDS:SET().cards;}
 function ck(i){return TEST==="t1"?i:TEST+"-"+i;} // each test keeps its own card progress
 function deck(){return curCards().map((c,i)=>({...c,i})).filter(c=>deckFilter==="All"||c.d===deckFilter||(deckFilter==="Again"&&S.cards[ck(c.i)]==="again"));}
 function renderCards(){
@@ -2306,13 +3123,13 @@ document.addEventListener("keydown",e=>{if(tab!=="cards"||/INPUT|TEXTAREA/.test(
 
 /* ============ QUIZ ============ */
 let Q=null;
-function pool(){return TEST==="t2"?T2.flatMap(s=>s.qs).filter(q=>q.type==="mc"):[...CASES.flatMap(c=>c.qs).filter(q=>q.type==="mc"),...GENQ];}
+function pool(){return TEST!=="t1"?SET().secs.flatMap(s=>s.qs).filter(q=>q.type==="mc"):[...CASES.flatMap(c=>c.qs).filter(q=>q.type==="mc"),...GENQ];}
 function bestKey(){return TEST==="t1"?"best":"best_"+TEST;}
-function qFrom(q){const cs=CASES.find(x=>x.qs.some(y=>y.id===q.id));if(cs)return cs.name;const s=T2.find(x=>x.qs.some(y=>y.id===q.id));return s?s.name:"Manual";}
+function qFrom(q){const cs=CASES.find(x=>x.qs.some(y=>y.id===q.id));if(cs)return cs.name;const s=[...T2,...T3].find(x=>x.qs.some(y=>y.id===q.id));return s?s.name:"Manual";}
 function newQuiz(onlyMiss){let p=pool();if(onlyMiss&&Q)p=p.filter(q=>Q.missed.includes(q.id));for(let i=p.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[p[i],p[j]]=[p[j],p[i]];}Q={items:p.slice(0,Math.min(10,p.length)).map(q=>q.id),i:0,score:0,picked:null,missed:[]};renderQuiz();}
 function renderQuiz(){
   const v=$("#view-quiz");
-  if(!Q){v.innerHTML=`<div class="panel" style="max-width:680px;margin:0 auto"><h2 style="font-size:28px">Lightning round</h2><p>${TEST==="t2"?"10 random questions from the indices, sealants, and scaling & root planing slides.":"10 random questions from every case plus the manual’s rules."} Best score: <b class="mono">${S[bestKey()]||0}/10</b></p><div class="row"><button class="btn acc" id="startQ">Start the quiz</button></div></div>`;return;}
+  if(!Q){v.innerHTML=`<div class="panel" style="max-width:680px;margin:0 auto"><h2 style="font-size:28px">Lightning round</h2><p>${TEST!=="t1"?SET().quiz:"10 random questions from every case plus the manual’s rules."} Best score: <b class="mono">${S[bestKey()]||0}/10</b></p><div class="row"><button class="btn acc" id="startQ">Start the quiz</button></div></div>`;return;}
   if(Q.i>=Q.items.length){const pct=Math.round(Q.score/Q.items.length*100);if(Q.score>(S[bestKey()]||0)&&Q.items.length===10){S[bestKey()]=Q.score;save();}
     v.innerHTML=`<div class="panel" style="max-width:680px;margin:0 auto"><div class="score"><span class="big">${Q.score}/${Q.items.length}</span><span class="muted">${pct>=90?"Ready. Go get it.":pct>=75?"Passing. Tighten up the misses.":"Keep going. Redo the misses."}</span></div>
     ${Q.missed.length?`<div class="lbl">Missed</div><ul class="clean">${Q.missed.map(id=>`<li>${esc(pool().find(q=>q.id===id).q)}</li>`).join("")}</ul>`:""}
@@ -2333,7 +3150,7 @@ $("#view-quiz").addEventListener("click",e=>{const t=e.target;
 
 /* ============ CRAM ============ */
 function renderCram(){
-  if(TEST==="t2"){renderCram2();return;}
+  if(TEST!=="t1"){SET().cram();return;}
   $("#view-cram").innerHTML=`<div class="cram-grid">
     <div class="panel cram"><h3>Alison, 68 F: the answers</h3><dl class="kv">
       <dt>ASA</dt><dd><b>III</b>: Type 1 DM (A1c 8.5%) + chronic hep C. Defend it vs IV.</dd>
@@ -2551,9 +3368,137 @@ function renderCram2(){
   </div>`;
 }
 
+function renderCram3(){
+  $("#view-cram").innerHTML=`<div class="cram-grid">
+    <div class="panel cram"><h3>Definitions</h3><dl class="kv">
+      <dt>Health</dt><dd>WHO · complete physical and social well-being, not just no disease · a continuum</dd>
+      <dt>Public health</dt><dd>CDC · protecting and improving the health of families and communities</dd>
+      <dt>Dental public health</dt><dd>AAPHD · prevent and control dental disease through <b>organized community efforts</b> · the community is the patient</dd>
+      <dt>Community health</dt><dd>= public health (interchangeable)</dd>
+      <dt>Population health</dt><dd>Outcomes of a group + how they’re distributed · reduce disparities</dd></dl>
+      <div>${srcTag("Ch1 slide 4–9")}</div></div>
+    <div class="panel cram"><h3>Prevention levels</h3><table class="bp">
+      <tr><th>Level</th><th>What</th><th>Example</th></tr>
+      <tr><td><b>Primary</b></td><td>Keep it from starting</td><td>Water fluoridation, sealants, brushing lessons</td></tr>
+      <tr><td><b>Secondary</b></td><td>Stop it early</td><td>Varnish on white spots, pre-diabetic group</td></tr>
+      <tr><td><b>Tertiary</b></td><td>Replace / rehab</td><td>Dentures, implants, cardiac ICU patients</td></tr></table>
+      <div>${srcTag("Ch1 slide 12")}</div></div>
+    <div class="panel cram"><h3>Core functions <span class="star">★</span></h3><dl class="kv">
+      <dt>Assessment</dt><dd>Collect the data · monitor health · diagnose and investigate</dd>
+      <dt>Policy development</dt><dd>Science-based plan · inform, educate, empower · mobilize partnerships · develop policies</dd>
+      <dt>Assurance</dt><dd>Does what it says, helps who it’s meant to · enforce laws · link to care · competent workforce · evaluate</dd>
+      <dt>Center</dt><dd>Research</dd>
+      <dt>Source</dt><dd>IOM, 1988; reinforced 2003</dd>
+      <dt>Not a service</dt><dd>“Diagnose and <b>treat</b> patients”</dd></dl>
+      <div>${srcTag("Ch1 slide 39–42")}</div></div>
+    <div class="panel cram"><h3>Who does what</h3><dl class="kv">
+      <dt>DHHS</dt><dd>Federal lead · largest grant-maker</dd>
+      <dt>NIH</dt><dd>Research · NIDCR</dd>
+      <dt>CDC</dt><dd>Surveillance · outbreaks · Oral Health Division · fluoridation</dd>
+      <dt>HRSA</dt><dd>NHSC · Ryan White · workforce</dd>
+      <dt>State</dt><dd>SOHP in <b>all states</b> · dental director leads</dd>
+      <dt>Local</dt><dd>Sliding scale clinics · Medicaid · school programs</dd>
+      <dt>Coalition</dt><dd>Diverse group uniting for one goal</dd>
+      <dt>ASTDD</dt><dd>Best practices · 7-step model · BSS · surveillance</dd></dl>
+      <div>${srcTag("Ch1 slide 26–30 · Assessment slide 76–86")}</div></div>
+    <div class="panel cram"><h3>Dates and reports</h3><dl class="kv">
+      <dt>1671</dt><dd>South Carolina water protection</dd>
+      <dt>1913</dt><dd>Fones coins “dental hygienist” · Irene Newman first</dd>
+      <dt>1920s / 30s</dt><dd>McKay brown stain · Dean’s studies</dd>
+      <dt>1988</dt><dd>IOM core functions</dd>
+      <dt>2000</dt><dd>Surgeon General, <i>Oral Health in America</i></dd>
+      <dt>2003</dt><dd>National Call to Action</dd>
+      <dt>2004</dt><dd>ADHA proposes the ADHP</dd>
+      <dt>2010</dt><dd>ACA</dd>
+      <dt>2013</dt><dd>ADA Action for Dental Health</dd>
+      <dt>2015</dt><dd>Fluoride 0.7 ppm · CHIPRA</dd>
+      <dt>HP</dt><dd>Every 10 years, DHHS · HP2020: oral health in 12 leading indicators</dd></dl>
+      <div>${srcTag("Ch1 slide 10–55")}</div></div>
+    <div class="panel cram"><h3>Epidemiology</h3><dl class="kv">
+      <dt>Definition</dt><dd>Distribution and determinants of health in populations</dd>
+      <dt>Triangle</dt><dd>Host · agent · environment (multifactorial)</dd>
+      <dt>Host</dt><dd>Enamel, saliva, immunity, behavior</dd>
+      <dt>Agent</dt><dd>Biofilm, S. mutans, lactobacillus</dd>
+      <dt>Environment</dt><dd>Diet, fluoride, SES, norms, family</dd>
+      <dt>Endemic</dt><dd>Usual rate in an area</dd>
+      <dt>Epidemic</dt><dd>Increase</dd>
+      <dt>Eradication</dt><dd>Gone from the population</dd>
+      <dt>Determinants</dt><dd>Biology · behavior · physical env · social env · access to care · none is most important</dd></dl>
+      <div>${srcTag("Assessment slide 12–28")}</div></div>
+    <div class="panel cram"><h3>Program planning: ADPIE</h3><table class="bp">
+      <tr><th>Step</th><th>What happens</th></tr>
+      <tr><td><b>Assessment</b></td><td>Needs assessment: target group, extent and severity · baseline · most important step</td></tr>
+      <tr><td><b>Diagnosis</b></td><td>Defines the problem, gives direction</td></tr>
+      <tr><td><b>Planning</b></td><td>Priorities, goals, objectives, constraints, alternatives, methods</td></tr>
+      <tr><td><b>Implementation</b></td><td>Putting it into action · pilot first</td></tr>
+      <tr><td><b>Evaluation</b></td><td>Did it meet its objectives? Formative + summative</td></tr>
+      <tr><td>Document</td><td>Optional · publish if helpful</td></tr></table>
+      <div>${srcTag("Assessment slide 35–69")}</div></div>
+    <div class="panel cram"><h3>Goals and objectives</h3><dl class="kv">
+      <dt>Goal</dt><dd>Broad statement of change</dd>
+      <dt>Objective</dt><dd>Specific, measurable end result · performance verb is key</dd>
+      <dt>SMART + C</dt><dd>Specific · Measurable · Achievable · Relevant · Timed · Challenging</dd>
+      <dt>Process</dt><dd>Short term · action on a contributing factor</dd>
+      <dt>Impact</dt><dd>Learning, knowledge, attitude, skill</dd>
+      <dt>Outcome</dt><dd>Long term · how much the problem drops</dd>
+      <dt>Formative</dt><dd>During · fix problems early</dd>
+      <dt>Summative</dt><dd>At the end · overall judgment</dd>
+      <dt>Research</dt><dd>Program evaluation = applied research</dd></dl>
+      <div>${srcTag("Assessment slide 51–65")}</div></div>
+    <div class="panel cram"><h3>ASTDD Seven-Step Model</h3><ol style="margin:0;padding-left:20px">
+      <li>Partners + advisory committee</li><li>Self-assessment: goals, resources</li><li>Plan the needs assessment</li><li>Collect data</li><li>Organize and analyze data</li><li>Use data; prioritize; report</li><li>Evaluate the needs assessment</li></ol>
+      <div>${srcTag("Assessment slide 71")}</div></div>
+    <div class="panel cram"><h3>Water fluoridation <span class="star">★</span></h3><dl class="kv">
+      <dt>Level</dt><dd><b>0.7 ppm</b> since 2015, any climate (was 0.7–1.2 by temperature)</dd>
+      <dt>History</dt><dd>McKay 1920s stain · Dean 1930s studies</dd>
+      <dt>Element</dt><dd>13th most abundant</dd>
+      <dt>Reach</dt><dd>74.6% on public water (2012) · 204+ million people</dd>
+      <dt>Why</dt><dd>Passive, any SES, cheap · “best dental health promotion of all time”</dd>
+      <dt>Cost</dt><dd>Large systems $1.15/person · small $5.09</dd>
+      <dt>Mechanism</dt><dd>Primary: posteruptive (topical) · secondary: fluorapatite</dd>
+      <dt>Decision</dt><dd>Local, not state</dd>
+      <dt>Campaign</dt><dd>Local context · key players · strategy · funding · know the opposition · <b>no debates</b></dd></dl>
+      <div>${srcTag("Assessment slide 88–100")}</div></div>
+    <div class="panel cram"><h3>Other fluoride programs</h3><dl class="kv">
+      <dt>Mouthrinse</dt><dd>School, <b>weekly</b>, 10 mL 0.2% NaF, 60 s · parent permission + dentist oversight</dd>
+      <dt>Varnish</dt><dd>High-risk kids at clinics, Head Start, WIC, schools</dd>
+      <dt>Supplements</dt><dd>Rx only · nonfluoridated areas · drops 6 mo+, chewables · none over 0.6 ppm · compliance and cost problems</dd>
+      <dt>Fluorosis</dt><dd>Early toothpaste · supplements · infant formula</dd>
+      <dt>CDC paste</dt><dd>Under 2: none · 2–6: pea-sized</dd></dl>
+      <div>${srcTag("Assessment slide 101–109")}</div></div>
+    <div class="panel cram"><h3>Sealants, education, dental home</h3><dl class="kv">
+      <dt>SBSP ages</dt><dd>6–8 and 12–14</dd>
+      <dt>Effect</dt><dd>Up to 60% fewer caries</dd>
+      <dt>CDC</dt><dd>Seal even without follow-up · no x-rays needed · toothbrush prophy OK · check within 1 yr</dd>
+      <dt>Gap</dt><dd>Low-income kids</dd>
+      <dt>Education</dt><dd>Active participation · internal + external factors · schools · Attitude + Knowledge alone fails</dd>
+      <dt>Dental home</dt><dd>By <b>12 months</b> · anticipatory guidance</dd>
+      <dt>Older adults</dt><dd>Fastest growing · 89 M by 2050 · Medicare no dental · Apple Tree · BSS</dd></dl>
+      <div>${srcTag("Assessment slide 110–129")}</div></div>
+    <div class="panel cram"><h3>Who pays</h3><table class="bp">
+      <tr><th>Program</th><th>Who / what</th></tr>
+      <tr><td><b>Medicaid</b> XIX</td><td>Low income · state + federal · EPSDT dental for kids</td></tr>
+      <tr><td><b>CHIP</b></td><td>Kids not on Medicaid · dental mandated</td></tr>
+      <tr><td><b>Medicare</b></td><td>Older adults · no routine dental</td></tr>
+      <tr><td><b>Title V</b></td><td>Maternal and child block grants</td></tr>
+      <tr><td><b>WIC</b></td><td>Food, referrals, nutrition ed</td></tr>
+      <tr><td><b>Head Start</b></td><td>Screening, referral, fluoride, brushing</td></tr>
+      <tr><td><b>FQHC</b></td><td>Anyone, any ability to pay · Look-Alike = no federal grant</td></tr></table>
+      <div>${srcTag("Assessment slide 130–137")}</div></div>
+    <div class="panel cram"><h3>Testlets</h3><dl class="kv">
+      <dt>NBDHE</dt><dd>5 testlets · 24 questions · programs 10, research 8, promotion 6</dd>
+      <dt>Names</dt><dd>Scenario = the case · testlet = case + questions</dd>
+      <dt>Formats</dt><dd>MC · completion · paired T/F · cause-and-effect · EXCEPT/NOT</dd>
+      <dt>Method</dt><dd>Community mindset · read questions first · spot distractors · best answer · no assumptions</dd>
+      <dt>Change it?</dt><dd>Only if you misread or the test corrects you</dd>
+      <dt>Practice</dt><dd>Referendum → local component · EXCEPT → public debate · parents → BSS + referral · 0.7 ppm</dd></dl>
+      <div>${srcTag("Test-taking slide 4–20")}</div></div>
+  </div>`;
+}
+
 /* ============ RESET ============ */
 $("#resetArea").addEventListener("click",e=>{
-  if(e.target.id==="resetBtn"){$("#resetArea").innerHTML=`<span class="confirm">Erase all progress, both tests? <button class="btn bad" id="resetYes" style="padding:5px 10px">Erase</button><button class="ghost" id="resetNo">Keep</button></span>`;}
+  if(e.target.id==="resetBtn"){$("#resetArea").innerHTML=`<span class="confirm">Erase all progress, every test? <button class="btn bad" id="resetYes" style="padding:5px 10px">Erase</button><button class="ghost" id="resetNo">Keep</button></span>`;}
   if(e.target.id==="resetNo"){$("#resetArea").innerHTML=`<button class="ghost" id="resetBtn">Start over</button>`;}
   if(e.target.id==="resetYes"){const keep=S.ask;S={xp:0,ans:{},cards:{},best:0};if(keep)S.ask=keep;/* instructor answers are notes, not progress */save();Q=null;laCart=null;$("#resetArea").innerHTML=`<button class="ghost" id="resetBtn">Start over</button>`;renderHUD();setTab(tab);toast("Progress erased");}
 });

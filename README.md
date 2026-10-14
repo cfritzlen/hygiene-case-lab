@@ -29,10 +29,22 @@ In the code: `TESTS` (the dropdown), `T2` (sections and questions), `CARDS2`, `r
 
 Test 2 answers are tagged with deck and slide number ("Indices slide 37"). A ★ or "class note" means it came from the handwriting. Multiple-choice options are shuffled once per question id so the right answer is not always in the same slot.
 
+## Test 3 Lab (added 2026-10-14)
+Same layout as Test 2: Ask instructor (13 items), Practice (153 questions in four sections), Flashcards (39), Quiz, Cram sheet. Opens on Practice.
+
+Sources are three slide decks in `Docs/Study Materials/Test 3/` (copied from OneDrive), with her handwritten notes:
+- `Chapter 1.pdf`: People’s Health, 68 slides. Tag: “Ch1 slide n.”
+- `Assessment for Community Oral Health Program .pdf`: 143 slides, Ch 3 (slides 1–71, assessment and planning) and Ch 6 (slides 72–137, community programs), review questions 139–143. Tag: “Assessment slide n.”
+- `Test taking strategies .pdf`: Ch 12, 20 slides, with the practice testlets. Tag: “Test-taking slide n.”
+
+In the code: `T3` (sections “ph”, “plan”, “prog”, “tl”), `CARDS3`, `ASK3`, `renderCram3()`. Question ids start `t3h-`, `t3a-`, `t3c-`, `t3t-`; instructor item ids start `t3-`. The shared tabs read the open test’s pieces through `SETS` / `SET()`. Saved keys: `<profile>-tab-t3`, card keys `t3-<n>`, `best_t3`. The answers message covers the open test; the saved-answers view shows each test she has started.
+
+**Items to check with the instructor:** practice testlet slide 20 has option a (letters to parents) circled, but the page uses c (school fluoride varnish program); the planning steps appear as 4, 5, and 6-step lists; Healthy People 2020 vs 2030; whether the supplement dosing table is on the test (her note says “not for test”). Full list in the Ask instructor tab.
+
 ### Slide links and online backup (Supabase, added 2026-09-28)
 Settings are the `SB` object at the top of the script in `case-lab.html`: project `url`, publishable `key`, and `bucket` name (`slides`). **While `url` is empty, both features are off on the live site.** On localhost the slide links read from the local `slides/` folder so they can be tested.
 
-- **Slides:** one JPEG per slide in `slides/test2/{indices,sealants,srp}/001.jpg` (263 files, 26.5 MB, never pushed to GitHub). Upload that `test2` folder to a **public** bucket named `slides`. Every source tag ("Indices slide 37") then opens that slide in a viewer. Re-export with PyMuPDF if the decks change.
+- **Slides:** one JPEG per slide in `slides/test2/{indices,sealants,srp}/001.jpg` (263 files, 26.5 MB) and `slides/test3/{ch1,assess,tts}/001.jpg` (231 files, 26 MB), never pushed to GitHub. Upload both the `test2` and `test3` folders to the root of a **public** bucket named `slides`. Deck folders are set in `DECKS`. Every source tag ("Indices slide 37") then opens that slide in a viewer. Re-export with PyMuPDF if the decks change.
 - **Photo questions:** four "name this fulcrum" questions show the photo side of slides 158–161. The image is cropped by CSS (`.qimg`) because the handwritten answer is on the other side of the slide. They are left out when slides are off.
 - **Online backup:** `supabase/setup.sql` creates the `hcl_sync` table and two functions. The table has row level security on with no policies; the only access is through `hcl_push` and `hcl_pull`, which need the family code. The code is stored only as a hash. Backup is one-way: it saves her work and lets another device read it. It does not merge progress between devices.
 - The publishable key is meant to be public. Never put the service role key or a database password in the page or the repo.
